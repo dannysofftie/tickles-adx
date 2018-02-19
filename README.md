@@ -1,6 +1,8 @@
 
 AdExchange implemented in NodeJs, it is intended to be super light and for educational purposes only. Tuning might be required for production use
 
+![sign-in](https://user-images.githubusercontent.com/17042186/36385623-0f17e73a-15a4-11e8-8e02-55d51d054039.png)
+
 # License
 MIT License
 
