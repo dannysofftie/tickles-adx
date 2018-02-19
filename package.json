@@ -1,0 +1,28 @@
+{
+  "name": "ad_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/bin/index.js",
+  "scripts": {
+    "start": "node dist/bin/index.js",
+    "debug": "node --nolazy --inspect-brk=3000 dist/bin/index.js"
+  },
+  "keywords": [],
+  "author": "Danny Sofftie",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.3",
+    "@types/express": "^4.11.0",
+    "@types/mongoose": "^4.7.32",
+    "@types/node": "^9.3.0",
+    "@types/ws": "^4.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "express-generator": "^4.15.5",
+    "express-ws": "^3.0.0",
+    "pug": "^2.0.0-rc.4",
+    "ws": "^4.0.0"
+  }
+}
