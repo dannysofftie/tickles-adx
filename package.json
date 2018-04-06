@@ -2,19 +2,26 @@
   "name": "ad_server",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/bin/index.js",
+  "main": "bin",
   "scripts": {
-    "start": "node dist/bin/index.js",
-    "debug": "node --nolazy --inspect-brk=3000 dist/bin/index.js"
+    "start": "node bin",
+    "debug": "node --nolazy --inspect-brk=4000 bin"
   },
-  "keywords": [],
+  "keywords": [
+    "AdExchange",
+    "AdServer"
+  ],
   "author": "Danny Sofftie",
   "license": "ISC",
+  "repository": {
+    "git": "https://github.com/DannySofftie/tickles-adx.git"
+  },
   "devDependencies": {
     "@types/cors": "^2.8.3",
     "@types/express": "^4.11.0",
     "@types/mongoose": "^4.7.32",
     "@types/node": "^9.3.0",
+    "@types/serve-favicon": "^2.2.30",
     "@types/ws": "^4.0.0"
   },
   "dependencies": {
@@ -22,7 +29,8 @@
     "express": "^4.16.2",
     "express-generator": "^4.15.5",
     "express-ws": "^3.0.0",
-    "pug": "^2.0.0-rc.4",
-    "ws": "^4.0.0"
+    "pug": "^2.0.3",
+    "serve-favicon": "^2.4.5",
+    "ws": "^4.1.0"
   }
 }

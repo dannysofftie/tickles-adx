@@ -1,0 +1,88 @@
+extends ./includes/layout.pug
+block content
+  section.section-header
+    div._innercontainer.p-5.mx-5.mt-5
+      div.float-right.text-uppercase
+        button.btn.btn-dark.p-1
+          span.mdi.mdi-menu.mdi-36px
+      header.mt-5.py-5.animated.pulse
+        h1.text-danger
+          span.mdi.mdi-seat-legroom-extra.mdi-rotate-315 &nbsp;Ad 
+          span.text-info Exchange
+        h4 A digital marketplace for publishers, advertisers and developers to buy and sell advertising space through real-time auctions.
+      section.text-center
+        p Grow revenue across adverts with real-time access to every major demand source
+        p Business tools, for online advertising has been integrated into one powerful platform, to easily manage your advertising inventory from one dashboard.
+      section.row.ad-explain
+        div.col-5.animated.fadeIn
+          a(href="#advertisers")
+            div.card-body.bg-dark._pubs
+              h5.text-info Ad Exchange for Advertisers
+              ul._adslists
+                li Unified insight into inventory performance
+                li Data graphing for all activities
+                li Location tracking
+                li Geolocation Ad Management
+        div.col-2
+        div.col-5.animated.fadeIn
+          a(href="#publishers")
+            div.card-body.bg-dark._adverts
+              h5.text-info Ad Exchange for Publishers
+              ul._adslists
+                li For developers and publishers
+                li Monitor Ad Activities on your dashboard
+                li Data graphs for income generated over time
+                li Personalized access to server data on demand
+    //- from center to bottom section
+  section.py-4.bg-custom-info
+    hr
+    div.py-5.container.animated.fadeIn#advertisers
+      h4.text-dark.text-center For Advertisers &amp; content owners
+      p.text-center my-4 Advertising at the comfort of your phone, laptop, or any online device. Integrated payment systems that suits your needs
+              with no hustle. Manage your campaigns from a dashboard, showing visually your ad performance over time.
+      div.adverts-grid.my-4
+        div.adverts-grid-inner
+          span.mdi.mdi-responsive.mdi-64px
+          span.text-center 20 mins read through our privacy policy
+        div.adverts-grid-inner
+          span.mdi.mdi-login.mdi-64px
+          span.text-center Free advertiser sign up
+        div.adverts-grid-inner
+          span.mdi.mdi-credit-card-scan.mdi-64px
+          span.text-center Free 
+            span.text-danger Ad 
+            span.text-info Exchange 
+            span Bank integration
+        div.adverts-grid-inner
+          span.mdi.mdi-publish.mdi-64px
+          span.text-center Publish your first campaign
+      div.text-center.my-5
+        button.btn.btn-info Use Twitter sign up &nbsp;
+          span.mdi.mdi-twitter &nbsp;
+        a( href="/advertiser").btn.btn-dark.ml-2 Sign up as Advertiser &nbsp;
+          span.mdi.mdi-account-switch
+    hr
+    div.py-5.animated.fadeIn.container#publishers
+      h4.text-dark.text-center For Publishers &amp; Developers
+      p.text-center Publishers and developers earn revenue from ads displayed in their websites, blogs and news sites. It has been
+              easier than pasting code into your website and income flows to your banks. No hustle, no bustle.
+      div.adverts-grid.my-4
+        div.adverts-grid-inner
+          span.mdi.mdi-responsive.mdi-64px
+          span.text-center Read through our privacy policy
+        div.adverts-grid-inner
+          span.mdi.mdi-information.mdi-64px
+          span.text-center Free publisher sign up
+        div.adverts-grid-inner
+          span.mdi.mdi-play-pause.mdi-64px
+          span.text-center Free and easy payment configuration
+        div.adverts-grid-inner
+          span.mdi.mdi-content-paste.mdi-64px
+          span.text-center Paste code &amp; earn money
+      div.text-center.my-5
+        button.btn.btn-info Use Twitter sign up &nbsp;
+          span.mdi.mdi-twitter &nbsp;
+        a( href="/publisher").btn.btn-dark.ml-2 Sign up as Publisher &nbsp;
+          span.mdi.mdi-account-switch
+    include ./includes/footer.pug
+    

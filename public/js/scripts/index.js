@@ -1,4 +1,4 @@
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
     // do stuff
     // let webSocket = new WebSocket('ws://127.0.0.1:4000/auth')
     // webSocket.addEventListener('open', () => {
@@ -16,11 +16,5 @@ window.addEventListener('load', () => {
     // })
     let _pubs = document.querySelector('div._pubs')
     let _adslists = document.querySelector('div._adslists')
-    _pubs.addEventListener('click', (evt) => {
 
-    })
-
-    _adslists.addEventListener('click', (evt) => {
-
-    })
 })
