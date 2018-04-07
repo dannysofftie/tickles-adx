@@ -16,5 +16,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // })
     let _pubs = document.querySelector('div._pubs')
     let _adslists = document.querySelector('div._adslists')
-
 })

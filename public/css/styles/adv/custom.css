@@ -3,16 +3,33 @@
  * Advertiser stylesheet
  */
 
+@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Berkshire+Swash');
 html,
 body {
     margin: 0;
     padding: 0;
+    height: 100vh;
 }
 
-* {
+div {
     font-family: 'Lato', sans-serif;
 }
 
 .bg-custom-info {
     background-color: rgb(213, 225, 230);
+}
+
+a {
+    color: rgb(42, 160, 150);
+}
+
+.ad-company-name {
+    font-family: 'Berkshire Swash', cursive;
+    font-size: 30px;
+}
+
+.-scrollable {
+    height: 100%;
+    overflow-y: visible;
 }

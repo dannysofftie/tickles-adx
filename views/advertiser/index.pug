@@ -1,0 +1,49 @@
+extends ../includes/layout
+append css
+    link(rel="stylesheet", href="/css/styles/adv/custom.css")
+block content
+    div.bg-custom-info.h-100.d-flex.pt-2
+        //- left
+        div.w-75.-scrollable
+            section
+                p.text-center.ad-company-name
+                    span.mdi.mdi-burst-mode.mdi-48px
+                    br
+                    span Tickles Ad Exchange                
+                div.p-5
+                    p.text-center Are you a product owner, business owner, application developer or a service provider looking for strategies to advertise your products online? Tickles is your solution.
+                div.text-left
+                    h5 Access &amp; enjoy the ease &amp; flexibility of Tickles.
+                    ul.list-group-flush
+                        li.list-group-item
+                            span.mdi.mdi-view-dashboard &nbsp;
+                            span Manage upto to 100 campaigns from a dashboard
+                        li.list-group-item
+                            span.mdi.mdi-account-location &nbsp;
+                            span Access top leading publisher sites in the region you target
+                        li.list-group-item
+                            span.mdi.mdi-candycane
+                            span 
+        //- sign up form
+        div.w-25
+            div.sign-up-form.p-3
+                div.my-3.text-center
+                    span.mdi.mdi-burst-mode.mdi-48px
+                    h4 Oauth 2.1 Authentication
+                    hr
+                form(action="#" title="Sign up form" method="POST")
+                    div.form-group
+                        input(type="text" placeholder="Username or email" name="username" required).form-control
+                    div.form-group
+                        input(type="text" placeholder="Password" name="password" required).form-control
+                    div.form-group.form-check
+                        label.form-check-label
+                            input(type="checkbox", name="").form-check-input.custom-checkbox
+                            span Stay signed in
+                        button(type="submit").btn.btn-info.float-right.ml-3 Sign in &nbsp;
+                            span.mdi.mdi-eject
+                    hr
+                    div.form-group
+                        a(href="javascript:void(0)")#signin Register?
+                        a(href="javascript:void(0)").float-right#recover Reset password
+            div.sign-in-form.d-none

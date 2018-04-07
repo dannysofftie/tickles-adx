@@ -1,5 +1,8 @@
-extends ./includes/layout.pug
+extends ./includes/layout
+append css
+  link(rel="stylesheet", href="/css/styles/custom.css")
 block content
+  body.index
   section.section-header
     div._innercontainer.p-5.mx-5.mt-5
       div.float-right.text-uppercase
@@ -7,7 +10,7 @@ block content
           span.mdi.mdi-menu.mdi-36px
       header.mt-5.py-5.animated.pulse
         h1.text-danger
-          span.mdi.mdi-seat-legroom-extra.mdi-rotate-315 &nbsp;Ad 
+          span.mdi.mdi-burst-mode &nbsp;Ad 
           span.text-info Exchange
         h4 A digital marketplace for publishers, advertisers and developers to buy and sell advertising space through real-time auctions.
       section.text-center
@@ -38,7 +41,7 @@ block content
     hr
     div.py-5.container.animated.fadeIn#advertisers
       h4.text-dark.text-center For Advertisers &amp; content owners
-      p.text-center my-4 Advertising at the comfort of your phone, laptop, or any online device. Integrated payment systems that suits your needs
+      p.text-center.my-4 Advertising at the comfort of your phone, laptop, or any online device. Integrated payment systems that suits your needs
               with no hustle. Manage your campaigns from a dashboard, showing visually your ad performance over time.
       div.adverts-grid.my-4
         div.adverts-grid-inner
@@ -84,5 +87,5 @@ block content
           span.mdi.mdi-twitter &nbsp;
         a( href="/publisher").btn.btn-dark.ml-2 Sign up as Publisher &nbsp;
           span.mdi.mdi-account-switch
-    include ./includes/footer.pug
+    include ./includes/footer
     

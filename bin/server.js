@@ -30,16 +30,7 @@ class AdServer {
         this.app.use(serveFavicon('ads.ico'));
     }
     routes() {
-        // @ts-ignore
-        this.app.get('/', (req, res) => {
-            res.render('index', { title: "Ad Exchange for Publishers | Advertisers" });
-        });
-        this.app.get('/publisher', (req, res) => {
-            res.render('publisher/index');
-        });
-        this.app.get('/advertiser', (req, res) => {
-            res.render('advertiser/index');
-        });
+        this.app.use('/', require('../routes'));
         this.ws.on('connection', (socket, req) => {
             new sockets_1.SocketsServer(this.ws, socket, req).emit('received', 'heeeeeeeeeeeey');
         });
