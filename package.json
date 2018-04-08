@@ -30,7 +30,9 @@
     "express-generator": "^4.15.5",
     "express-ws": "^3.0.0",
     "pug": "^2.0.3",
-    "serve-favicon": "^2.4.5",
-    "ws": "^4.1.0"
+    "serve-favicon": "^2.4.5"
+  },
+  "engines": {
+    "node": "9.11.1"
   }
 }
