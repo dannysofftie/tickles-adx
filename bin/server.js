@@ -6,23 +6,21 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const serveFavicon = require("serve-favicon");
 const cors = require("cors");
-const WebSocket = require("ws");
 const http_1 = require("http");
 const os = require("os");
 const cluster = require("cluster");
-const sockets_1 = require("../sockets");
-class AdServer {
+class AdWebServer {
     constructor() {
         this.PORT = process.env.PORT || 4000;
         this.CPUS = os.cpus().length;
         this.app = express();
         this.server = http_1.createServer(this.app);
-        this.ws = new WebSocket.Server({ server: this.server });
         this.configs();
         this.routes();
     }
     configs() {
         this.app.set('view engine', 'pug');
+        this.app.disable('x-powered-by');
         this.app.use(express.static(path.join(__dirname, '../', 'public')));
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json());
@@ -30,10 +28,11 @@ class AdServer {
         this.app.use(serveFavicon('ads.ico'));
     }
     routes() {
-        this.app.use('/', require('../routes'));
-        this.ws.on('connection', (socket, req) => {
-            new sockets_1.SocketsServer(this.ws, socket, req).emit('received', 'heeeeeeeeeeeey');
+        this.app.get('/', (req, res) => {
+            res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' });
         });
+        this.app.use('/client', require('../routes/advertiser'));
+        this.app.use('/publisher', require('../routes/publisher'));
         //this.app.use('/ads/api/v1', )
     }
     normalizePort(port) {
@@ -65,7 +64,12 @@ class AdServer {
             this.server.listen(port, () => {
                 console.log(`Server process: ${process.pid} listening on port: ${port}`);
             });
+            process.on('uncaughtException', (err) => {
+                // @ts-ignore
+                if (err.code == 'EADDRINUSE')
+                    this.startServer();
+            });
         }
     }
 }
-exports.AdServer = AdServer;
+exports.AdWebServer = AdWebServer;

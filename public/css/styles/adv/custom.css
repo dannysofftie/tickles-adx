@@ -9,7 +9,6 @@ html,
 body {
     margin: 0;
     padding: 0;
-    height: 100vh;
 }
 
 div {
@@ -29,7 +28,40 @@ a {
     font-size: 30px;
 }
 
+.left-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
 .-scrollable {
     height: 100%;
     overflow-y: visible;
+}
+
+.list-group-item {
+    background-color: transparent;
+    border: none;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-gap: 15px;
+}
+
+.features-grid-internal {
+    display: grid;
+    grid-template-columns: 10% 90%;
+    grid-gap: 5px;
+    padding: 11px;
+    background-color: white;
+    border-radius: 3px;
+    transition: .6s;
+    cursor: pointer;
+}
+
+.features-grid-internal:hover {
+    background-color: rgb(204, 215, 220);
+    box-shadow: 1px 2px 15px 1px rgba(204, 215, 220, 0.3);
 }
