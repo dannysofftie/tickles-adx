@@ -13,6 +13,7 @@
   "author": "Danny Sofftie",
   "license": "ISC",
   "repository": {
+    "type": "url",
     "git": "https://github.com/DannySofftie/tickles-adx.git"
   },
   "devDependencies": {

@@ -55,8 +55,9 @@ var __spread = (this && this.__spread) || function () {
     return ar;
 };
 var d = document, onloadCallback = function () {
-    var recaptcha = 'recaptcha';
-    if (i(d.getElementById('recaptcha2')))
+    var recaptcha = 'recaptcha',
+        targetElem  = d.getElementById('recaptcha2')
+    if (targetElem !== null && i(targetElem))
         recaptcha = 'recaptcha2';
     // @ts-ignore
     grecaptcha.render(recaptcha, {

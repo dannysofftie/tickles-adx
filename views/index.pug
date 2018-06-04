@@ -19,7 +19,7 @@ block content
       section.row.ad-explain
         div.col-5.animated.fadeIn
           a(href="#advertisers")
-            div.card-body.bg-dark._pubs
+            div.card-body.bg-dark._pubs.py-5
               h5.text-info Ad Exchange for Advertisers
               ul._adslists
                 li Unified insight into inventory performance
@@ -29,7 +29,7 @@ block content
         div.col-2
         div.col-5.animated.fadeIn
           a(href="#publishers")
-            div.card-body.bg-dark._adverts
+            div.card-body.bg-dark._adverts.py-5
               h5.text-info Ad Exchange for Publishers
               ul._adslists
                 li For developers and publishers
@@ -37,36 +37,41 @@ block content
                 li Data graphs for income generated over time
                 li Personalized access to server data on demand
     //- from center to bottom section
-  section.py-4.bg-custom-info
-    hr
-    div.py-5.container.animated.fadeIn#advertisers
-      h4.text-dark.text-center For Advertisers &amp; content owners
-      p.text-center.my-4 Advertising at the comfort of your phone, laptop, or any online device. Integrated payment systems that suits your needs
-              with no hustle. Manage your campaigns from a dashboard, showing visually your ad performance over time.
-      div.adverts-grid.my-4
-        div.adverts-grid-inner
-          span.mdi.mdi-responsive.mdi-64px
-          span.text-center 20 mins read through our privacy policy
-        div.adverts-grid-inner
-          span.mdi.mdi-login.mdi-64px
-          span.text-center Free advertiser sign up
-        div.adverts-grid-inner
-          span.mdi.mdi-credit-card-scan.mdi-64px
-          span.text-center Free 
-            span.text-danger Ad 
-            span.text-info Exchange 
-            span Bank integration
-        div.adverts-grid-inner
-          span.mdi.mdi-publish.mdi-64px
-          span.text-center Publish your first campaign
-      div.text-center.my-5
-        button.btn.btn-info Use Twitter sign up &nbsp;
-          span.mdi.mdi-twitter &nbsp;
-        a( href="/client").btn.btn-dark.ml-2 Sign up as Advertiser &nbsp;
-          span.mdi.mdi-account-switch
-    hr
-    div.py-5.animated.fadeIn.container#publishers
-      h4.text-dark.text-center For Publishers &amp; Developers
+    div.advertiser-container.my-4#advertisers
+      .advertiser-container-inner.py-5
+        h3.text-center For Advertisers &amp; content owners
+        p.text-center.my-4 Advertising at the comfort of your phone, laptop, or any online device. Integrated payment systems that suits your needs
+                with no hustle. Manage your campaigns from a dashboard, showing visually your ad performance over time.
+        div.adverts-grid.my-5
+          div.adverts-grid-inner.px-5
+            div.image-holder
+              img(src="/images/traffic.jpg", alt="", srcset="")
+            h4 Traffic control
+            span.text-center Platform traffic monetization, with optimum optimization through integrated ad units
+          div.adverts-grid-inner.px-5
+            div.image-holder
+              img(src="/images/geo-targeting.jpg", alt="", srcset="")
+            h4 Geo-Targetting
+            span.text-center Have full control on who sees your ad through targetting geo-locations to suit your needs
+          div.adverts-grid-inner.px-5
+            div.image-holder
+              img(src="/images/performance.jpg", alt="", srcset="")
+            h4 Perfomance measure
+            span.text-center Measure your campaign performance through our enhanced ad metrics. 
+          div.adverts-grid-inner.px-5
+            div.image-holder
+              img(src="/images/billing.png", alt="", srcset="")
+            h4 Convenient billing
+            span.text-center Get billings for every shilling spent, on your favourite payment wallet. Paypal, Visa, Skillet etc
+        div.text-center.my-5
+          button.btn.btn-info Use Twitter sign up &nbsp;
+            span.mdi.mdi-twitter &nbsp;
+          a( href="/client").btn.btn-dark.ml-2 Sign up as Advertiser &nbsp;
+            span.mdi.mdi-account-switch
+  hr
+  div.publishers-container#publishers
+    .publisher-container-inner
+      h3.text-center For Publishers &amp; Developers
       p.text-center Publishers and developers earn revenue from ads displayed in their websites, blogs and news sites. It has been
               easier than pasting code into your website and income flows to your banks. No hustle, no bustle.
       div.adverts-grid.my-4
@@ -87,6 +92,6 @@ block content
           span.mdi.mdi-twitter &nbsp;
         a( href="/publisher").btn.btn-dark.ml-2 Sign up as Publisher &nbsp;
           span.mdi.mdi-account-switch
-    include ./includes/footer
+  include ./includes/footer
   script(src="/js/scripts/index.js")
     

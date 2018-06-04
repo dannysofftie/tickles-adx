@@ -9,10 +9,13 @@ const cors = require("cors");
 const http_1 = require("http");
 const os = require("os");
 const cluster = require("cluster");
+
+// determine cpus core in the current environment, fork all cores in production
+const ENV_CPUS = process.env.NODE_ENV === 'production' ? os.cpus().length : 1
+
 class AdWebServer {
     constructor() {
         this.PORT = process.env.PORT || 4000;
-        this.CPUS = os.cpus().length;
         this.app = express();
         this.server = http_1.createServer(this.app);
         this.configs();
@@ -53,11 +56,13 @@ class AdWebServer {
         }
         return port;
     }
-    startServer() {
+    async startServer() {
         if (cluster.isMaster) {
-            for (let i = 0; i < this.CPUS; i++) {
+            for (let i = 0; i < ENV_CPUS; i++) {
                 cluster.fork();
             }
+            for await (const event of ['disconnect', 'exit'])
+                cluster.on(event, () => cluster.fork())
         }
         else {
             let port = this.normalizePort(this.PORT);
