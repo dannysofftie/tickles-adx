@@ -1,7 +1,7 @@
 
-AdExchange implemented in NodeJs, it is intended to be super light and for educational purposes only. Tuning might be required for production use
+AdExchange, with real-time auction, implemented in NodeJs, for developers, publishers and advertisers / content owners.
 
-![adexchange](https://user-images.githubusercontent.com/17042186/38419493-60e150fa-39a9-11e8-98cb-f6fd8980e396.png)
+![capture](https://user-images.githubusercontent.com/17042186/40917594-7f5a381c-680c-11e8-810c-a310f80f8432.PNG)
 
 # License
 MIT License
