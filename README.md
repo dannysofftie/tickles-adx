@@ -1,7 +1,8 @@
 
 AdExchange, with real-time auction, implemented in NodeJs, for developers, publishers and advertisers / content owners.
 
-![capture](https://user-images.githubusercontent.com/17042186/40917594-7f5a381c-680c-11e8-810c-a310f80f8432.PNG)
+![capture](https://user-images.githubusercontent.com/17042186/40917797-2069ff80-680d-11e8-9f5d-bbf6a3501cef.PNG)
+
 
 # License
 MIT License
