@@ -7,8 +7,8 @@
             "dom"
         ],
         "module": "commonjs",
-        "outDir": "./js",
-        "rootDir": "./scripts",
+        "outDir": "./dist",
+        "rootDir": "./src",
         "removeComments": false,
         /* Strict Type-Checking Options */
         "strict": true,
