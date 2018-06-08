@@ -1,23 +1,27 @@
 #!/usr/bin/env node
 "use strict";
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const serveFavicon = require("serve-favicon");
 const cors = require("cors");
-const http_1 = require("http");
+const http = require("http");
 const os = require("os");
 const cluster = require("cluster");
-
-// determine cpus core in the current environment, fork all cores in production
-const ENV_CPUS = process.env.NODE_ENV === 'production' ? os.cpus().length : 1
-
+const ENV_CPUS = process.env.NODE_ENV === 'production' ? os.cpus().length : 1, log = console.log;
 class AdWebServer {
     constructor() {
-        this.PORT = process.env.PORT || 4000;
+        this.port = process.env.PORT || 4000;
         this.app = express();
-        this.server = http_1.createServer(this.app);
+        this.server = http.createServer(this.app);
         this.configs();
         this.routes();
     }
@@ -39,40 +43,51 @@ class AdWebServer {
         //this.app.use('/ads/api/v1', )
     }
     normalizePort(port) {
-        if (typeof port == 'function') {
-            throw new TypeError('Argument of type function can\'t used as port');
-        }
-        else if (typeof port == 'string') {
-            return Number.isNaN(parseInt(port)) ? process.exit(1) : parseInt(port);
-        }
-        else if (typeof port == 'undefined') {
+        if (typeof port == 'undefined') {
             throw new Error('Expected parameter port number but found none');
+        }
+        else if (typeof port == 'function') {
+            throw new TypeError('Argument of type function can\'t used as port');
         }
         else if (typeof port == 'object') {
             throw new TypeError('Argument of type object can\'t be used as port');
         }
         else if (isNaN(port)) {
-            return 4000;
+            process.exit(1);
         }
         return port;
     }
     async startServer() {
+        var e_1, _a;
         if (cluster.isMaster) {
             for (let i = 0; i < ENV_CPUS; i++) {
                 cluster.fork();
             }
-            for await (const event of ['disconnect', 'exit'])
-                cluster.on(event, () => cluster.fork())
+            try {
+                // spin core on ['disconnect', 'exit']                               
+                for (var _b = __asyncValues(['disconnect', 'exit']), _c; _c = await _b.next(), !_c.done;) {
+                    const event = await _c.value;
+                    cluster.on(event, () => cluster.fork());
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (_c && !_c.done && (_a = _b.return)) await _a.call(_b);
+                }
+                finally { if (e_1) throw e_1.error; }
+            }
         }
         else {
-            let port = this.normalizePort(this.PORT);
-            this.server.listen(port, () => {
-                console.log(`Server process: ${process.pid} listening on port: ${port}`);
+            // @ts-ignore
+            let normalizedPort = this.normalizePort(this.port);
+            this.server.listen(normalizedPort, () => {
+                log(`Server process: ${process.pid} listening on port: ${normalizedPort}`);
             });
-            process.on('uncaughtException', (err) => {
+            process.on('uncaughtException', async (err) => {
                 // @ts-ignore
                 if (err.code == 'EADDRINUSE')
-                    this.startServer();
+                    await this.startServer().catch(console.error);
             });
         }
     }

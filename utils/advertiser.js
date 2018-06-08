@@ -1,15 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const utilities = require("../includes");
-/**
- * authenticate advertiser to allow login and access dashboard
- * @param req client request
- */
+const https = require("https");
+const includes_1 = require("../includes");
+const qs = require("querystring");
+async function verifyCaptcha(captcha, ip) {
+    return new Promise((resolve, reject) => {
+        let req = https.request({
+            method: 'POST',
+            host: 'www.google.com',
+            path: '/recaptcha/api/siteverify',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }, (res) => {
+            res.on('data', data => resolve(data));
+            res.on('error', error => reject(error));
+        });
+        req.write(qs.stringify({ secret: '6LdN1FEUAAAAAGHokcf3kHwvrWrfJ5hZfCGtDwE2', response: captcha, remoteip: ip }));
+        req.on('error', error => reject(error));
+        req.end();
+    });
+}
 async function advertiserLogin(req) {
-    let result = await utilities.request({ captchaValue: req.body['g-recaptcha-response'], ip: req.ip, username: req.body.username, password: req.body.password }, '/advertiser/login');
-    // check returned data by server and respond to client
-    console.log(result);
-    return result;
+    return await verifyCaptcha(req.body['g-recaptcha-response'], req.ip).then(async (data) => {
+        if (!!JSON.parse(data.toString()).success) {
+            const path = '/advertiser/login', data = {
+                username: req.body.username,
+                password: req.body.password
+            };
+            return await new includes_1.HttpRequest().request(path, data).catch(console.error);
+        }
+        return { error: 'captcha_error' };
+    }).catch(error => JSON.stringify({ error: error.errno }));
 }
 exports.advertiserLogin = advertiserLogin;
 async function advertiserSignUp(req) {

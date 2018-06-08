@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     res.render('advertiser/index', { title: 'Ad Exchange for Advertisers' });
 });
 router.post('/login', async (req, res) => {
-    let apiResponse = await utils_1.advertiserLogin(req).catch(err => err);
+    let apiResponse = await utils_1.advertiserLogin(req).catch(console.error);
     res.end(apiResponse);
 });
 router.post('/signup', async (req, res) => {

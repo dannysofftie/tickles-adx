@@ -1,1 +1,1 @@
-export * from './makeHttpRequest'
+export * from './httpRequest'

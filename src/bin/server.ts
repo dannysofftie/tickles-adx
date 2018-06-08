@@ -14,7 +14,7 @@ const ENV_CPUS = process.env.NODE_ENV === 'production' ? os.cpus().length : 1,
 export class AdWebServer {
     private app: express.Application
     private server: http.Server
-    private port: any
+    private port: string | number
 
     constructor() {
         this.port = process.env.PORT || 4000
@@ -63,7 +63,7 @@ export class AdWebServer {
                 cluster.on(event, () => cluster.fork())
 
         } else {
-
+            // @ts-ignore
             let normalizedPort = this.normalizePort(this.port)
             this.server.listen(normalizedPort, () => {
                 log(`Server process: ${process.pid} listening on port: ${normalizedPort}`)

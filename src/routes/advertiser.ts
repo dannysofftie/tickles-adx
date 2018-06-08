@@ -11,7 +11,8 @@ router.get('/', (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    let apiResponse = await advertiserLogin(req).catch(err => err)
+    let apiResponse = await advertiserLogin(req).catch(console.error)
+
     res.end(apiResponse)
 })
 
@@ -19,4 +20,5 @@ router.post('/signup', async (req, res) => {
 
     res.end(JSON.stringify(req.body))
 })
+
 module.exports = router

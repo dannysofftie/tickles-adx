@@ -4,7 +4,7 @@ append css
 block content
   body.index
   section.section-header
-    div._innercontainer.p-5.mx-5.mt-5
+    div._innercontainer.p-3.mx-3.mt-4
       div.float-right.text-uppercase
         button.btn.btn-dark.p-1
           span.mdi.mdi-menu.mdi-36px
@@ -12,14 +12,14 @@ block content
         h1.text-danger
           span.mdi.mdi-burst-mode &nbsp;Ad 
           span.text-info Exchange
-        h4 A digital marketplace for publishers, advertisers and developers to buy and sell advertising space through real-time auctions.
+        h4.text-center A digital marketplace for publishers, advertisers and developers to buy and sell advertising space through real-time auctions.
       section.text-center
-        p Grow revenue across adverts with real-time access to every major demand source
-        p Business tools, for online advertising has been integrated into one powerful platform, to easily manage your advertising inventory from one dashboard.
+        p.text-white Grow revenue across adverts with real-time access to every major demand source
+        p.text-white Business tools, for online advertising has been integrated into one powerful platform, to easily manage your advertising inventory from one dashboard.
       section.row.ad-explain
         div.col-5.animated.fadeIn
           a(href="#advertisers")
-            div.card-body.bg-dark._pubs.py-5
+            div.card-body.bg-dark._pubs.py-3
               h5.text-info Ad Exchange for Advertisers
               ul._adslists
                 li Unified insight into inventory performance
@@ -29,7 +29,7 @@ block content
         div.col-2
         div.col-5.animated.fadeIn
           a(href="#publishers")
-            div.card-body.bg-dark._adverts.py-5
+            div.card-body.bg-dark._adverts.py-3
               h5.text-info Ad Exchange for Publishers
               ul._adslists
                 li For developers and publishers
@@ -37,56 +37,57 @@ block content
                 li Data graphs for income generated over time
                 li Personalized access to server data on demand
     //- from center to bottom section
-    div.advertiser-container.my-4#advertisers
-      .advertiser-container-inner.py-5
-        h3.text-center For Advertisers &amp; content owners
+    div.advertiser-container.mt-4#advertisers
+      .advertiser-container-inner.pt-4
+        h2.text-center For Advertisers &amp; content owners
         p.text-center.my-4 Advertising at the comfort of your phone, laptop, or any online device. Integrated payment systems that suits your needs
                 with no hustle. Manage your campaigns from a dashboard, showing visually your ad performance over time.
         div.adverts-grid.my-5
           div.adverts-grid-inner.px-5
             div.image-holder
               img(src="/images/traffic.jpg", alt="", srcset="")
-            h4 Traffic control
-            span.text-center Platform traffic monetization, with optimum optimization through integrated ad units
+            h5 Traffic control
+            small.text-center Platform traffic monetization, with optimum optimization through integrated ad units
           div.adverts-grid-inner.px-5
             div.image-holder
               img(src="/images/geo-targeting.jpg", alt="", srcset="")
-            h4 Geo-Targetting
-            span.text-center Have full control on who sees your ad through targetting geo-locations to suit your needs
+            h5 Geo-Targetting
+            small.text-center Have full control on who sees your ad through targetting geo-locations to suit your needs
           div.adverts-grid-inner.px-5
             div.image-holder
               img(src="/images/performance.jpg", alt="", srcset="")
-            h4 Perfomance measure
-            span.text-center Measure your campaign performance through our enhanced ad metrics. 
+            h5 Perfomance measure
+            small.text-center Measure your campaign performance through our enhanced ad metrics. 
           div.adverts-grid-inner.px-5
             div.image-holder
               img(src="/images/billing.png", alt="", srcset="")
-            h4 Convenient billing
-            span.text-center Get billings for every shilling spent, on your favourite payment wallet. Paypal, Visa, Skillet etc
-        div.text-center.my-5
+            h5 Convenient billing
+            small.text-center Get billings for every shilling spent, on your favourite payment wallet. Paypal, Visa, Skillet etc
+        div.text-center.py-3
           button.btn.btn-info Use Twitter sign up &nbsp;
             span.mdi.mdi-twitter &nbsp;
           a( href="/client").btn.btn-dark.ml-2 Sign up as Advertiser &nbsp;
             span.mdi.mdi-account-switch
-  hr
-  div.publishers-container#publishers
-    .publisher-container-inner
-      h3.text-center For Publishers &amp; Developers
-      p.text-center Publishers and developers earn revenue from ads displayed in their websites, blogs and news sites. It has been
-              easier than pasting code into your website and income flows to your banks. No hustle, no bustle.
-      div.adverts-grid.my-4
-        div.adverts-grid-inner
-          span.mdi.mdi-responsive.mdi-64px
-          span.text-center Read through our privacy policy
-        div.adverts-grid-inner
-          span.mdi.mdi-information.mdi-64px
-          span.text-center Free publisher sign up
-        div.adverts-grid-inner
-          span.mdi.mdi-play-pause.mdi-64px
-          span.text-center Free and easy payment configuration
-        div.adverts-grid-inner
-          span.mdi.mdi-content-paste.mdi-64px
-          span.text-center Paste code &amp; earn money
+    div.trust-area.m-0
+      div.trust-container
+        span.mdi.mdi-account-switch.mdi-64px
+        h6 Sign up as publisher
+      div.trust-container
+        span.mdi.mdi-content-paste.mdi-64px
+        h6 Paste code to your website
+      div.trust-container
+        span.mdi.mdi-cash-usd.mdi-64px
+        h6 Monetize your content
+      div.trust-container
+        span.mdi.mdi-wallet.mdi-64px
+        h6 Get paid for impressions
+    
+    //- publisher section
+    div.publishers-container.py-5#publishers
+      .publisher-container-inner
+        .pub-image
+          img(src="/images/portfolio.png", alt="", srcset="")
+        span.text-secondary &quot;As a developer, I advertised my portfolio through Tickles Ad Exchange and I was amazed by the results. They have a well curated, and an innovative programmatic solution designed for supply partners looking for ways to generate revenue through website or app advertising.&quot;
       div.text-center.my-5
         button.btn.btn-info Use Twitter sign up &nbsp;
           span.mdi.mdi-twitter &nbsp;
