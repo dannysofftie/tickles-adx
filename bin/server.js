@@ -35,12 +35,14 @@ class AdWebServer {
         this.app.use(serveFavicon('ads.ico'));
     }
     routes() {
-        this.app.get('*', (req, res) => {
+        this.app.get('*', (req, res, next) => {
             if (process.env.NODE_ENV === 'production') {
                 if (req.protocol != 'https') {
                     res.redirect('https://' + req.hostname + req.url);
                 }
+                next();
             }
+            next();
         });
         this.app.get('/', (req, res) => {
             res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' });
