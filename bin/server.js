@@ -35,12 +35,14 @@ class AdWebServer {
         this.app.use(serveFavicon('ads.ico'));
     }
     routes() {
-        this.app.get('/', (req, res) => {
+        this.app.get('*', (req, res) => {
             if (process.env.NODE_ENV === 'production') {
                 if (req.protocol != 'https') {
-                    res.redirect(301, 'https://adxe.herokuapp.com');
+                    res.redirect('https://' + req.hostname + req.url);
                 }
             }
+        });
+        this.app.get('/', (req, res) => {
             res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' });
         });
         this.app.use('/client', require('../routes/advertiser'));
