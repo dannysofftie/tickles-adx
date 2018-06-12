@@ -2,16 +2,17 @@ html,
 body {
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 * {
     font-family: 'Lato', sans-serif;
 }
 
-body {
-    /* background: rgba(0, 0, 0, 0.4) url('/images/landing_page.jpg') no-repeat fixed center; */
+/* body {
+    background: rgba(0, 0, 0, 0.4) url('/images/landing_page.jpg') no-repeat fixed center;
     background-size: cover;
-}
+} */
 
 ._innercontainer {
     background: linear-gradient(rgb(26, 158, 175), rgba(0, 0, 0, 0.747));
@@ -105,17 +106,29 @@ a:hover {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background: rgba(0, 0, 0, 0.4) url(/images/publisher_bg.jpg) no-repeat fixed center;
+    background-size: cover;
+    min-height: 66vh;
+    position: relative;
 }
 
 .publisher-container-inner {
     display: grid;
-    grid-template-columns: 30% 40%;
+    grid-template-columns: 45% 30%;
     grid-gap: 40px;
     padding-left: 10%;
 }
 
 .publisher-container-inner span {
     text-align: center;
+    font-style: italic;
+}
+
+.publishers-inner {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, rgb(213, 225, 230), rgba(213, 225, 230, 0.98), rgba(213, 225, 230, 0.78), rgba(0, 0, 0, 0.0))
 }
 
 .pub-image {
@@ -131,8 +144,18 @@ a:hover {
     height: 100%;
     width: 100%;
     transition: 1.4s;
+    cursor: pointer;
 }
 
 .pub-image img:hover {
+    transform: scale(1.2)
+}
+
+.zoomable {
+    transition: ease-in-out 1.2s;
+    cursor: pointer;
+}
+
+.zoomable:hover {
     transform: scale(1.2)
 }

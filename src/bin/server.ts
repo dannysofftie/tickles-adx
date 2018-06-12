@@ -35,6 +35,11 @@ export class AdWebServer {
     }
     private routes() {
         this.app.get('/', (req, res) => {
+            if (process.env.NODE_ENV === 'production') {
+                if (req.protocol != 'https') {
+                    res.redirect(301, 'https://adxe.herokuapp.com')
+                }
+            }
             res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
         })
         this.app.use('/client', require('../routes/advertiser'))
