@@ -40,9 +40,11 @@ class AdWebServer {
                 if (req.protocol != 'https') {
                     res.redirect('https://' + req.hostname + req.url);
                 }
-                next();
+                else
+                    res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' });
             }
-            res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' });
+            else
+                res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' });
         });
         this.app.use('/client', require('../routes/client'));
         this.app.use('/publisher', require('../routes/publisher'));

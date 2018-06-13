@@ -5,14 +5,19 @@ body {
     overflow-x: hidden;
 }
 
+a {
+    color: rgb(25, 201, 204)
+}
+
 .client-details-box {
-    padding: 9px;
+    padding: 9px 16px;
     height: auto;
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     background-color: white;
+    transition: 0.6s;
 }
 
 .top-navigation {
@@ -24,9 +29,26 @@ body {
 .nav-options {
     padding: 11px;
     cursor: pointer;
-    transition: .7s;
+    transition: .6s;
 }
 
 .nav-options:hover {
-    border-bottom: 1.8px solid rgba(185, 54, 197, 0.683);
+    border-bottom: 1.8px solid rgb(25, 201, 204);
+    color: coral;
+}
+
+.nav-active {
+    border-bottom: 1.8px solid rgba(185, 54, 197, 0.883);
+    color: rgb(25, 201, 204);
+}
+
+.referralAwards {
+    position: absolute;
+    right: 5px;
+}
+
+.overview-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 24.4%);
+    grid-gap: 10px;
 }

@@ -25,7 +25,7 @@ async function advertiserLogin(req) {
         username: req.body.username,
         password: req.body.password
     };
-    return await new includes_1.HttpRequest().request(path, data).catch(err => err);
+    return await new includes_1.HttpRequest().request(path, data).catch(err => err.code ? { code: err.code } : err);
 }
 exports.advertiserLogin = advertiserLogin;
 async function advertiserSignUp(req) {

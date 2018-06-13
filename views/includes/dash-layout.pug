@@ -1,0 +1,40 @@
+extends ./layout
+append css
+  link(rel="stylesheet", href="/css/styles/client/dashboard.css")     
+block content
+  div.client-details-box
+    a(href="/client/advertiser/dashboard/?client=me")
+        span.mdi.mdi-account-edit &nbsp;
+        span= client
+    a(href="/client/advertiser/dashboard/?overview=dashboard")
+        span.mx-5.mdi.mdi-move-resize-variant &nbsp; Overview
+    div.right-client-box.float-right
+        span Balance $
+            span.mr-3= balance
+        a(href="javascript:void(0)") Settings&nbsp;
+            span.mdi.mdi-settings
+        a(href="javascript:void(0)").ml-2 Help&nbsp;
+            span.mdi.mdi-help
+        a(href="javascript:void(0)").ml-2 Logout&nbsp;
+            span.mdi.mdi-logout
+
+  div.top-navigation.d-flex
+    div.nav-options#create-campaign
+      span.mdi.mdi-creation &nbsp;
+      span Create campaign
+    div.nav-options#manage-campaign
+      span.mdi.mdi-chart-line &nbsp;
+      span Manage campaign
+    div.nav-options#campaign-statistics 
+      span.mdi.mdi-chart-timeline &nbsp;
+      span Campaign statistics
+    div.nav-options#payment-wallet
+      span.mdi.mdi-wallet-giftcard &nbsp;
+      span Payment wallet
+    div.nav-options#referral-program
+      span.mdi.mdi-map-marker-circle &nbsp;
+      span Referral program
+    div.nav-options.referralAwards#referral-program
+      small.mdi.mdi-cash-usd &nbsp;
+      small Referral awards $
+        span= referralAwards
