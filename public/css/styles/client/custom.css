@@ -20,11 +20,11 @@ div {
 }
 
 a {
-    color: rgb(42, 160, 150);
+    color: rgb(31, 196, 182);
 }
 
 .ad-company-name {
-    font-family: 'Berkshire Swash', cursive;
+    font-family: 'Amita', cursive;
     font-size: 30px;
 }
 
@@ -64,4 +64,84 @@ a {
 .features-grid-internal:hover {
     background-color: rgb(204, 215, 220);
     box-shadow: 1px 2px 15px 1px rgba(204, 215, 220, 0.3);
+}
+
+.advertiser-wrapper-block {
+    background: #0000004b url(/images/blank-business-composition-373076.jpg) no-repeat fixed center;
+    background-size: cover;
+    height: 100vh;
+    color: white;
+}
+
+.advertiser-wrapper-block-inner {
+    height: auto;
+    background-color: #82168b8f;
+}
+
+.dsp-title {
+    font-family: 'Monoton', cursive;
+}
+
+.white-divider {
+    width: 90px;
+    height: 5px;
+    background-color: white;
+    margin: 20px;
+}
+
+.client-image-container {
+    perspective: 700px;
+    width: 65vw;
+}
+
+.client-image {
+    width: 100%;
+    margin-top: -40px;
+    transform: rotateX(50deg);
+}
+
+.adverts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 20% 5%);
+    grid-gap: 1px;
+}
+
+.adverts-grid-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.image-holder {
+    margin-bottom: 8px;
+    padding: 20px;
+}
+
+.arrow-left::after {
+    content: '----- >'
+}
+
+.image-holder img {
+    height: 100%;
+    width: 100%;
+}
+
+.zoomable {
+    transition: ease-in-out 1.2s;
+    cursor: pointer;
+}
+
+.zoomable:hover {
+    transform: scale(1.2)
+}
+
+.signinform {
+    position: fixed;
+    top: 88px;
+    right: 20px;
+    width: 320px;
+    padding: 20px;
+    border-radius: 5px 0px 5px 5px;
+    background-color: #0000004b;
 }

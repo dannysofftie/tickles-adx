@@ -3,7 +3,7 @@ import { Request } from 'express'
 import { HttpRequest } from '../includes'
 import * as qs from 'querystring'
 
-async function verifyCaptcha(captcha: string, ip: string): Promise<{} | Array<string>> {
+export async function verifyCaptcha(captcha: string, ip: string): Promise<{} | Array<string>> {
     return new Promise((resolve, reject) => {
         let req = https.request({
             method: 'POST',
@@ -21,17 +21,12 @@ async function verifyCaptcha(captcha: string, ip: string): Promise<{} | Array<st
 }
 
 export async function advertiserLogin(req: Request) {
-    return await verifyCaptcha(req.body['g-recaptcha-response'], req.ip).then(async (data) => {
-        if (!!JSON.parse(data.toString()).success) {
-            const path = '/advertiser/login',
-                data = {
-                    username: req.body.username,
-                    password: req.body.password
-                }
-            return await new HttpRequest().request(path, data).catch(console.error)
+    const path = '/advertiser/login',
+        data = {
+            username: req.body.username,
+            password: req.body.password
         }
-        return { error: 'captcha_error' }
-    }).catch(error => JSON.stringify({ error: error.errno }))
+    return await new HttpRequest().request(path, data).catch(err => err)
 }
 
 export async function advertiserSignUp(req: Request) {

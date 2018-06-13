@@ -1,100 +1,102 @@
 extends ../includes/layout
 append css
-    link(rel="stylesheet", href="/css/styles/client/custom.css")   
+    link(rel="stylesheet", href="/css/styles/client/custom.css")     
 block content
-    .bg-custom-info.d-flex.pt-2
-      //- left
-      .w-75
-        //- section
-        //-   p.text-center.ad-company-name
-        //-     span.mdi.mdi-burst-mode.mdi-48px.text-danger
-        //-     br
-        //-     span.text-info Tickles Ad Exchange   
-        //-   .p-5
-        //-     p.text-center Are you a product owner, business owner, application developer or a service provider looking for strategies to advertise your products online? Tickles is your solution.
-        //-   .px-5
-        //-     h4.text-center.text-uppercase.mb-5.text-danger What you will get
-        //-     .features-grid
-        //-       .features-grid-internal
-        //-         span.mdi.mdi-checkbox-marked.text-success
-        //-         div
-        //-           h5.text-uppercase.text-info easy scalability
-        //-           i Connect to multiple publishers and open your inventory to a large audience. Expose your business &amp; services to the world.
-        //-       .features-grid-internal
-        //-         span.mdi.mdi-checkbox-marked.text-success
-        //-         div
-        //-           h5.text-uppercase.text-info easy integration
-        //-           i Easily monetize your products with ease through a simplified interface without hidden fees.
-        //-       .features-grid-internal
-        //-         span.mdi.mdi-checkbox-marked.text-success
-        //-         div
-        //-           h5.text-uppercase.text-info modern analytics
-        //-           i Access to real-time stats &amp; get detailed viewpoints into your campaign performance with custom reports.
-        //-       .features-grid-internal
-        //-         span.mdi.mdi-checkbox-marked.text-success
-        //-         div
-        //-           h5.text-uppercase.text-info full transparency
-        //-           i Choose the best performing publisher. View the top publishers from your dashboard.
-        //-       .features-grid-internal
-        //-         span.mdi.mdi-checkbox-marked.text-success
-        //-         div
-        //-           h5.text-uppercase.text-info modern analytics
-        //-           i Access to real-time stats &amp; get detailed viewpoints into your campaign performance with custom reports.
-        //-       .features-grid-internal
-        //-         span.mdi.mdi-checkbox-marked.text-success
-        //-         div
-        //-           h5.text-uppercase.text-info full transparency
-        //-           i Choose the best performing publisher. View the top publishers from your dashboard.                  
-        //- //- sign up form
-        .w-25.left-container
-          .sign-up-form.p-3
-            .my-5.text-center
-              span Sign in and start managing your campaigns
-              hr
-            form(action="/client/login" method="POST")#signinform
-              .form-group
-                input(type="text" placeholder="Username or email" name="username" required).form-control
-              .form-group
-                input(type="password" placeholder="Password" name="password" required).form-control
-              .form-group
-                div(class="g-recaptcha")#recaptcha
-              .form-group.form-check
-                label.form-check-label
-                  input(type="checkbox", name="").form-check-input.custom-checkbox
-                  span Save credentials
-              .form-group
-                button(type="submit").btn.btn-info.btn-block Sign in &nbsp;
-                  span.mdi.mdi-fire
-                button(type="submit").btn.btn-danger.btn-block Sign in with Google &nbsp;
-                  span.mdi.mdi-google-plus
-              hr
-              .form-group
-                a(href="javascript:void(0)")#signin Register?
-                a(href="javascript:void(0)").float-right#recover Reset password
-          .sign-in-form.my-5.d-none
-            .my-3.text-center
-              span Sign up and start a campaign today. Give us your email and set up the rest later
-              hr
-              form(action="/advertiser/signup", method="post").pr-3#signupform
-                .form-group
-                  input(type="email", name="email_address" placeholder="Email address").form-control
-                .form-group
-                  input(type="password", name="password" placeholder="Set password").form-control
-                .form-group
-                  input(type="password", name="password2" placeholder="Confirm password").form-control
-                //- .form-group
-                //-     .g-recaptcha#recaptcha2
-                .form-group.form-check
-                  label.form-check-label 
-                    input(type="checkbox", name="").form-check-input.custom-checkbox
-                    small By continuing, you agree to our terms of 
-                      a(href="javascript:void(0)", title="Privacy policy") privacy policy
-                button(type="submit").btn.btn-block.btn-info Confirm &amp; Continue &nbsp;
-                  span.mdi.mdi-chevron-double-right
-                button.btn.btn-block.btn-danger Sign up with Google  
-                  span.mdi.mdi-google-plus
-                .form-group
-                  a(href="javascript:void(0)")#signup Sign in instead?
-                  a(href="javascript:void(0)").float-right#overview Overview
-      script(src="/dist/client/index.js")
+    div.advertiser-wrapper-block
+      //- image background
+      div.advertiser-wrapper-block-inner.p-5
+        h1.text-danger.ad-company-name
+          a(href="/")
+            span.mdi.mdi-burst-mode &nbsp;Ad 
+            span.text-info Exchange
+          button.btn.btn-info.float-right GET STARTED &nbsp;
+            span.mdi.mdi-star-half
+        div.mt-5.d-flex.justify-content-center.align-items-center.flex-column.text-center
+          h4.text-uppercase.dsp-title tickles &nbsp; adexchange &nbsp; dsp <br /> for &nbsp; advertisers
+          div.white-divider
+          div Connect to Tickles AdExchange SSP, increase your traffic volume <br /> and optimize your campaigns through a single platform
+          div.client-image-container
+            img(src="/images/client-img.png", alt="").client-image
+
+    //- how it works
+    div.jumbotron.text-center
+      h4.dsp-title  how it works
+      div.adverts-grid
+        div.adverts-grid-inner.px-5
+          div.image-holder
+            h1.mdi.mdi-account-switch.zoomable
+          h5 Registration
+          div.adverts-grid-inner.px-5
+        .arrow-left.py-5
+        div.adverts-grid-inner.px-5
+          div.image-holder
+            h1.mdi.mdi-verified.zoomable
+          h5 Account verification
+          div.adverts-grid-inner.px-5
+        .arrow-left.py-5
+        div.adverts-grid-inner.px-5
+          div.image-holder
+            h1.mdi.mdi-pound-box.zoomable
+          h5 Set up campaign
+          div.adverts-grid-inner.px-5
+        .arrow-left.py-5
+        div.adverts-grid-inner.px-5
+          div.image-holder
+            h1.mdi.mdi-traffic-light.zoomable
+          h5 Targetted traffic
+          div.adverts-grid-inner.px-5 
+    div.jumbotron.bg-dark.text-center
+      button.btn.btn-success.dsp-title.text-white get started &nbsp;
+        span.mdi.mdi-star-half   
+    //- inner content holder
+    div.signinform.text-white
+      span.text-danger.animated.flash= error
+      .sign-up-form
+        .mt-4
+          span Sign in to get started
+        form(action="/client/client-login" method="POST")#signinform.text-left
+          .form-group
+            input(type="text" placeholder="Username or email" name="username" required).form-control
+          .form-group
+            input(type="password" placeholder="Password" name="password" required).form-control
+          .form-group
+            div(class="g-recaptcha")#recaptcha
+          .form-group.form-check
+            label.form-check-label
+              input(type="checkbox", name="").form-check-input.custom-checkbox
+              span Save credentials
+          .form-group
+            button(type="submit").btn.btn-info.btn-block Sign in &nbsp;
+              span.mdi.mdi-fire
+          hr
+          .form-group
+            a(href="javascript:void(0)")#signin Register?
+            a(href="javascript:void(0)").float-right#recover Reset password
+      .sign-in-form.my-2.d-none
+        .my-1.text-center
+          span Sign up and start a campaign today. Give us your email and set up the rest later
+          hr
+          form(action="/client/client-signup", method="POST",name="signupform").pr-3#signupform
+            .form-group
+              input(type="email", name="email_address" placeholder="Email address").form-control
+            .form-group
+              input(type="password", name="password" placeholder="Set password").form-control
+            .form-group
+              input(type="password", name="password2" placeholder="Confirm password").form-control
+            //- .form-group
+            //-     .g-recaptcha#recaptcha2
+            .form-group.form-check
+              label.form-check-label 
+                input(type="checkbox", name="").form-check-input.custom-checkbox
+                small Agree to our terms of 
+                  a(href="javascript:void(0)", title="Privacy policy") privacy policy
+            div.form-group
+              button(type="submit").btn.btn-block.btn-info Register &nbsp;
+                span.mdi.mdi-play-circle
+              button.btn.btn-block.btn-danger Google sign up &nbsp;
+                span.mdi.mdi-google-pages
+            .form-group
+              a(href="javascript:void(0)")#signup Sign in instead?
+              a(href="javascript:void(0)").float-right#overview Overview      
+    script(src="/dist/client/captcha-auth.js")
     include ../includes/footer

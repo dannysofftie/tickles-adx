@@ -1,0 +1,28 @@
+extends ../includes/layout
+append css
+  link(rel="stylesheet", href="/css/styles/client/dashboard.css")     
+block content
+  div.client-details-box
+    span.mdi.mdi-account-edit &nbsp;
+    span= client
+    span.mx-5.mdi.mdi-move-resize-variant &nbsp; Overview
+    div.right-client-box.float-right
+      span Balance $
+        span.mr-4= balance
+        span.mdi.mdi-settings
+  div.top-navigation.d-flex
+    div.nav-options
+      span.mdi.mdi-creation &nbsp;
+      span Create campaign
+    div.nav-options
+      span.mdi.mdi-chart-line &nbsp;
+      span Manage campaign
+    div.nav-options 
+      span.mdi.mdi-chart-timeline &nbsp;
+      span Campaign statistics
+    div.nav-options 
+      span.mdi.mdi-wallet-giftcard &nbsp;
+      span Payment wallet
+    div.nav-options 
+      span.mdi.mdi-map-marker-circle &nbsp;
+      span Referral program

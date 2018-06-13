@@ -1,8 +1,6 @@
-var d = document,
+let d = document,
     onloadCallback = function () {
-        var recaptcha = 'recaptcha'
-        if (i(d.getElementById('recaptcha2')))
-            recaptcha = 'recaptcha2'
+        let recaptcha = 'recaptcha'
         // @ts-ignore
         grecaptcha.render(recaptcha, {
             'sitekey': '6LdN1FEUAAAAAPoMc4b4A9pPFRC2E1GkA0Y3EOyi'
@@ -23,7 +21,7 @@ function i(elem: HTMLElement) {
  * @param {string} url server url to send/request data
  * @param {Array.<string>|{}} body optional data to send to server `always in json`
  */
-async function r(url: string, body: Array<string> | {}) {
+async function r(url: string, body: any) {
     if (typeof url == 'undefined' || typeof url != 'string')
         throw new Error('Expected a url but found none!')
     if (typeof body == 'undefined')
@@ -65,12 +63,15 @@ async function r(url: string, body: Array<string> | {}) {
         })
 
         // sign up form
-        d.getElementById('signupform').addEventListener('submit', async function (e) {
+        d.forms['signupform'].addEventListener('submit', async function (e) {
             e.preventDefault()
             // @ts-ignore
-            let adData = { ...Array.from(new FormData(this), ([v, k]) => ({ [v]: k.trim() })) },
-                result = await r('/client/signup', adData).catch(err => err)
-
+            let icon = this.querySelector('.mdi-play-circle')
+            icon.classList.add('mdi-spin')
+            // @ts-ignore
+            let signUpData = Object.assign({}, ...Array.from(new FormData(this), ([x, y]) => ({ [x]: y.trim() }))),
+                result = await r('/client/client-signup', signUpData).catch(err => err)
+            icon.classList.remove('mdi-spin')
             console.log(result)
         })
     })

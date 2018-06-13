@@ -35,7 +35,7 @@ class AdWebServer {
         this.app.use(serveFavicon('ads.ico'));
     }
     routes() {
-        this.app.get('*', (req, res, next) => {
+        this.app.all('*', (req, res, next) => {
             if (process.env.NODE_ENV === 'production') {
                 if (req.protocol != 'https') {
                     res.redirect('https://' + req.hostname + req.url);
@@ -44,10 +44,10 @@ class AdWebServer {
             }
             next();
         });
-        this.app.get('/', (req, res) => {
+        this.app.all('/', (req, res) => {
             res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' });
         });
-        this.app.use('/client', require('../routes/advertiser'));
+        this.app.use('/client', require('../routes/client'));
         this.app.use('/publisher', require('../routes/publisher'));
         //this.app.use('/ads/api/v1', )
     }
@@ -96,7 +96,7 @@ class AdWebServer {
             process.on('uncaughtException', async (err) => {
                 // @ts-ignore
                 if (err.code == 'EADDRINUSE')
-                    await this.startServer().catch(console.error);
+                    await this.startServer();
             });
         }
     }
