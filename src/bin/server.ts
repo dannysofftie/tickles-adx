@@ -35,11 +35,8 @@ export class AdWebServer {
     }
     private routes() {
         this.app.get('/', (req, res, next) => {
-            if (process.env.NODE_ENV === 'production') {
-                if (req.protocol != 'https') {
-                    res.redirect('https://' + req.hostname + req.url)
-                }
-                else res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
+            if (process.env.NODE_ENV === 'production' && req.protocol !== 'https') {
+                res.redirect('https://' + req.hostname + req.url)
             } else res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
         })
         this.app.use('/client', require('../routes/client'))
