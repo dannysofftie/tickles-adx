@@ -34,11 +34,11 @@ export class AdWebServer {
         this.app.use(serveFavicon('ads.ico'))
     }
     private routes() {
-        this.app.all('*', (req, res, next) => {
-            if (process.env.NODE_ENV == 'production' && req.protocol !== 'https') {
-                res.redirect('https://' + req.get('host') + req.url)
-            } else res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
-        })
+        // this.app.all('*', (req, res, next) => {
+        //     if (process.env.NODE_ENV == 'production' && req.protocol !== 'https') {
+        //         res.redirect('https://' + req.get('host') + req.url)
+        //     } else res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
+        // })
         this.app.get('/', (req, res) => {
             res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
         })
