@@ -34,7 +34,7 @@ export class AdWebServer {
         this.app.use(serveFavicon('ads.ico'))
     }
     private routes() {
-        this.app.all('/', (req, res, next) => {
+        this.app.get('/', (req, res, next) => {
             if (process.env.NODE_ENV === 'production') {
                 if (req.protocol != 'https') {
                     res.redirect('https://' + req.hostname + req.url)
