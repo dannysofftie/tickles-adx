@@ -1,7 +1,16 @@
 
 import { HttpRequest } from '../includes'
+interface T {
+    title: string,
+    client: string,
+    balance: string,
+    referralAwards: string,
+    averageSpend: string,
+    totalCampaigns: string,
+    totalAds: string
+}
 
-export async function clientData(id: string) {
+export async function clientData(id: string, ref?: string): Promise<T> {
     // do database/API data request for specific client
     // return an object with client data
     // return await new HttpRequest().request(path, data).catch(err => err)

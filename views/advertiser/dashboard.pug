@@ -1,32 +1,34 @@
 include ../includes/dash-layout
-div.container
-    //- dashboard content
-    .overview.my-2
+.d-none#color-top-loader
+.mb-5    
+//- dashboard content
+.dashboard-content
+    .overview.my-2.container
         .jumbotron
             h3 Dashboard overview, all ad campaign data at a glance
         .overview-card-grid
-            .card
+            .card.bg-info.text-white
                 .card-body
                     h5.card-title Referrals
                     .card-text Total referral awards $
                         span= referralAwards
                     small Become a successfull referrer 
                         a(href="javascript:void(0)") here
-            .card
+            .card.bg-dark.text-white
                 .card-body
                     h5.card-title Daily spend
                     .card-text Average spend in ads $
                         span= averageSpend
                     small Improve ad performance by 
                         a(href="javascript:void(0)") geo-targetting
-            .card
+            .card.bg-secondary.text-white
                 .card-body
                     h5.card-title Campaigns
                     .card-text Total campaigns &nbsp;
                         span= totalCampaigns
                     small Each campaign can have multiple 
                         a(href="javascript:void(0)") ads
-            .card
+            .card.bg-success.text-white
                 .card-body
                     h5.card-title Campaigns & Ads
                     .card-text Total campaigns &nbsp;
@@ -35,12 +37,19 @@ div.container
                         span= totalAds
                     small Manage multiple ads under single &nbsp;
                         a(href="javascript:void(0)") campaign
-
-    .data-overview-container
-        canvas#data-overview
+    .dropdown-divider.my-4
+    .data-overview-container.container-fluid.mb-5
+        .row
+            .col-md-5
+                h5 Top two performing campaigns
+                canvas(height="240")#top-performing
+            .col-md-7
+                h5 All ads performance over time
+                canvas(height="220")#all-ads-overview
+        //- geolocation ad based performance
 
 
 //- embed javascript
-script(src="/vendor/chartjs/Chart.bundle.min.js")
-script(src="/dist/client/dashboard.js")
+include ../includes/footer.pug
+script(src="/dist/client/chart-data.js")
 

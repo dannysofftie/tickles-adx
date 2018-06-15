@@ -2,11 +2,12 @@ extends ./layout
 append css
   link(rel="stylesheet", href="/css/styles/client/dashboard.css")     
 block content
+  .d-none#color-top-loader
   div.client-details-box
-    a(href="/client/advertiser/dashboard/?client=me")
+    a(href="/client/adv/dashboard/?client=me")
         span.mdi.mdi-account-edit &nbsp;
         span= client
-    a(href="/client/advertiser/dashboard/?overview=dashboard")
+    a(href="/client/adv/dashboard/?overview=dashboard")
         span.mx-5.mdi.mdi-move-resize-variant &nbsp; Overview
     div.right-client-box.float-right
         span Balance $
@@ -15,7 +16,7 @@ block content
             span.mdi.mdi-settings
         a(href="javascript:void(0)").ml-2 Help&nbsp;
             span.mdi.mdi-help
-        a(href="javascript:void(0)").ml-2 Logout&nbsp;
+        a(href="/client").ml-2 Logout&nbsp;
             span.mdi.mdi-logout
 
   div.top-navigation.d-flex

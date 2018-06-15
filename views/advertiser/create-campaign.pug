@@ -1,0 +1,24 @@
+//- create campaign instructions and UI
+.container-fluid.my-3.animated.fadeIn  
+    p You currently have &nbsp;
+        span.badge.badge-success= totalCampaigns
+        span &nbsp;campaigns 
+    .container.row
+        .col-md-3
+            .campaign-tabs
+                .campaign-tab
+                    span.mdi.mdi-creation
+                    span &nbsp; Create campaign
+                .campaign-tab
+                    span.mdi.mdi-adjust
+                    span &nbsp; Create ad 
+                .campaign-tab
+                    span.mdi.mdi-source-commit-end
+                    span &nbsp; Finalize & publish
+        .col-md-9
+            .campaign-tab-content
+
+
+
+
+script(src="/dist/client/create-campaign.js")

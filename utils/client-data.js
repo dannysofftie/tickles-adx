@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-async function clientData(id) {
+async function clientData(id, ref) {
     // do database/API data request for specific client
     // return an object with client data
     // return await new HttpRequest().request(path, data).catch(err => err)

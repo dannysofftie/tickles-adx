@@ -42,8 +42,8 @@ export class AdWebServer {
         this.app.get('/', (req, res) => {
             res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
         })
-        this.app.use('/client', require('../routes/client'))
-        this.app.use('/publisher', require('../routes/publisher'))
+        this.app.use('/client', require('../routes/client-routes'))
+        this.app.use('/publisher', require('../routes/publisher-routes'))
         //this.app.use('/ads/api/v1', )
     }
     private normalizePort(port: number) {

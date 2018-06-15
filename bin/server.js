@@ -43,8 +43,8 @@ class AdWebServer {
         this.app.get('/', (req, res) => {
             res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' });
         });
-        this.app.use('/client', require('../routes/client'));
-        this.app.use('/publisher', require('../routes/publisher'));
+        this.app.use('/client', require('../routes/client-routes'));
+        this.app.use('/publisher', require('../routes/publisher-routes'));
         //this.app.use('/ads/api/v1', )
     }
     normalizePort(port) {
@@ -71,7 +71,7 @@ class AdWebServer {
             try {
                 // spin core on ['disconnect', 'exit']                               
                 for (var _b = __asyncValues(['disconnect', 'exit']), _c; _c = await _b.next(), !_c.done;) {
-                    const event = await _c.value;
+                    const event = _c.value;
                     cluster.on(event, () => cluster.fork());
                 }
             }
