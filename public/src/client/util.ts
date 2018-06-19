@@ -1,4 +1,3 @@
-
 /**
    * Top level ajax function for GET and POST requests
   * @param {string} url server url to send/request data
@@ -37,66 +36,81 @@ function isElementInViewport(el: HTMLElement) {
         rect.top < (window.innerHeight || document.documentElement.clientHeight)
 }
 
+/**
+ * loads link navigation and router manager to current document loaded
+ */
+function linksLoader() {
+    const links = Array.from(document.querySelectorAll('a.link'))
+    links.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault()
 
-((f) => {
-    if (typeof module == 'undefined') {
-        document.addEventListener('DOMContentLoaded', () => {
-            f(document, window)
-        })
-    }
-    else
-        throw new Error('Cannot run in Node environment')
-})((document: Document, window: Window) => {
-
-    let loader = document.getElementById('color-top-loader')
-    // @ts-ignore
-    window.loader = loader
-
-
-    // listen for scroll event
-    document.addEventListener('scroll', () => {
-        let ref: HTMLElement = document.querySelector('.client-details-box')
-
-        if (!isElementInViewport(document.querySelector('.top-navigation'))) {
-            Object.assign(ref.style, {
-                'box-shadow': '0px 4px 5px 0px rgba(0, 0, 0, 0.3)',
-                'padding': '15px 22px'
-            })
-        } else
-            Object.assign(ref.style, {
-                'box-shadow': '0px 0px 0px 0px rgba(0, 0, 0, 0.0)',
-                'padding': '9px 16px'
-            })
-    })
-
-    // manage dashboard naviagations
-    let navs: Array<Element> = Array.from(document.querySelectorAll('.nav-options'))
-    navs.forEach(nav => {
-        nav.addEventListener('click', function () {
-            loader.classList.remove('d-none')
+            let href = this.getAttribute('href')
             // @ts-ignore
-            let id = this.getAttribute('id')
-            navs.forEach(n => {
-                n.classList.remove('nav-active')
-            })
-            // @ts-ignore
-            this.classList.add('nav-active')
-            // pass id of the clicked tab to function changeContent(id:string){ }
-            changeContent(id)
+            window.router.navigateTo(href)
         })
     })
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
+}
 
-    // change content in dashboard
-    async function changeContent(url: string) {
-        let contentHolder = document.querySelector('.dashboard-content'),
-            rootUrl: string = '/client/adv/dashboard/?url='
-        history.replaceState(null, null, '?url=' + url)
-
-        let data = await asyncRequest(rootUrl + url)
-        contentHolder.innerHTML = data
-        setTimeout(() => {
-            loader.classList.add('d-none')
-        }, 1000)
+/**
+ * extract url parameter search queries
+ * @param {string} param parameter to value value for
+ */
+function extractURLParam(param: string) {
+    if (typeof param == undefined)
+        throw new Error('Expected param to search but found none')
+    let url = window.location.href
+    if (url.indexOf('?') == -1)
+        return 'Can\'t get search params'
+    else {
+        let u: string = url.split('?')[1], s, obj: any = {}
+        if (u.indexOf('&') != -1) s = u.split('&')
+        else s = u
+        if (typeof s == "string")
+            obj[s.split('=')[0].trim()] = s.split('=')[1]
+        else
+            s.map(p => obj[p.split('=')[0].trim()] = p.split('=')[1])
+        if (typeof param != "undefined")
+            return obj[param]
+        else return obj
     }
-})
-
+}
+function showSpinner() {
+    let spinner = document.querySelector('.spinner-holder')
+    spinner.classList.remove('d-none')
+}
+function hideSpinner() {
+    let spinner = document.querySelector('.spinner-holder')
+    setTimeout(() => {
+        spinner.classList.add('d-none')
+    }, 2000)
+}
+function showTopLoader() {
+    let loader = document.querySelector('#color-top-loader')
+    loader.classList.remove('d-none')
+}
+function hideTopLoader() {
+    let loader = document.querySelector('#color-top-loader')
+    setTimeout(() => {
+        loader.classList.add('d-none')
+    }, 2000)
+}
+function scriptLoader(script: string | Array<string>) {
+    let d = document
+    let scd = d.createElement('script'),
+        sad = d.getElementsByTagName('script')[0]
+    if (typeof script == "string") {
+        scd.src = `/dist/client/${script}.js`
+        scd.async = true
+        scd.defer = true
+        sad.parentNode.insertBefore(scd, sad)
+    } else
+        script.forEach(s => {
+            let sr = d.createElement('script')
+            sr.src = `/dist/client/${s}.js`
+            sr.async = true
+            sr.defer = true
+            sad.parentNode.insertBefore(sr, sad)
+        })
+}

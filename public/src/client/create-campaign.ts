@@ -1,8 +1,6 @@
 ((f) => {
     if (typeof module == 'undefined') {
-        document.addEventListener('DOMContentLoaded', () => {
-            f(document, window)
-        })
+        f(document, window)
     }
     else
         throw new Error('Cannot run in Node environment')
@@ -11,9 +9,9 @@
     tabs.forEach((tab) => {
         tab.addEventListener('click', function () {
             tabs.forEach(div => {
-                div.classList.remove('campaign-tab-active')
+                div.classList.remove('campaign-tab-active', 'bg-info')
             })
-            this.classList.add('campaign-tab-active')
+            this.classList.add('campaign-tab-active', 'bg-info')
         })
     })
 })

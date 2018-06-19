@@ -1,55 +1,60 @@
 include ../includes/dash-layout
-.d-none#color-top-loader
-.mb-5    
 //- dashboard content
 .dashboard-content
-    .overview.my-2.container
-        .jumbotron
-            h3 Dashboard overview, all ad campaign data at a glance
-        .overview-card-grid
-            .card.bg-info.text-white
-                .card-body
-                    h5.card-title Referrals
-                    .card-text Total referral awards $
-                        span= referralAwards
-                    small Become a successfull referrer 
-                        a(href="javascript:void(0)") here
-            .card.bg-dark.text-white
-                .card-body
-                    h5.card-title Daily spend
-                    .card-text Average spend in ads $
-                        span= averageSpend
-                    small Improve ad performance by 
-                        a(href="javascript:void(0)") geo-targetting
-            .card.bg-secondary.text-white
-                .card-body
-                    h5.card-title Campaigns
-                    .card-text Total campaigns &nbsp;
-                        span= totalCampaigns
-                    small Each campaign can have multiple 
-                        a(href="javascript:void(0)") ads
-            .card.bg-success.text-white
-                .card-body
-                    h5.card-title Campaigns & Ads
-                    .card-text Total campaigns &nbsp;
-                        span= totalCampaigns 
-                        span &nbsp;&amp;&nbsp;
-                        span= totalAds
-                    small Manage multiple ads under single &nbsp;
-                        a(href="javascript:void(0)") campaign
-    .dropdown-divider.my-4
-    .data-overview-container.container-fluid.mb-5
-        .row
-            .col-md-5
-                h5 Top two performing campaigns
-                canvas(height="240")#top-performing
-            .col-md-7
-                h5 All ads performance over time
-                canvas(height="220")#all-ads-overview
-        //- geolocation ad based performance
-
-
-//- embed javascript
-include ../includes/footer.pug
-script(src="/dist/client/chart-data.js")
-
+    .my-1.page-template.overview-template
+        .container
+            .jumbotron
+                h3 Dashboard overview, all ad campaign data at a glance
+            .overview-card-grid
+                .card.bg-info.text-white
+                    .card-body
+                        h5.card-title Referrals
+                        .card-text Total referral awards $
+                            span= referralAwards
+                        small Become a successfull referrer 
+                            a(href="javascript:void(0)") here
+                .card.bg-dark.text-white
+                    .card-body
+                        h5.card-title Daily spend
+                        .card-text Average spend in ads $
+                            span= averageSpend
+                        small Improve ad performance by 
+                            a(href="javascript:void(0)") geo-targetting
+                .card.bg-secondary.text-white
+                    .card-body
+                        h5.card-title Campaigns
+                        .card-text Total campaigns &nbsp;
+                            span= totalCampaigns
+                        small Each campaign can have multiple 
+                            a(href="javascript:void(0)") ads
+                .card.bg-success.text-white
+                    .card-body
+                        h5.card-title Campaigns & Ads
+                        .card-text Total campaigns &nbsp;
+                            span= totalCampaigns 
+                            span &nbsp;&amp;&nbsp;
+                            span= totalAds
+                        small Manage multiple ads under single &nbsp;
+                            a(href="javascript:void(0)") campaign
+        .dropdown-divider.my-3    
+        .data-overview-container.container-fluid.mb-5
+            .row        
+                .col-12.text-right.my-1
+                    form(name="filter-form")
+                        span From &nbsp;
+                        input(type="text" name="from" required autocomplete="off").custom-datepicker
+                        span &nbsp; to &nbsp;
+                        input(type="text" name="to" required autocomplete="off").custom-datepicker
+                        span &nbsp;
+                        button(type="submit").btn.btn-info.btn-sm#filter-chart-data Apply filter &nbsp;
+                            span.mdi.mdi-filter-outline
+                .col-md-5
+                    h5 Top two performing campaigns
+                    canvas(height="240")#top-performing
+                .col-md-7
+                    h5 All ads performance over time
+                    canvas(height="220")#all-ads-overview
+            //- geolocation ad based performance
+            .row
+                .col-12    
+        include ../includes/footer

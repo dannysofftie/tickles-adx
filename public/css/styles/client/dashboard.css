@@ -9,34 +9,12 @@ a {
     color: rgb(25, 201, 204)
 }
 
-#color-top-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    width: 100vw;
-    z-index: 999;
-    animation-name: animate-loader;
-    animation-duration: 1.3s;
-    animation-iteration-count: infinite
+.btn {
+    cursor: pointer;
 }
 
-@keyframes animate-loader {
-    0% {
-        background: linear-gradient(to right, rgba(25, 201, 204, 0.1), rgba(25, 201, 204, 0.5), rgba(25, 201, 204, 0.8), rgb(11, 162, 165))
-    }
-    25% {
-        background: linear-gradient(to right, rgba(25, 201, 204, 0.1), rgba(25, 201, 204, 0.5), rgb(11, 162, 165), rgba(25, 201, 204, 0.8))
-    }
-    50% {
-        background: linear-gradient(to right, rgba(25, 201, 204, 0.1), rgb(11, 162, 165), rgba(25, 201, 204, 0.5), rgba(25, 201, 204, 0.8))
-    }
-    75% {
-        background: linear-gradient(to right, rgb(11, 162, 165), rgba(25, 201, 204, 0.8), rgba(25, 201, 204, 0.5), rgba(25, 201, 204, 0.1))
-    }
-    100% {
-        background: linear-gradient(to right, rgba(25, 201, 204, 0.1), rgb(11, 162, 165), rgba(25, 201, 204, 0.5), rgba(25, 201, 204, 0.8))
-    }
+.btn:focus {
+    outline: none;
 }
 
 .client-details-box {
@@ -68,15 +46,25 @@ a {
     color: coral;
 }
 
-.nav-active,
-.campaign-tab:hover {
+.nav-active {
     border-bottom: 1.2px solid rgba(185, 54, 197, 0.883);
-    color: rgb(25, 201, 204);
+    color: white;
+    background-color: rgb(25, 201, 204)
 }
 
 .referralAwards {
     position: absolute;
     right: 5px;
+}
+
+.hidden {
+    visibility: hidden;
+    z-index: 1;
+}
+
+.page-template {
+    z-index: 2;
+    position: absolute;
 }
 
 .overview-card-grid {
@@ -85,20 +73,38 @@ a {
     grid-gap: 10px;
 }
 
-.campaign-tabs {
-    box-shadow: 3px -1px 2px -2px rgba(0, 0, 0, 0.4);
+.custom-datepicker {
+    border: 0.5px solid rgba(0, 0, 0, 0.3);
+    border-radius: 11px;
+    outline: none;
+    color: rgba(20, 161, 163, 0.938);
+    padding-left: 7px;
 }
+
+.custom-datepicker:focus {
+    border: 0.5px solid rgb(25, 201, 204);
+}
+
+/* .campaign-tabs {
+    box-shadow: 3px -1px 2px -2px rgba(0, 0, 0, 0.4);
+} */
 
 .campaign-tab {
     padding: 9px 0px;
     cursor: pointer;
+    border-bottom: rgba(0, 0, 0, 0.2) 0.6px solid;
+    padding-left: 10px;
+    transition: ease-in-out 0.6s;
 }
 
-.campaign-tab:not(:last-child) {
-    border-bottom: rgba(0, 0, 0, 0.2) 0.6px solid;
+.campaign-tab:hover {
+    border-bottom: 1.2px solid rgba(185, 54, 197, 0.883);
+    color: rgb(25, 201, 204);
+    padding-left: 20px;
 }
 
 .campaign-tab-active {
     border-bottom: 1.2px solid rgb(25, 201, 204);
-    color: coral;
+    color: white;
+    padding-left: 20px;
 }

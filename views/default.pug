@@ -1,0 +1,14 @@
+extends ./includes/layout
+append css
+  link(rel="stylesheet", href="/css/styles/custom.css")
+block content
+    //- main app content holder
+    .d-none#color-top-loader
+    .app
+      .spinner-holder
+        .spinner 
+          .double-bounce1
+          .double-bounce2
+    #app
+      //- footer plus script files
+    include ./includes/jsfiles

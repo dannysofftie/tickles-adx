@@ -34,17 +34,14 @@ export class AdWebServer {
         this.app.use(serveFavicon('ads.ico'))
     }
     private routes() {
-        // this.app.all('*', (req, res, next) => {
-        //     if (process.env.NODE_ENV == 'production' && req.protocol !== 'https') {
-        //         res.redirect('https://' + req.get('host') + req.url)
-        //     } else res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
-        // })
-        this.app.get('/', (req, res) => {
-            res.render('index', { title: 'Ad Exchange for Publishers | Advertisers' })
-        })
-        this.app.use('/client', require('../routes/client-routes'))
-        this.app.use('/publisher', require('../routes/publisher-routes'))
-        //this.app.use('/ads/api/v1', )
+        // router to handle page view requests
+        this.app.use('/client-router', require('../routes/page-routes'))
+        // router to handle data requests from advertiser/client
+        this.app.use('/api/client', require('../routes/client-routes'))
+        // router to handle data requests from publishers
+        this.app.use('/api/publisher', require('../routes/publisher-routes'))
+        // route all traffic to default page for client-side routing to work
+        this.app.use((req, res) => res.render('default', { title: 'Ad Exchange for Publishers | Advertisers' }))
     }
     private normalizePort(port: number) {
         if (typeof port == 'undefined') {

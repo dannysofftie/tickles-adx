@@ -67,15 +67,14 @@ a {
 }
 
 .advertiser-wrapper-block {
-    background: #0000004b url(/images/blank-business-composition-373076.jpg) no-repeat fixed center;
+    background: #0000004b url('/images/blank-business-composition-373076.jpg') no-repeat fixed center;
     background-size: cover;
-    height: 100vh;
     color: white;
 }
 
 .advertiser-wrapper-block-inner {
     height: auto;
-    background-color: #82168b8f;
+    background-color: #5d1b63c7;
 }
 
 .dsp-title {
@@ -114,12 +113,12 @@ a {
 }
 
 .image-holder {
-    margin-bottom: 8px;
-    padding: 20px;
+    margin-bottom: 1px;
+    height: 70px;
 }
 
 .arrow-left::after {
-    content: '----- >'
+    content: '--- >';
 }
 
 .image-holder img {

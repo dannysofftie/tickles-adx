@@ -1,7 +1,8 @@
+include ../includes/dash-layout
 //- create campaign instructions and UI
-.container-fluid.my-3.animated.fadeIn  
+.container-fluid.my-3.animated.fadeIn.page-template.create-campaign-template
     p You currently have &nbsp;
-        span.badge.badge-success= totalCampaigns
+        span.badge.badge-info= totalCampaigns
         span &nbsp;campaigns 
     .container.row
         .col-md-3
@@ -17,8 +18,4 @@
                     span &nbsp; Finalize & publish
         .col-md-9
             .campaign-tab-content
-
-
-
-
-script(src="/dist/client/create-campaign.js")
+                h4 Create campaign, and add ads to it later

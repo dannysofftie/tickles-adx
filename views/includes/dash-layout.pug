@@ -2,12 +2,11 @@ extends ./layout
 append css
   link(rel="stylesheet", href="/css/styles/client/dashboard.css")     
 block content
-  .d-none#color-top-loader
   div.client-details-box
-    a(href="/client/adv/dashboard/?client=me")
+    a(href="/client/dashboard/?client=me").link
         span.mdi.mdi-account-edit &nbsp;
         span= client
-    a(href="/client/adv/dashboard/?overview=dashboard")
+    a(href="/client/dashboard/?overview=dashboard").link
         span.mx-5.mdi.mdi-move-resize-variant &nbsp; Overview
     div.right-client-box.float-right
         span Balance $
@@ -16,26 +15,26 @@ block content
             span.mdi.mdi-settings
         a(href="javascript:void(0)").ml-2 Help&nbsp;
             span.mdi.mdi-help
-        a(href="/client").ml-2 Logout&nbsp;
+        a(href="/client").link.ml-2 Logout&nbsp;
             span.mdi.mdi-logout
 
   div.top-navigation.d-flex
-    div.nav-options#create-campaign
+    a(href="/client/dashboard/create-campaign").nav-options.link#create-campaign
       span.mdi.mdi-creation &nbsp;
       span Create campaign
-    div.nav-options#manage-campaign
+    a(href="/client/dashboard/manage-campaign").nav-options.link#manage-campaign
       span.mdi.mdi-chart-line &nbsp;
       span Manage campaign
-    div.nav-options#campaign-statistics 
+    a(href="/client/dashboard/campaign-statistics").nav-options.link#campaign-statistics 
       span.mdi.mdi-chart-timeline &nbsp;
       span Campaign statistics
-    div.nav-options#payment-wallet
+    a(href="/client/dashboard/payment-wallet").nav-options.link#payment-wallet
       span.mdi.mdi-wallet-giftcard &nbsp;
       span Payment wallet
-    div.nav-options#referral-program
+    a(href="/client/dashboard/referral-program").nav-options.link#referral-program
       span.mdi.mdi-map-marker-circle &nbsp;
       span Referral program
-    div.nav-options.referralAwards#referral-program
+    a(href="/client/dashboard/referral-program").nav-options.referralAwards.link#referral-program
       small.mdi.mdi-cash-usd &nbsp;
       small Referral awards $
         span= referralAwards

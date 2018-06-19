@@ -11,6 +11,7 @@
         "routes": true,
         "models": true,
         "public/dist": true,
-        "utils": true
+        "utils": true,
+        "public/vendor": true,
     }
 }
