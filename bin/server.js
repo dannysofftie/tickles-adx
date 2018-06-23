@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const serveFavicon = require("serve-favicon");
 const cors = require("cors");
 const http = require("http");
@@ -28,6 +29,7 @@ class AdWebServer {
     configs() {
         this.app.set('view engine', 'pug');
         this.app.disable('x-powered-by');
+        this.app.use(cookieParser());
         this.app.use(express.static(path.join(__dirname, '../', 'public')));
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json());

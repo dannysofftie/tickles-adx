@@ -1,5 +1,5 @@
 
-import { HttpRequest } from '../includes'
+import { HttpRequest } from '.'
 interface T {
     title: string,
     client: string,
@@ -17,7 +17,7 @@ export async function clientData(id: string, ref?: string): Promise<T> {
     return {
         title: 'Tickles All in one dashboard || Client portal',
         client: 'Jessica Pearson',
-        balance: '108.80',
+        balance: '10.80',
         referralAwards: '0.00',
         averageSpend: '0.00',
         totalCampaigns: '0',

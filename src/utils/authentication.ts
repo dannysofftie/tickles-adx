@@ -1,6 +1,6 @@
 import * as https from 'https'
 import { Request } from 'express'
-import { HttpRequest } from '../includes'
+import { HttpRequest } from './'
 import * as qs from 'querystring'
 
 export async function verifyCaptcha(captcha: string, ip: string): Promise<{} | Array<string>> {
@@ -26,7 +26,7 @@ export async function advertiserLogin(req: Request) {
             username: req.body.username,
             password: req.body.password
         }
-    return await new HttpRequest().request(path, data).catch(err => err.code ? { code: err.code } : err)
+    return await new HttpRequest().post(path, data).catch(err => err.code ? { code: err.code } : err)
 }
 
 export async function advertiserSignUp(req: Request) {

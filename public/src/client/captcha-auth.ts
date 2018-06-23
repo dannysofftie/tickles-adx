@@ -27,18 +27,18 @@ let d = document;
     })
 
     // client sign-in form handler
-    d.forms['signinform'].addEventListener('submit', async function (e) {
+    let signInForm: HTMLFormElement = d.forms['signinform']
+    signInForm.addEventListener('submit', async function (e) {
         e.preventDefault()
+        let btn: HTMLButtonElement = document.querySelector('button#submitbutton')
+        btn.innerHTML = `<span>Loading ... </span><span class="mdi mdi-loading mdi-spin"></span>`
+        btn.disabled = true
         // @ts-ignore
-        let icon = this.querySelector('.mdi-fire')
-        icon.classList.add('mdi-spin')
-        // @ts-ignore
-        let signInData = Object.assign({}, ...Array.from(new FormData(this), ([x, y]) => ({ [x]: y.trim() }))),
+        let signInData = await extractFormData(signInForm),
             result = await asyncRequest('/api/client/client-login', signInData).catch(err => err)
         if (result.message == 'success') {
             // @ts-ignore
             window.router.navigateTo('/client/dashboard')
         }
-        icon.classList.remove('mdi-spin')
     })
 })

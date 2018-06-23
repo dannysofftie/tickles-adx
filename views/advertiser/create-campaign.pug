@@ -1,21 +1,94 @@
 include ../includes/dash-layout
 //- create campaign instructions and UI
-.container-fluid.my-3.animated.fadeIn.page-template.create-campaign-template
-    p You currently have &nbsp;
-        span.badge.badge-info= totalCampaigns
-        span &nbsp;campaigns 
-    .container.row
+.container-fluid.animated.fadeIn    
+    .row
         .col-md-3
-            .campaign-tabs
-                .campaign-tab
+            .campaign-tabs.py-4
+                p You currently have &nbsp;
+                    span.badge.badge-info= totalCampaigns
+                    span &nbsp;campaigns 
+                .campaign-tab(ref-tab="create-campaign-body").campaign-tab-active
                     span.mdi.mdi-creation
                     span &nbsp; Create campaign
-                .campaign-tab
+                .campaign-tab(ref-tab="create-ad")
                     span.mdi.mdi-adjust
                     span &nbsp; Create ad 
-                .campaign-tab
+                .campaign-tab(ref-tab="finalize")
                     span.mdi.mdi-source-commit-end
                     span &nbsp; Finalize & publish
         .col-md-9
-            .campaign-tab-content
-                h4 Create campaign, and add ads to it later
+            .campaign-tab-content.py-3
+                #create-campaign-body.camp-child
+                    .alert.alert-dark Create your 
+                        span.badge.badge-info= Number(totalCampaigns) + 1
+                        span  campaign. You can have multiple campaigns. You will be able to add ads under a campaign group. A single campaign can have multiple campaigns.
+                        span You can 
+                            a(href="/client/dashboard/manage-campaign").link.btn.btn-sm.btn-info.py-0 manage &nbsp;
+                                small.badge.badge-light= Number(totalCampaigns)
+                            span &nbsp; campaigns &nbsp;
+                    form(action="#" name="campaignDataForm")
+                        .row
+                            .col-md-5
+                                .form-group
+                                    input(type="text" autocomplete="off" name="campaignName" placeholder="Campaign group name").form-control
+                                    span.mdi.mdi-tag &nbsp; Campaign group name e.g. Holiday promotions
+                                .form-group
+                                    input(type="number"  autocomplete="off" name="campaignEstimatedBudget" placeholder="0.00").form-control
+                                    span.mdi.mdi-cash-usd &nbsp; Campaign estimated daily budget    
+                                .form-group
+                                    .d-flex.flex-row
+                                        input(type="number"  autocomplete="off" name="campaignBidPerAd" placeholder="0.00").form-control.mr-2
+                                        span.btn.btn-dark(title="Show recommended bid rates")
+                                            span.mdi.mdi-eyedropper
+                                    span.mdi.mdi-cash &nbsp; Bid per ad delivered   
+                                .form-group
+                                    .d-flex.flex-row
+                                        span
+                                            input(type="text" autocomplete="off" name="campaignBeginDate" placeholder="Commence date").form-control.calendar
+                                        span.ml-2
+                                            input(type="text" autocomplete="off" name="campaignEndDate" placeholder="Commence date").form-control.calendar                              
+                                    span.mdi.mdi-calendar &nbsp; Campaign duration (date schedule) 
+                                .form-group
+                                    .d-flex.flex-row
+                                        select(name="campaignTargetLocations" data-live-search="true" title="Specify target location").form-control.mr-2.custom-select-search
+                                            option(value="1") Nairobi
+                                        span.btn.btn-dark(title="Select location on map")
+                                            span.mdi.mdi-google-maps
+                                    span.mdi.mdi-crosshairs-gps &nbsp; Specify target location(s)
+
+                            .col-md-7
+                                p.text-center Advanced targeting helps you reach the right audience for your content. These includes target devices, campaign category, banned domains, prioritized domains and such custom targeting. With our cookie policy, updating your campaign category will improve audience reach drastically, but its necessary if you set targeting options yourself.
+
+                                a(href="javascript:void(0)" style={color:'blue'}) Show advanced trageting 
+                                .form-group                             
+                                    .d-flex.flex-row.justify-content-between
+                                        .custom-control.custom-checkbox
+                                            input(type="checkbox", name="campaignTargetMobile").custom-control-input#customCheck1
+                                            label(for="customCheck1").custom-control-label
+                                                span.mdi.mdi-phone &nbsp; Smartphones
+                                        .custom-control.custom-checkbox
+                                            input(type="checkbox", name="campaignTargetTablets").custom-control-input#customCheck2
+                                            label(for="customCheck2").custom-control-label
+                                                span.mdi.mdi-tablet &nbsp; Tablets
+                                        .custom-control.custom-checkbox
+                                            input(type="checkbox", name="campaignTargetDesktop").custom-control-input#customCheck3
+                                            label(for="customCheck3").custom-control-label
+                                                span.mdi.mdi-monitor &nbsp; Desktop
+                                    span.mdi.mdi-group &nbsp; Select target devices
+                                .form-group
+                                    select(name="campaignCategory" data-live-search="true" title="Select business category" ).form-control.selectpicker-category.mb-1
+                                    span.mdi.mdi-skype-business &nbsp; Business group category
+                                .form-group
+                                    textarea(name="campaignBannedDomains", rows="3" placeholder="Banned domains. Comma separated e.g. www.example.com , http://anotherdomain.net").form-control
+                                    span.mdi.mdi-domain &nbsp; A list of banned domains (comma separated)
+                                .form-group
+                                    button(type="submit").btn.btn-info.float-right Save campaign &nbsp;
+                                        span.mdi.mdi-table-column-remove
+
+                //- create ad tab
+                #create-ad.hidden.camp-child
+                    h3 Create ads under campaigns you've created before
+
+                //- finalize and publish ad
+                #finalize.hidden.camp-child
+                    h3 Finalize and publish

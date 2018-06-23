@@ -46,15 +46,22 @@ let onloadCallback = function () {
         showSpinner()
         app.innerHTML = await asyncRequest('/client-router/client/dashboard')
         // ['chart-data', 'create-campaign', 'dash-home']
-        await scriptLoader(['chart-data', 'dash-home'])
+        await scriptLoader('chart-data')
         await linksLoader()
         hideSpinner()
     })
 
     router.add('/client/dashboard/create-campaign', async () => {
-        showTopLoader()
+        showSpinner()
         app.innerHTML = await asyncRequest('/client-router/client/create-campaign')
         await scriptLoader('create-campaign')
+        let g = document.createElement('script'),
+            s = Array.from(document.getElementsByTagName('script'))
+        g.async = true
+        g.defer = true
+        g.type = 'text/javascript'
+        g.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBs-9K2aygiKd_2bXjhgnltqE-LW8FgRLc&callback=initMap"
+        s.forEach(sc => sc.src == g.src ? sc.parentNode.removeChild(sc) : sc.parentNode.insertBefore(g, sc))
         await linksLoader()
         hideTopLoader()
         hideSpinner()
@@ -63,7 +70,7 @@ let onloadCallback = function () {
     router.add('/client/dashboard/manage-campaign', async () => {
         showTopLoader()
         app.innerHTML = await asyncRequest('/client-router/client/manage-campaign')
-        await scriptLoader('create-campaign')
+        // await scriptLoader('create-campaign')
         await linksLoader()
         hideTopLoader()
         hideSpinner()
@@ -71,7 +78,7 @@ let onloadCallback = function () {
     router.add('/client/dashboard/campaign-statistics', async () => {
         showTopLoader()
         app.innerHTML = await asyncRequest('/client-router/client/campaign-statistics')
-        await scriptLoader('create-campaign')
+        // await scriptLoader('create-campaign')
         await linksLoader()
         hideTopLoader()
         hideSpinner()
@@ -79,7 +86,7 @@ let onloadCallback = function () {
     router.add('/client/dashboard/payment-wallet', async () => {
         showTopLoader()
         app.innerHTML = await asyncRequest('/client-router/client/payment-wallet')
-        await scriptLoader('create-campaign')
+        // await scriptLoader('create-campaign')
         await linksLoader()
         hideTopLoader()
         hideSpinner()
@@ -87,7 +94,7 @@ let onloadCallback = function () {
     router.add('/client/dashboard/referral-program', async () => {
         showTopLoader()
         app.innerHTML = await asyncRequest('/client-router/client/referral-program')
-        await scriptLoader('create-campaign')
+        // await scriptLoader('create-campaign')
         await linksLoader()
         hideTopLoader()
         hideSpinner()

@@ -5,20 +5,35 @@
     else
         throw new Error('Cannot run in Node environment')
 })((document: Document, window: Window) => {
+    document.addEventListener('scroll', () => {
+        let ref: HTMLElement = document.querySelector('.client-details-box')
+
+        if (!isElementInViewport(document.querySelector('.top-navigation'))) {
+            Object.assign(ref.style, {
+                'box-shadow': '0px 4px 5px 0px rgba(0, 0, 0, 0.3)',
+                'padding': '15px 22px'
+            })
+        } else
+            Object.assign(ref.style, {
+                'box-shadow': '0px 0px 0px 0px rgba(0, 0, 0, 0.0)',
+                'padding': '9px 16px'
+            })
+    })
     // apply filters using date ranges
     // @ts-ignore
     $('.custom-datepicker').datepicker({
         setDate: new Date(),
         todayHighlight: true,
         daysOfWeekHighlighted: "0",
-        autoclose: true
+        autoclose: true,
+        endDate: '+0d'
     })
     // chart data
     let chartColors = { red: 'rgb(255, 99, 132)', orange: 'rgb(255, 159, 64)', yellow: 'rgb(255, 205, 86)', green: 'rgb(75, 192, 192)', blue: 'rgb(54, 162, 235)', purple: 'rgb(153, 102, 255)', grey: 'rgb(201, 203, 207)' },
         // data-overview charts
         // top 2 performing campaigns
-        top2Ctx: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById('top-performing'),
-        allAdsCtx: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById('all-ads-overview')
+        top2Ctx: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('top-performing'),
+        allAdsCtx: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('all-ads-overview')
 
     // random scale generator
     function randScaleGen(min: number, max: number) {

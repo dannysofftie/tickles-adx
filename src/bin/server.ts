@@ -2,6 +2,7 @@
 import * as path from 'path'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
+import * as cookieParser from 'cookie-parser'
 import * as serveFavicon from 'serve-favicon'
 import * as cors from 'cors'
 import * as http from 'http'
@@ -27,6 +28,7 @@ export class AdWebServer {
     private configs() {
         this.app.set('view engine', 'pug')
         this.app.disable('x-powered-by')
+        this.app.use(cookieParser())
         this.app.use(express.static(path.join(__dirname, '../', 'public')))
         this.app.use(bodyParser.urlencoded({ extended: true }))
         this.app.use(bodyParser.json())

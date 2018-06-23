@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const https = require("https");
-const includes_1 = require("../includes");
+const _1 = require("./");
 const qs = require("querystring");
 async function verifyCaptcha(captcha, ip) {
     return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ async function advertiserLogin(req) {
         username: req.body.username,
         password: req.body.password
     };
-    return await new includes_1.HttpRequest().request(path, data).catch(err => err.code ? { code: err.code } : err);
+    return await new _1.HttpRequest().post(path, data).catch(err => err.code ? { code: err.code } : err);
 }
 exports.advertiserLogin = advertiserLogin;
 async function advertiserSignUp(req) {

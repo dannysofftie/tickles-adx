@@ -9,6 +9,10 @@ a {
     color: rgb(25, 201, 204)
 }
 
+* {
+    font-family: Roboto;
+}
+
 .btn {
     cursor: pointer;
 }
@@ -58,13 +62,7 @@ a {
 }
 
 .hidden {
-    visibility: hidden;
-    z-index: 1;
-}
-
-.page-template {
-    z-index: 2;
-    position: absolute;
+    display: none;
 }
 
 .overview-card-grid {
@@ -85,9 +83,10 @@ a {
     border: 0.5px solid rgb(25, 201, 204);
 }
 
-/* .campaign-tabs {
+.campaign-tabs {
     box-shadow: 3px -1px 2px -2px rgba(0, 0, 0, 0.4);
-} */
+    height: 100%;
+}
 
 .campaign-tab {
     padding: 9px 0px;
@@ -105,6 +104,11 @@ a {
 
 .campaign-tab-active {
     border-bottom: 1.2px solid rgb(25, 201, 204);
+    background-color: rgba(20, 161, 163, 0.938);
     color: white;
     padding-left: 20px;
+}
+
+.camp-child {
+    position: absolute;
 }

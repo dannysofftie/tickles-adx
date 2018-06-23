@@ -114,3 +114,11 @@ function scriptLoader(script: string | Array<string>) {
             sad.parentNode.insertBefore(sr, sad)
         })
 }
+async function extractFormData(form: HTMLFormElement) {
+    if (typeof form == 'undefined')
+        throw new Error('Requires a form to iterate')
+    else
+        // @ts-ignore
+        return Object.assign({}, ...Array.from(new FormData(form), ([v, k]) => ({ [v]: k.trim() })))
+
+}
