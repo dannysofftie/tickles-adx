@@ -11,7 +11,7 @@ include ../includes/dash-layout
                     span.mdi.mdi-creation
                     span &nbsp; Create campaign
                 .campaign-tab(ref-tab="create-ad")
-                    span.mdi.mdi-adjust
+                    span.mdi.mdi-adjust 
                     span &nbsp; Create ad 
                 .campaign-tab(ref-tab="finalize")
                     span.mdi.mdi-source-commit-end
@@ -87,8 +87,99 @@ include ../includes/dash-layout
 
                 //- create ad tab
                 #create-ad.hidden.camp-child
-                    h3 Create ads under campaigns you've created before
+                    .alert.alert-light Ad creation wizard, you can have multiple ads under a single campaign group.
+                    -var campaigns = Number(totalCampaigns)
+                    if campaigns > 1
+                        .container.text-center
+                            .mdi.mdi-alert.mdi-64px.text-danger
+                            div You don't have existing campaigns. You can only create an ad under a campaign. It's good to note that multiple campaigns can exist under a single campaign group.
+                                span You need to create one first, then you can add ads to it later. Follow this simple wizard to get you started.
+                                a(href="/client/dashboard/create-campaign").link.btn.btn-dark Create campaign wizard &nbsp;
+                                    span.mdi.mdi-chevron-double-right
+                    else  
+                        form(action="#" name="createAdDataForm" enctype="multipart/form-data")
+                            .row
+                                .col-md-5
+                                    .form-group
+                                        input(type="text" autocomplete="off" name="adName" placeholder="Ad name as it will appear").form-control
+                                        span.mdi.mdi-tag-plus &nbsp; Ad name
+                                    .form-group
+                                        input(type="text" autocomplete="off" name="adTitle" placeholder="Ad title as it will appear").form-control
+                                        span.mdi.mdi-tag-text-outline &nbsp; Ad title
+                                    .form-group
+                                        select(name="adCampaignCategory" data-live-search="true" title="Ad type e.g. Image, Text, Link").custom-campaign-group.form-control
+                                        span.mdi.mdi-group.mt-4 &nbsp; Ad campaign category (campaigns you have created)
+                                    .form-group 
+                                        input(type="url" autocomplete="off" name="adDestinationUrl" placeholder="https://example.com/devices").form-control
+                                        span.mdi.mdi-domain &nbsp; Ad destination url (click url)
+                                    .form-group
+                                        select(name="adType" title="Ad type e.g. Image, Text, Link").custom-select
+                                            option(value="image") Image
+                                            option(value="text") Text description
+                                            option(value="link") Click link
+                                        span.mdi.mdi-tag-multiple &nbsp; Ad type e.g. Image, Text, Link
+                                    .form-group
+                                        .custom-file
+                                            input(type="file" name="adDisplayImage").custom-file-input
+                                            label.custom-file-label#labelUpload Click here to upload &nbsp;
+                                                span.mdi.mdi-file-document
+                                            span.mdi.mdi-file-cloud &nbsp; Display image to feature
+                                    .form-group.mt-4
+                                        textarea(name="adDescription", rows="3" maxlength="120" placeholder="Description in 120 characters").form-control
+                                        span.mdi.mdi-comment-text &nbsp; Text description
+                                .col-md-7
+                                    .alert.alert-light Ad preview as it would appear in different devices
+                                    .btn-group
+                                        span.btn.btn-dark Desktop
+                                        span.btn.btn-secondary Tablets
+                                        span.btn.btn-dark Mobiles (phones)
+                                    .ad-preview-holder
+                                        .ad-preview-header
+                                            span Title will go here
+                                            span.float-right Ad name will go here
+                                        .ad-preview-body
+                                            div
+                                                img(src="/images/sample-image.ico", alt="").ad-image-preview
+                                            .container-fluid Ad description text will go here. Add your description text of up to 120 characters.
+                                        .ad-preview-footer
+                                            i Tickles ads
+                                            span.float-right
+                                                span(title="What is this?").badge.badge-info.mr-1#adHelp
+                                                    span.mdi.mdi-help-circle
+                                                span(title="Close this ad").badge.badge-dark#closeAd
+                                                    span.mdi.mdi-close
+                                    .form-group.mt-5
+                                        span.btn.btn-info.float-right#goToFinalStep Next &nbsp;
+                                            span.mdi.mdi-skip-next
+
 
                 //- finalize and publish ad
                 #finalize.hidden.camp-child
-                    h3 Finalize and publish
+                    .alert.alert-light We have collected your ad data and this is how it will look like when you publish and how it will feature on websites.
+                    .row
+                        .col-md-7
+                            .ad-preview-holder
+                                .ad-preview-header
+                                    span Title will go here
+                                    span.float-right Ad name will go here
+                                .ad-preview-body
+                                    div
+                                        img(src="/images/sample-image.ico", alt="").ad-image-preview
+                                    .container-fluid Ad description text will go here. Add your description text of up to 120 characters.
+                                .ad-preview-footer
+                                    i Tickles ads
+                                    span.float-right
+                                        span(title="What is this?").badge.badge-info.mr-1#adHelp
+                                            span.mdi.mdi-help-circle
+                                        span(title="Close this ad").badge.badge-dark#closeAd
+                                            span.mdi.mdi-close
+                            .mt-4.text-center
+                                button.btn.btn-dark#publishAd Publish Ad &nbsp;
+                                    span.mdi.mdi-chevron-double-right
+                        .col-md-5
+                            p.text-center Your currently have &nbsp;$
+                                span= balance 
+                                span &nbsp; in your account. Your ad will start featuring in websites and other online platforms when minimum balance is met.
+                                span You might want to add some funds. <br /> &nbsp;
+                                a(href="/client/dashboard/payment-wallet").btn.btn-info.link Manage wallet &nbsp;
+                                    span.mdi.mdi-wallet-membership

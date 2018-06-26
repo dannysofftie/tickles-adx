@@ -111,4 +111,49 @@ a {
 
 .camp-child {
     position: absolute;
+    left: -2px;
+    width: 100%;
+    padding: 0;
+}
+
+.ad-preview-holder {
+    height: 110px;
+    width: 520px;
+    margin-top: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    display: grid;
+    grid-template-rows: 15% 70% 15%;
+}
+
+.ad-preview-holder:hover {
+    opacity: .7;
+}
+
+.ad-preview-header {
+    padding: 0px 3px 4px 3px;
+}
+
+.ad-preview-body {
+    display: grid;
+    grid-template-columns: 20% 70%;
+    grid-gap: 5px;
+    padding: 2px 3px 2px 3px;
+}
+
+.ad-preview-body>* {
+    overflow: hidden;
+}
+
+.ad-preview-body .container-fluid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ad-preview-body img {
+    height: 100%;
+}
+
+.ad-preview-footer {
+    padding-bottom: 10px;
 }

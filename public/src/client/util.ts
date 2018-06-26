@@ -1,9 +1,31 @@
+function showSpinner() {
+    let spinner = document.querySelector('.spinner-holder')
+    spinner.classList.remove('d-none')
+}
+function hideSpinner() {
+    let spinner = document.querySelector('.spinner-holder')
+    setTimeout(() => {
+        spinner.classList.add('d-none')
+    }, 2000)
+}
+function showTopLoader() {
+    let loader = document.querySelector('#color-top-loader')
+    loader.classList.remove('d-none')
+}
+function hideTopLoader() {
+    let loader = document.querySelector('#color-top-loader')
+    setTimeout(() => {
+        loader.classList.add('d-none')
+    }, 2000)
+}
+
 /**
    * Top level ajax function for GET and POST requests
   * @param {string} url server url to send/request data
   * @param {Array.<string>|{}} body optional data to send to server `always in json`
+  * @param {string} ifForm Content-Type to include in headers
   */
-async function asyncRequest(url: string, body?: {} | any) {
+async function asyncRequest(url: string, body?: {} | any, ifForm?: string) {
     if (typeof url == 'undefined' || typeof url != 'string')
         throw new Error('Expected a url but found none!')
     if (typeof body == 'undefined')
@@ -14,6 +36,10 @@ async function asyncRequest(url: string, body?: {} | any) {
                 return res.json()
             else return undefined
         })
+    else if (typeof ifForm != 'undefined')
+        return await fetch(url, {
+            method: 'POST', credentials: 'include', body: body
+        }).then(res => res.json())
     else
         return await fetch(url, {
             method: 'POST', credentials: 'include', headers: {
@@ -76,26 +102,7 @@ function extractURLParam(param: string) {
         else return obj
     }
 }
-function showSpinner() {
-    let spinner = document.querySelector('.spinner-holder')
-    spinner.classList.remove('d-none')
-}
-function hideSpinner() {
-    let spinner = document.querySelector('.spinner-holder')
-    setTimeout(() => {
-        spinner.classList.add('d-none')
-    }, 2000)
-}
-function showTopLoader() {
-    let loader = document.querySelector('#color-top-loader')
-    loader.classList.remove('d-none')
-}
-function hideTopLoader() {
-    let loader = document.querySelector('#color-top-loader')
-    setTimeout(() => {
-        loader.classList.add('d-none')
-    }, 2000)
-}
+
 function scriptLoader(script: string | Array<string>) {
     let d = document
     let scd = d.createElement('script'),
@@ -114,11 +121,46 @@ function scriptLoader(script: string | Array<string>) {
             sad.parentNode.insertBefore(sr, sad)
         })
 }
+
+/**
+ * extracts form data, including checkboxes, multiple select options,
+ * multiple file uploads, ..... radio buttons still to be implemented,
+ * and returns an iterable
+ * @param {HTMLFormElement} form form to extract data
+ */
 async function extractFormData(form: HTMLFormElement) {
     if (typeof form == 'undefined')
         throw new Error('Requires a form to iterate')
-    else
-        // @ts-ignore
-        return Object.assign({}, ...Array.from(new FormData(form), ([v, k]) => ({ [v]: k.trim() })))
-
+    else {
+        let data = {}
+        for (let element of Array.from(form.elements)) {
+            ['text', 'number', 'url', 'textarea', 'password'].forEach(type => {
+                if (element['type'].indexOf(type) != -1) {
+                    data[element['name']] = element['value']
+                }
+            })
+            if (element['type'] == 'file') {
+                data[element['name']] = element['files'][0]
+            }
+            if (element['type'].indexOf('select') != -1) {
+                if (element.getAttribute('multiple') != undefined) {
+                    try {
+                        let multiValues: Array<string> = [],
+                            options = Array.from(element.querySelectorAll('option'))
+                        for (let option of options) {
+                            if (option.selected)
+                                multiValues.push(option.value)
+                        }
+                        data[element['name']] = multiValues
+                    } catch (err) { }
+                } else {
+                    data[element['name']] = element['value']
+                }
+            }
+            // @ts-ignore
+            if (element['type'] == 'checkbox' && element.checked)
+                data[element['name']] = element['value']
+        }
+        return data
+    }
 }

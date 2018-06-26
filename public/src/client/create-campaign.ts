@@ -6,12 +6,14 @@ function initMap() {
 }
 
 async function currentAdvertiserCampaigns() {
-    let campaigns: Array<string> = await asyncRequest('/api/client/retrieve-campaigns'),
-        htmlSelect: HTMLSelectElement = document.querySelector('select[name=""]')
-    for (let field in campaigns) {
-        // @ts-ignore
-        htmlSelect.append(new Option(field.campaignName, field.campaingValue))
-    }
+    let catSelect: HTMLSelectElement = document.querySelector('select[name="adCampaignCategory"]'),
+        groups = await asyncRequest('/api/client/retrieve-campaigns')
+    if (catSelect != null)
+        for await (const field of groups) {
+            catSelect.append(new Option(field.campaignName, field.campaignValue))
+        }
+    // @ts-ignore
+    $('.custom-campaign-group').selectpicker()
 }
 ((f) => {
     if (typeof module == 'undefined') {
@@ -86,16 +88,16 @@ async function currentAdvertiserCampaigns() {
             validated: boolean = false
         // validate input fields of type text
         Object.keys(data).forEach(inputName => {
-            let refInput: HTMLInputElement = campaignDataForm.querySelector(`input[name="${inputName}"]`)
-
-            if (refInput != null && refInput.getAttribute('type') == 'text' && data[inputName].length < 4) {
-                refInput.classList.add('is-invalid')
-                validated = false
-            } else if (refInput != null && refInput.getAttribute('type') == 'number' && Number(data[inputName]) < 0.5) {
-                refInput.classList.add('is-invalid')
-                validated = false
-            } else {
-                if (refInput != null) {
+            let refInput: HTMLInputElement = campaignDataForm.querySelector(`input[name="${inputName}"]`),
+                refSelect: HTMLSelectElement = campaignDataForm.querySelector(`select[name="campaignTargetLocations"]`)
+            if (refInput != null) {
+                if (refInput.getAttribute('type') == 'text' && data[inputName].length < 4) {
+                    refInput.classList.add('is-invalid')
+                    validated = false
+                } else if (refInput.getAttribute('type') == 'number' && Number(data[inputName]) < 0.5) {
+                    refInput.classList.add('is-invalid')
+                    validated = false
+                } else {
                     refInput.classList.remove('is-invalid')
                     validated = true
                 }
@@ -108,4 +110,44 @@ async function currentAdvertiserCampaigns() {
             createAdTab.click()
         }
     })
+
+    // save ad and validate input fields
+    let createAdForm: HTMLFormElement = document.forms['createAdDataForm'],
+        adDataToPublish: FormData = new FormData()
+    if (createAdForm != undefined) {
+        let finalStep: HTMLDivElement = document.querySelector('div[ref-tab="finalize"]'),
+            upLoadedImage: HTMLImageElement = createAdForm.querySelector('input[name="adDisplayImage"]'),
+            previewImages = Array.from(document.querySelectorAll('.ad-image-preview'))
+        upLoadedImage.addEventListener('change', function (e) {
+            let image = e.srcElement['files'][0],
+                imageName = image.name,
+                imageType = image.type,
+                imageSize = image.size,
+                lastModified = new Date(image.lastModified),
+                fileReader = new FileReader()
+            fileReader.onload = function (e) {
+                document.getElementById('labelUpload').innerHTML = `<span>${imageName}</span>`
+                previewImages.forEach(img => {
+                    img.setAttribute('src', e.target.result)
+                })
+            }
+            fileReader.readAsDataURL(image)
+        })
+
+        // submit and publish ad
+        document.getElementById('goToFinalStep').addEventListener('click', async function (event) {
+            event.preventDefault()
+            let adData = await extractFormData(createAdForm)
+            for (const key in adData) {
+                if (key.trim().length > 1)
+                    adDataToPublish.append(key, adData[key])
+            }
+            finalStep.click()
+        })
+
+        document.getElementById('publishAd').addEventListener('click', async function (e) {
+            let pubResult = await asyncRequest('/api/client/publish-ad', adDataToPublish, 'multipart/form-data')
+            console.log(pubResult)
+        })
+    }
 })
