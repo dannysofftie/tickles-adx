@@ -118,20 +118,24 @@ async function currentAdvertiserCampaigns() {
         let finalStep: HTMLDivElement = document.querySelector('div[ref-tab="finalize"]'),
             upLoadedImage: HTMLImageElement = createAdForm.querySelector('input[name="adDisplayImage"]'),
             previewImages = Array.from(document.querySelectorAll('.ad-image-preview'))
-        upLoadedImage.addEventListener('change', function (e) {
+        upLoadedImage.addEventListener('change', async function (e) {
             let image = e.srcElement['files'][0],
                 imageName = image.name,
                 imageType = image.type,
-                imageSize = image.size,
-                lastModified = new Date(image.lastModified),
-                fileReader = new FileReader()
-            fileReader.onload = function (e) {
-                document.getElementById('labelUpload').innerHTML = `<span>${imageName}</span>`
-                previewImages.forEach(img => {
-                    img.setAttribute('src', e.target.result)
-                })
+                imageSize = image.size
+
+            if (imageType == 'image/jpeg' || imageType == 'image/png') {
+                let fileReader: FileReader = new FileReader()
+                await fileReader.readAsDataURL(image)
+                fileReader.onloadend = function (e) {
+                    document.getElementById('labelUpload').innerHTML = `<span>${imageName}</span>`
+                    previewImages.forEach(img => {
+                        img.setAttribute('src', e.target.result)
+                    })
+                }
+            } else {
+                // display file format not supported error message, and clear input[type="file"]
             }
-            fileReader.readAsDataURL(image)
         })
 
         // submit and publish ad
@@ -146,7 +150,7 @@ async function currentAdvertiserCampaigns() {
         })
 
         document.getElementById('publishAd').addEventListener('click', async function (e) {
-            let pubResult = await asyncRequest('/api/client/publish-ad', adDataToPublish, 'multipart/form-data')
+            let pubResult = await asyncRequest('/api/client/publish-ad', adDataToPublish)
             console.log(pubResult)
         })
     }

@@ -1,8 +1,7 @@
 
 import { HttpRequest } from '.'
-import * as multer from 'multer'
 import { Request, Response } from 'express'
-const uploads = multer({ dest: 'uploads/client' }).single('adDisplayImage')
+import * as formidable from 'formidable'
 
 interface T {
     title: string,
@@ -29,12 +28,27 @@ export async function clientData(id: string, ref?: string): Promise<T> {
     }
 }
 
+
 /**
  * handles ad publishing including file uploads (images or gif videos for advertisement if any)
  * @param req request object from client
  */
 export async function publishAdvertisement(req: Request, res: Response) {
-    console.log(req.file, req.body)
+    let form = new formidable.IncomingForm()
+    form.uploadDir = './uploads/'
+    form.keepExtensions = true
+    form.parse(req, (err, fields, files) => {
+        console.log(files.adDisplayImage.name)
+        requestBody(fields)
+    })
+    form.on('progress', (bytesReceived, bytesExpected) => {
+        console.log((Math.ceil(Number(bytesReceived) / Number(bytesExpected) * 100)) + '%')
+    })
+    async function requestBody(body: object) {
+        let result = await new HttpRequest().post('/api/v1/publish/publish-ad', req.body).catch(e => e ? e.code : [])
+        console.log(body)
+        res.status(res.statusCode).json(body)
+    }
 }
 
 /**
@@ -43,12 +57,9 @@ export async function publishAdvertisement(req: Request, res: Response) {
  * @param res response object
  */
 export async function businessCategories(req: Request, res: Response) {
-    res.status(res.statusCode).json([
-        { businessGroup: 'Beauty and fragrances', groupValue: '1' },
-        { businessGroup: 'Books and magazines', groupValue: '2' },
-        { businessGroup: 'Clothing, accessories, and shoes', groupValue: '3' },
-        { businessGroup: 'Entertainment and media', groupValue: '4' }
-    ])
+    let categories = await new HttpRequest().get('/api/v1/data/business-categories').catch(e => e ? { error: 'Unreachable' } : [])
+    res.setHeader('Content-Type','application/json')
+    res.status(res.statusCode).send(categories)
 }
 
 /**

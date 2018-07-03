@@ -8,6 +8,7 @@ import * as cors from 'cors'
 import * as http from 'http'
 import * as os from 'os'
 import * as cluster from 'cluster'
+import * as mongoose from 'mongoose'
 
 const ENV_CPUS = process.env.NODE_ENV === 'production' ? os.cpus().length : 1,
     log = console.log
@@ -16,11 +17,13 @@ export class AdWebServer {
     private app: express.Application
     private server: http.Server
     private port: string | number
+    private MONGO_URI: string
 
     constructor() {
         this.port = process.env.PORT || 4000
         this.app = express()
         this.server = http.createServer(this.app)
+        this.MONGO_URI = process.env.NODE_ENV === 'production' ? 'mongodb+srv://dannysofftie:25812345Dan@project-adexchange-bftmj.gcp.mongodb.net/test' : 'mongodb://127.0.0.1/project-adexchange'
         this.configs()
         this.routes()
     }
@@ -28,6 +31,7 @@ export class AdWebServer {
     private configs() {
         this.app.set('view engine', 'pug')
         this.app.disable('x-powered-by')
+        mongoose.connect(this.MONGO_URI).catch(e => e)
         this.app.use(cookieParser())
         this.app.use(express.static(path.join(__dirname, '../', 'public')))
         this.app.use(bodyParser.urlencoded({ extended: true }))
@@ -37,7 +41,7 @@ export class AdWebServer {
     }
     private routes() {
         // router to handle page view requests
-        this.app.use('/client-router', require('../routes/page-routes'))
+        this.app.use('/page-view', require('../routes/page-routes'))
         // router to handle data requests from advertiser/client
         this.app.use('/api/client', require('../routes/client-routes'))
         // router to handle data requests from publishers

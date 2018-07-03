@@ -9,7 +9,7 @@ block content
           a(href="/")
             span.mdi.mdi-burst-mode &nbsp;Ad 
             span.text-info Exchange
-          button.btn.btn-info.float-right GET STARTED &nbsp;
+          a(href="/client/signin").link.btn.btn-info.float-right GET STARTED &nbsp;
             span.mdi.mdi-star-half
         div.mt-5.d-flex.justify-content-center.align-items-center.flex-column.text-center
           h4.text-uppercase.dsp-title tickles &nbsp; adexchange &nbsp; dsp <br /> for &nbsp; advertisers
@@ -49,55 +49,5 @@ block content
     div.jumbotron.bg-dark.text-center
       button.btn.btn-success.dsp-title.text-white get started &nbsp;
         span.mdi.mdi-star-half   
-    //- inner content holder
-    div.signinform.text-white
-      span.text-danger.animated.flash= error
-      .sign-up-form
-        .mt-4
-          span Sign in to get started
-        form(action="/api/client/client-login" method="POST" name="signinform")#signinform.text-left
-          .form-group
-            input(type="text" placeholder="Username or email" name="username" required).form-control
-          .form-group
-            input(type="password" placeholder="Password" name="password" required).form-control
-          .form-group
-            div(class="g-recaptcha")#recaptcha
-          .form-group.form-check
-            label.form-check-label
-              input(type="checkbox", name="").form-check-input.custom-checkbox
-              span Save credentials
-          .form-group
-            button(type="submit")#submitbutton.btn.btn-info.btn-block Sign in &nbsp;
-              span.mdi.mdi-fire
-          hr
-          .form-group
-            a(href="javascript:void(0)")#signin Register?
-            a(href="javascript:void(0)").float-right#recover Reset password
-      .sign-in-form.my-2.d-none
-        .my-1.text-center
-          span Sign up and start a campaign today. Give us your email and set up the rest later
-          hr
-          form(action="/api/client/client-signup", method="POST",name="signupform").pr-3#signupform
-            .form-group
-              input(type="email", name="email_address" placeholder="Email address").form-control
-            .form-group
-              input(type="password", name="password" placeholder="Set password").form-control
-            .form-group
-              input(type="password", name="password2" placeholder="Confirm password").form-control
-            //- .form-group
-            //-     .g-recaptcha#recaptcha2
-            .form-group.form-check
-              label.form-check-label 
-                input(type="checkbox", name="").form-check-input.custom-checkbox
-                small Agree to our terms of 
-                  a(href="javascript:void(0)", title="Privacy policy") privacy policy
-            div.form-group
-              button(type="submit").btn.btn-block.btn-info Register &nbsp;
-                span.mdi.mdi-play-circle
-              button.btn.btn-block.btn-danger Google sign up &nbsp;
-                span.mdi.mdi-google-pages
-            .form-group
-              a(href="javascript:void(0)")#signup Sign in instead?
-              a(href="javascript:void(0)").float-right#overview Overview      
-    
+
     include ../includes/footer

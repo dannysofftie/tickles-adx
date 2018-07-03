@@ -25,7 +25,7 @@ function hideTopLoader() {
   * @param {Array.<string>|{}} body optional data to send to server `always in json`
   * @param {string} ifForm Content-Type to include in headers
   */
-async function asyncRequest(url: string, body?: {} | any, ifForm?: string) {
+async function asyncRequest(url: string, body?: {} | any) {
     if (typeof url == 'undefined' || typeof url != 'string')
         throw new Error('Expected a url but found none!')
     if (typeof body == 'undefined')
@@ -36,10 +36,6 @@ async function asyncRequest(url: string, body?: {} | any, ifForm?: string) {
                 return res.json()
             else return undefined
         })
-    else if (typeof ifForm != 'undefined')
-        return await fetch(url, {
-            method: 'POST', credentials: 'include', body: body
-        }).then(res => res.json())
     else
         return await fetch(url, {
             method: 'POST', credentials: 'include', headers: {
@@ -106,19 +102,25 @@ function extractURLParam(param: string) {
 function scriptLoader(script: string | Array<string>) {
     let d = document
     let scd = d.createElement('script'),
-        sad = d.getElementsByTagName('script')[0]
+        sad = d.getElementsByTagName('script')[0],
+        allTags = Array.from(document.getElementsByTagName('script'))
     if (typeof script == "string") {
         scd.src = `/dist/client/${script}.js`
         scd.async = true
         scd.defer = true
-        sad.parentNode.insertBefore(scd, sad)
+        allTags.forEach(s => {
+            (s.src == scd.src) ? s.parentNode.removeChild(s) : sad.parentNode.insertBefore(scd, s)
+        })
+
     } else
         script.forEach(s => {
             let sr = d.createElement('script')
             sr.src = `/dist/client/${s}.js`
             sr.async = true
             sr.defer = true
-            sad.parentNode.insertBefore(sr, sad)
+            allTags.forEach(s => {
+                (s.src == sr.src) ? s.parentNode.removeChild(s) : sad.parentNode.insertBefore(sr, s)
+            })
         })
 }
 
@@ -134,9 +136,9 @@ async function extractFormData(form: HTMLFormElement) {
     else {
         let data = {}
         for (let element of Array.from(form.elements)) {
-            ['text', 'number', 'url', 'textarea', 'password'].forEach(type => {
+            ['text', 'number', 'url', 'textarea', 'password','email'].forEach(type => {
                 if (element['type'].indexOf(type) != -1) {
-                    data[element['name']] = element['value']
+                    data[element['name']] = element['value'].trim()
                 }
             })
             if (element['type'] == 'file') {
@@ -159,6 +161,9 @@ async function extractFormData(form: HTMLFormElement) {
             }
             // @ts-ignore
             if (element['type'] == 'checkbox' && element.checked)
+                data[element['name']] = element['value']
+            // @ts-ignore
+            if (element['type'] == 'radio' && element.checked)
                 data[element['name']] = element['value']
         }
         return data

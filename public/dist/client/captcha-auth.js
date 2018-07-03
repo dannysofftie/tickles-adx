@@ -33,21 +33,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __read = (this && this.__read) || function (o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
+var __values = (this && this.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
         }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
+    };
 };
 var d = document;
 (function (f) {
@@ -56,48 +50,135 @@ var d = document;
     else
         throw new Error('Node environment not supported');
 })(function () {
-    // google recaptcha and advertiser authentication
-    // sign-up and sign-in handler
-    var sc = d.createElement('script'), sa = d.getElementsByTagName('script')[0];
-    sc.src = "https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit";
-    sc.async = true;
-    sc.defer = true;
-    sa.parentNode.insertBefore(sc, sa);
-    var _a = __read([d.getElementById('signin'), d.getElementById('signup'), d.querySelector('.sign-up-form'), d.querySelector('.sign-in-form')], 4), sin = _a[0], sup = _a[1], sint = _a[2], supt = _a[3];
-    sin.addEventListener('click', function (e) {
-        supt.classList.remove('d-none');
-        sint.classList.add('d-none');
-    });
-    sup.addEventListener('click', function (e) {
-        sint.classList.remove('d-none');
-        supt.classList.add('d-none');
-    });
-    // client sign-in form handler
-    var signInForm = d.forms['signinform'];
-    signInForm.addEventListener('submit', function (e) {
-        return __awaiter(this, void 0, void 0, function () {
-            var btn, signInData, result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        e.preventDefault();
-                        btn = document.querySelector('button#submitbutton');
-                        btn.innerHTML = "<span>Loading ... </span><span class=\"mdi mdi-loading mdi-spin\"></span>";
-                        btn.disabled = true;
-                        return [4 /*yield*/, extractFormData(signInForm)];
-                    case 1:
-                        signInData = _a.sent();
-                        return [4 /*yield*/, asyncRequest('/api/client/client-login', signInData)["catch"](function (err) { return err; })];
-                    case 2:
-                        result = _a.sent();
-                        if (result.message == 'success') {
-                            // @ts-ignore
-                            window.router.navigateTo('/client/dashboard');
+    return __awaiter(this, void 0, void 0, function () {
+        var e_1, _a, signInForm, sc, sa, signUpForm, sc, sa, businessCategories, selectOption, businessCategories_1, businessCategories_1_1, field;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    signInForm = d.forms['signinform'];
+                    if (typeof signInForm != 'undefined') {
+                        sc = d.createElement('script'), sa = d.getElementsByTagName('script')[0];
+                        sc.src = "https://www.google.com/recaptcha/api.js?onload=signInRecaptcha&render=explicit";
+                        sc.async = true;
+                        sc.defer = true;
+                        sa.parentNode.insertBefore(sc, sa);
+                        signInForm.addEventListener('submit', function (e) {
+                            return __awaiter(this, void 0, void 0, function () {
+                                var submitButton, notify, signInData, result;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            e.preventDefault();
+                                            submitButton = this.querySelector('button[type="submit"]'), notify = d.getElementById('notifystatus');
+                                            submitButton.innerHTML = "<span>Loading ... </span><span class=\"mdi mdi-flattr mdi-spin\"></span>";
+                                            submitButton.disabled = true;
+                                            return [4 /*yield*/, extractFormData(signInForm)];
+                                        case 1:
+                                            signInData = _a.sent();
+                                            return [4 /*yield*/, asyncRequest('/api/client/client-login', signInData)];
+                                        case 2:
+                                            result = _a.sent();
+                                            if (result.error == 'NOT_FOUND') {
+                                                notify.innerText = 'Email provided not registered';
+                                                notify.classList.remove('d-none');
+                                                submitButton.disabled = false;
+                                                submitButton.innerHTML = "<span> Sign in &nbsp; <span class=\"mdi mdi-play-circle\"></span></span>";
+                                            }
+                                            else if (result.error == 'WRONG_PASS') {
+                                                notify.innerText = 'Wrong password';
+                                                notify.classList.remove('d-none');
+                                                submitButton.disabled = false;
+                                                submitButton.innerHTML = "<span> Sign in &nbsp; <span class=\"mdi mdi-play-circle\"></span></span>";
+                                            }
+                                            else if (result.error == 'captcha_error') {
+                                                notify.innerText = 'Verify captcha to continue';
+                                                notify.classList.remove('d-none');
+                                                submitButton.disabled = false;
+                                                submitButton.innerHTML = "<span> Sign in &nbsp; <span class=\"mdi mdi-play-circle\"></span></span>";
+                                            }
+                                            else {
+                                                // @ts-ignore
+                                                window.router.navigateTo('/client/dashboard');
+                                            }
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            });
+                        });
+                    }
+                    signUpForm = d.forms['signupform'];
+                    if (!(typeof signUpForm != 'undefined')) return [3 /*break*/, 2];
+                    sc = d.createElement('script'), sa = d.getElementsByTagName('script')[0];
+                    sc.src = "https://www.google.com/recaptcha/api.js?onload=signUpRecaptcha&render=explicit";
+                    sc.async = true;
+                    sc.defer = true;
+                    sa.parentNode.insertBefore(sc, sa);
+                    return [4 /*yield*/, fetch('/api/client/business-group-categories').then(function (res) { return res.json(); })];
+                case 1:
+                    businessCategories = _b.sent(), selectOption = document.querySelector('select[name="businessgrouptarget"]');
+                    try {
+                        for (businessCategories_1 = __values(businessCategories), businessCategories_1_1 = businessCategories_1.next(); !businessCategories_1_1.done; businessCategories_1_1 = businessCategories_1.next()) {
+                            field = businessCategories_1_1.value;
+                            selectOption.append(new Option(field.businessName, field._id));
                         }
-                        return [2 /*return*/];
-                }
-            });
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (businessCategories_1_1 && !businessCategories_1_1.done && (_a = businessCategories_1["return"])) _a.call(businessCategories_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
+                    // @ts-ignore
+                    $('.business-target').selectpicker();
+                    signUpForm.addEventListener('submit', function (e) {
+                        return __awaiter(this, void 0, void 0, function () {
+                            var submitButton, signUpData, signUpResult, notify;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        e.preventDefault();
+                                        submitButton = this.querySelector('button[type="submit"]');
+                                        submitButton.innerHTML = "<span>Processing &nbsp; <span class=\"mdi mdi-flattr mdi-spin\"></span></span>";
+                                        submitButton.disabled = true;
+                                        return [4 /*yield*/, extractFormData(this)];
+                                    case 1:
+                                        signUpData = _a.sent();
+                                        return [4 /*yield*/, asyncRequest('/api/client/client-signup', signUpData)];
+                                    case 2:
+                                        signUpResult = _a.sent(), notify = document.getElementById('notify');
+                                        if (signUpResult.error == 'EMAIL_EXISTS') {
+                                            notify.innerText = 'Email provided has been taken';
+                                            notify.classList.remove('d-none');
+                                            submitButton.disabled = false;
+                                            submitButton.innerHTML = "<span>Register &nbsp; <span class=\"mdimdi-play-circle\"></span></span>";
+                                        }
+                                        else if (signUpResult.error == 'captcha_error') {
+                                            notify.innerText = 'Verify captcha to proceed';
+                                            notify.classList.remove('d-none');
+                                            submitButton.disabled = false;
+                                            submitButton.innerHTML = "<span>Register &nbsp; <span class=\"mdimdi-play-circle\"></span></span>";
+                                        }
+                                        else {
+                                            notify.innerText = 'Successfull, check your email to verify registration ';
+                                            notify.classList.remove('d-none', 'alert-danger');
+                                            notify.classList.add('alert-success');
+                                            submitButton.disabled = true;
+                                            submitButton.classList.remove('btn-info');
+                                            submitButton.classList.add('btn-success');
+                                            submitButton.innerHTML = "<span>Successfully registered &nbsp;</span>";
+                                            // @ts-ignore
+                                            setTimeout(function () { window.router.navigateTo('/client/signin'); }, 3000);
+                                        }
+                                        return [2 /*return*/];
+                                }
+                            });
+                        });
+                    });
+                    _b.label = 2;
+                case 2: return [2 /*return*/];
+            }
         });
     });
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FwdGNoYS1hdXRoLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NsaWVudC9jYXB0Y2hhLWF1dGgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsSUFBSSxDQUFDLEdBQUcsUUFBUSxDQUFDO0FBRWpCLENBQUMsVUFBVSxDQUFDO0lBQ1IsSUFBSSxPQUFPLE1BQU0sSUFBSSxXQUFXO1FBQzVCLENBQUMsRUFBRSxDQUFBOztRQUVILE1BQU0sSUFBSSxLQUFLLENBQUMsZ0NBQWdDLENBQUMsQ0FBQTtBQUN6RCxDQUFDLENBQUMsQ0FBQztJQUVDLGlEQUFpRDtJQUNqRCw4QkFBOEI7SUFDOUIsSUFBSSxFQUFFLEdBQUcsQ0FBQyxDQUFDLGFBQWEsQ0FBQyxRQUFRLENBQUMsRUFDOUIsRUFBRSxHQUFHLENBQUMsQ0FBQyxvQkFBb0IsQ0FBQyxRQUFRLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQTtJQUM1QyxFQUFFLENBQUMsR0FBRyxHQUFHLCtFQUErRSxDQUFBO0lBQ3hGLEVBQUUsQ0FBQyxLQUFLLEdBQUcsSUFBSSxDQUFBO0lBQ2YsRUFBRSxDQUFDLEtBQUssR0FBRyxJQUFJLENBQUE7SUFDZixFQUFFLENBQUMsVUFBVSxDQUFDLFlBQVksQ0FBQyxFQUFFLEVBQUUsRUFBRSxDQUFDLENBQUE7SUFFOUIsSUFBQSw0SUFBcUosRUFBcEosV0FBRyxFQUFFLFdBQUcsRUFBRSxZQUFJLEVBQUUsWUFBSSxDQUFnSTtJQUN6SixHQUFHLENBQUMsZ0JBQWdCLENBQUMsT0FBTyxFQUFFLFVBQVUsQ0FBQztRQUNyQyxJQUFJLENBQUMsU0FBUyxDQUFDLE1BQU0sQ0FBQyxRQUFRLENBQUMsQ0FBQTtRQUMvQixJQUFJLENBQUMsU0FBUyxDQUFDLEdBQUcsQ0FBQyxRQUFRLENBQUMsQ0FBQTtJQUNoQyxDQUFDLENBQUMsQ0FBQTtJQUNGLEdBQUcsQ0FBQyxnQkFBZ0IsQ0FBQyxPQUFPLEVBQUUsVUFBVSxDQUFDO1FBQ3JDLElBQUksQ0FBQyxTQUFTLENBQUMsTUFBTSxDQUFDLFFBQVEsQ0FBQyxDQUFBO1FBQy9CLElBQUksQ0FBQyxTQUFTLENBQUMsR0FBRyxDQUFDLFFBQVEsQ0FBQyxDQUFBO0lBQ2hDLENBQUMsQ0FBQyxDQUFBO0lBRUYsOEJBQThCO0lBQzlCLElBQUksVUFBVSxHQUFvQixDQUFDLENBQUMsS0FBSyxDQUFDLFlBQVksQ0FBQyxDQUFBO0lBQ3ZELFVBQVUsQ0FBQyxnQkFBZ0IsQ0FBQyxRQUFRLEVBQUUsVUFBZ0IsQ0FBQzs7Ozs7O3dCQUNuRCxDQUFDLENBQUMsY0FBYyxFQUFFLENBQUE7d0JBQ2QsR0FBRyxHQUFzQixRQUFRLENBQUMsYUFBYSxDQUFDLHFCQUFxQixDQUFDLENBQUE7d0JBQzFFLEdBQUcsQ0FBQyxTQUFTLEdBQUcsMkVBQXlFLENBQUE7d0JBQ3pGLEdBQUcsQ0FBQyxRQUFRLEdBQUcsSUFBSSxDQUFBO3dCQUVGLHFCQUFNLGVBQWUsQ0FBQyxVQUFVLENBQUMsRUFBQTs7d0JBQTlDLFVBQVUsR0FBRyxTQUFpQzt3QkFDckMscUJBQU0sWUFBWSxDQUFDLDBCQUEwQixFQUFFLFVBQVUsQ0FBQyxDQUFDLE9BQUssQ0FBQSxDQUFDLFVBQUEsR0FBRyxJQUFJLE9BQUEsR0FBRyxFQUFILENBQUcsQ0FBQyxFQUFBOzt3QkFBckYsTUFBTSxHQUFHLFNBQTRFO3dCQUN6RixJQUFJLE1BQU0sQ0FBQyxPQUFPLElBQUksU0FBUyxFQUFFOzRCQUM3QixhQUFhOzRCQUNiLE1BQU0sQ0FBQyxNQUFNLENBQUMsVUFBVSxDQUFDLG1CQUFtQixDQUFDLENBQUE7eUJBQ2hEOzs7OztLQUNKLENBQUMsQ0FBQTtBQUNOLENBQUMsQ0FBQyxDQUFBIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FwdGNoYS1hdXRoLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NsaWVudC9jYXB0Y2hhLWF1dGgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsSUFBSSxDQUFDLEdBQUcsUUFBUSxDQUFDO0FBRWpCLENBQUMsVUFBVSxDQUFDO0lBQ1IsSUFBSSxPQUFPLE1BQU0sSUFBSSxXQUFXO1FBQzVCLENBQUMsRUFBRSxDQUFBOztRQUVILE1BQU0sSUFBSSxLQUFLLENBQUMsZ0NBQWdDLENBQUMsQ0FBQTtBQUN6RCxDQUFDLENBQUMsQ0FBQzs7Ozs7O29CQUVLLFVBQVUsR0FBb0IsQ0FBQyxDQUFDLEtBQUssQ0FBQyxZQUFZLENBQUMsQ0FBQTtvQkFDdkQsSUFBRyxPQUFPLFVBQVUsSUFBSSxXQUFXLEVBQUM7d0JBQzVCLEVBQUUsR0FBRyxDQUFDLENBQUMsYUFBYSxDQUFDLFFBQVEsQ0FBQyxFQUNsQyxFQUFFLEdBQUcsQ0FBQyxDQUFDLG9CQUFvQixDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFBO3dCQUN4QyxFQUFFLENBQUMsR0FBRyxHQUFHLGdGQUFnRixDQUFBO3dCQUN6RixFQUFFLENBQUMsS0FBSyxHQUFHLElBQUksQ0FBQTt3QkFDZixFQUFFLENBQUMsS0FBSyxHQUFHLElBQUksQ0FBQTt3QkFDZixFQUFFLENBQUMsVUFBVSxDQUFDLFlBQVksQ0FBQyxFQUFFLEVBQUUsRUFBRSxDQUFDLENBQUE7d0JBRWxDLFVBQVUsQ0FBQyxnQkFBZ0IsQ0FBQyxRQUFRLEVBQUUsVUFBZ0IsQ0FBQzs7Ozs7OzRDQUNuRCxDQUFDLENBQUMsY0FBYyxFQUFFLENBQUE7NENBQ2QsWUFBWSxHQUFzQixJQUFJLENBQUMsYUFBYSxDQUFDLHVCQUF1QixDQUFDLEVBQ2pGLE1BQU0sR0FBbUIsQ0FBQyxDQUFDLGNBQWMsQ0FBQyxjQUFjLENBQUMsQ0FBQTs0Q0FDekQsWUFBWSxDQUFDLFNBQVMsR0FBRywwRUFBd0UsQ0FBQTs0Q0FDakcsWUFBWSxDQUFDLFFBQVEsR0FBRyxJQUFJLENBQUE7NENBRVgscUJBQU0sZUFBZSxDQUFDLFVBQVUsQ0FBQyxFQUFBOzs0Q0FBOUMsVUFBVSxHQUFHLFNBQWlDOzRDQUN6QyxxQkFBTSxZQUFZLENBQUMsMEJBQTBCLEVBQUUsVUFBVSxDQUFDLEVBQUE7OzRDQUFuRSxNQUFNLEdBQUcsU0FBMEQ7NENBQ25FLElBQUksTUFBTSxDQUFDLEtBQUssSUFBSSxXQUFXLEVBQUM7Z0RBQzVCLE1BQU0sQ0FBQyxTQUFTLEdBQUcsK0JBQStCLENBQUE7Z0RBQ2xELE1BQU0sQ0FBQyxTQUFTLENBQUMsTUFBTSxDQUFDLFFBQVEsQ0FBQyxDQUFBO2dEQUNqQyxZQUFZLENBQUMsUUFBUSxHQUFHLEtBQUssQ0FBQTtnREFDN0IsWUFBWSxDQUFDLFNBQVMsR0FBRywwRUFBd0UsQ0FBQTs2Q0FDcEc7aURBQUssSUFBSSxNQUFNLENBQUMsS0FBSyxJQUFJLFlBQVksRUFBQztnREFDbkMsTUFBTSxDQUFDLFNBQVMsR0FBRyxnQkFBZ0IsQ0FBQTtnREFDbkMsTUFBTSxDQUFDLFNBQVMsQ0FBQyxNQUFNLENBQUMsUUFBUSxDQUFDLENBQUE7Z0RBQ2pDLFlBQVksQ0FBQyxRQUFRLEdBQUcsS0FBSyxDQUFBO2dEQUM3QixZQUFZLENBQUMsU0FBUyxHQUFHLDBFQUF3RSxDQUFBOzZDQUNwRztpREFBTSxJQUFJLE1BQU0sQ0FBQyxLQUFLLElBQUksZUFBZSxFQUFDO2dEQUN2QyxNQUFNLENBQUMsU0FBUyxHQUFHLDRCQUE0QixDQUFBO2dEQUMvQyxNQUFNLENBQUMsU0FBUyxDQUFDLE1BQU0sQ0FBQyxRQUFRLENBQUMsQ0FBQTtnREFDakMsWUFBWSxDQUFDLFFBQVEsR0FBRyxLQUFLLENBQUE7Z0RBQzdCLFlBQVksQ0FBQyxTQUFTLEdBQUcsMEVBQXdFLENBQUE7NkNBQ3BHO2lEQUFJO2dEQUNELGFBQWE7Z0RBQ2IsTUFBTSxDQUFDLE1BQU0sQ0FBQyxVQUFVLENBQUMsbUJBQW1CLENBQUMsQ0FBQTs2Q0FDaEQ7Ozs7O3lCQUNKLENBQUMsQ0FBQTtxQkFDTDtvQkFFRyxVQUFVLEdBQW9CLENBQUMsQ0FBQyxLQUFLLENBQUMsWUFBWSxDQUFDLENBQUE7eUJBQ3BELENBQUEsT0FBTyxVQUFVLElBQUksV0FBVyxDQUFBLEVBQWhDLHdCQUFnQztvQkFDM0IsRUFBRSxHQUFHLENBQUMsQ0FBQyxhQUFhLENBQUMsUUFBUSxDQUFDLEVBQ2xDLEVBQUUsR0FBRyxDQUFDLENBQUMsb0JBQW9CLENBQUMsUUFBUSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUE7b0JBQ3hDLEVBQUUsQ0FBQyxHQUFHLEdBQUcsZ0ZBQWdGLENBQUE7b0JBQ3pGLEVBQUUsQ0FBQyxLQUFLLEdBQUcsSUFBSSxDQUFBO29CQUNmLEVBQUUsQ0FBQyxLQUFLLEdBQUcsSUFBSSxDQUFBO29CQUNmLEVBQUUsQ0FBQyxVQUFVLENBQUMsWUFBWSxDQUFDLEVBQUUsRUFBRSxFQUFFLENBQUMsQ0FBQTtvQkFFVCxxQkFBTSxLQUFLLENBQUMsdUNBQXVDLENBQUMsQ0FBQyxJQUFJLENBQUMsVUFBQSxHQUFHLElBQUUsT0FBQSxHQUFHLENBQUMsSUFBSSxFQUFFLEVBQVYsQ0FBVSxDQUFDLEVBQUE7O29CQUEvRixrQkFBa0IsR0FBRyxTQUEwRSxFQUNuRyxZQUFZLEdBQXFCLFFBQVEsQ0FBQyxhQUFhLENBQUMsb0NBQW9DLENBQUM7O3dCQUM3RixLQUFvQix1QkFBQSxTQUFBLGtCQUFrQixDQUFBLDRJQUFDOzRCQUE1QixLQUFLOzRCQUNaLFlBQVksQ0FBQyxNQUFNLENBQUMsSUFBSSxNQUFNLENBQUMsS0FBSyxDQUFDLFlBQVksRUFBRSxLQUFLLENBQUMsR0FBRyxDQUFDLENBQUMsQ0FBQTt5QkFDakU7Ozs7Ozs7OztvQkFDRCxhQUFhO29CQUNiLENBQUMsQ0FBQyxrQkFBa0IsQ0FBQyxDQUFDLFlBQVksRUFBRSxDQUFBO29CQUVwQyxVQUFVLENBQUMsZ0JBQWdCLENBQUMsUUFBUSxFQUFFLFVBQWUsQ0FBQzs7Ozs7O3dDQUNsRCxDQUFDLENBQUMsY0FBYyxFQUFFLENBQUE7d0NBQ2QsWUFBWSxHQUFxQixJQUFJLENBQUMsYUFBYSxDQUFDLHVCQUF1QixDQUFDLENBQUE7d0NBQ2hGLFlBQVksQ0FBQyxTQUFTLEdBQUcsZ0ZBQThFLENBQUE7d0NBQ3ZHLFlBQVksQ0FBQyxRQUFRLEdBQUcsSUFBSSxDQUFBO3dDQUNYLHFCQUFNLGVBQWUsQ0FBQyxJQUFJLENBQUMsRUFBQTs7d0NBQXhDLFVBQVUsR0FBRyxTQUEyQjt3Q0FDN0IscUJBQU0sWUFBWSxDQUFDLDJCQUEyQixFQUFFLFVBQVUsQ0FBQyxFQUFBOzt3Q0FBMUUsWUFBWSxHQUFHLFNBQTJELEVBQzFFLE1BQU0sR0FBbUIsUUFBUSxDQUFDLGNBQWMsQ0FBQyxRQUFRLENBQUM7d0NBQzFELElBQUcsWUFBWSxDQUFDLEtBQUssSUFBSSxjQUFjLEVBQUM7NENBQ3BDLE1BQU0sQ0FBQyxTQUFTLEdBQUcsK0JBQStCLENBQUE7NENBQ2xELE1BQU0sQ0FBQyxTQUFTLENBQUMsTUFBTSxDQUFDLFFBQVEsQ0FBQyxDQUFBOzRDQUNqQyxZQUFZLENBQUMsUUFBUSxHQUFHLEtBQUssQ0FBQTs0Q0FDN0IsWUFBWSxDQUFDLFNBQVMsR0FBRyx5RUFBdUUsQ0FBQTt5Q0FDbkc7NkNBQUssSUFBRyxZQUFZLENBQUMsS0FBSyxJQUFJLGVBQWUsRUFBQzs0Q0FDM0MsTUFBTSxDQUFDLFNBQVMsR0FBRywyQkFBMkIsQ0FBQTs0Q0FDOUMsTUFBTSxDQUFDLFNBQVMsQ0FBQyxNQUFNLENBQUMsUUFBUSxDQUFDLENBQUE7NENBQ2pDLFlBQVksQ0FBQyxRQUFRLEdBQUcsS0FBSyxDQUFBOzRDQUM3QixZQUFZLENBQUMsU0FBUyxHQUFHLHlFQUF1RSxDQUFBO3lDQUNuRzs2Q0FBSTs0Q0FDRCxNQUFNLENBQUMsU0FBUyxHQUFHLHVEQUF1RCxDQUFBOzRDQUMxRSxNQUFNLENBQUMsU0FBUyxDQUFDLE1BQU0sQ0FBQyxRQUFRLEVBQUMsY0FBYyxDQUFDLENBQUE7NENBQ2hELE1BQU0sQ0FBQyxTQUFTLENBQUMsR0FBRyxDQUFDLGVBQWUsQ0FBQyxDQUFBOzRDQUNyQyxZQUFZLENBQUMsUUFBUSxHQUFHLElBQUksQ0FBQTs0Q0FDNUIsWUFBWSxDQUFDLFNBQVMsQ0FBQyxNQUFNLENBQUMsVUFBVSxDQUFDLENBQUE7NENBQ3pDLFlBQVksQ0FBQyxTQUFTLENBQUMsR0FBRyxDQUFDLGFBQWEsQ0FBQyxDQUFBOzRDQUN6QyxZQUFZLENBQUMsU0FBUyxHQUFHLDZDQUE2QyxDQUFBOzRDQUN0RSxhQUFhOzRDQUNiLFVBQVUsQ0FBQyxjQUFLLE1BQU0sQ0FBQyxNQUFNLENBQUMsVUFBVSxDQUFDLGdCQUFnQixDQUFDLENBQUEsQ0FBQSxDQUFDLEVBQUUsSUFBSSxDQUFDLENBQUE7eUNBQ3JFOzs7OztxQkFDSixDQUFDLENBQUE7Ozs7OztDQUVULENBQUMsQ0FBQSJ9

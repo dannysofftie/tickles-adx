@@ -1,0 +1,46 @@
+extends ../includes/layout
+
+block content
+    .container.mt-5
+        div(style={position:'fixed',top:'10px',right:'20px'})
+            span.alert.alert-danger.animated.jello.d-none#notify
+        div.d-flex.justify-content-center.align-content-center
+            span.text-danger.animated
+            .sign-up-form(style={width:'420px'})
+                span Sign up to get started
+                form(action="/api/client/client-signup", method="POST",name="signupform").pr-3#signupform
+                    .form-group
+                        input(type="text", name="fullnames" placeholder="Full names" required="required").form-control
+                    .form-group
+                        input(type="email", name="emailaddress" required="required" placeholder="Email address").form-control                    
+                    .form-group.d-flex.justify-content-between
+                        .custom-control.custom-radio.custom-control-inline
+                            input(type="radio" required="required" name="businesstarget" value="affiliate").custom-control-input#affiliate
+                            label(for="affiliate").custom-control-label Join as an affiliate
+                        .custom-control.custom-radio.custom-control-inline
+                            input(type="radio" required="required" name="businesstarget" value="owner" checked="checked").custom-control-input#owner
+                            label(for="owner").custom-control-label Join as a business owner
+                    .form-group
+                        select(name="businessgrouptarget" required="required" data-live-search="true" title="Select business category").form-control.custom-select.business-target
+                    .form-group
+                        input(type="password", name="password" required="required" placeholder="Set password").form-control
+                    .form-group
+                        input(type="password" required="required" placeholder="Confirm password").form-control
+                    .form-group.d-flex.justify-content-center
+                        .g-recaptcha#recaptcha2
+                    .form-group.form-check
+                        label.form-check-label 
+                            input(type="checkbox" required="required").form-check-input.custom-checkbox
+                            small Agree to our terms of 
+                            a(href="javascript:void(0)", title="Privacy policy") privacy policy
+                    .form-group
+                        button(type="submit").btn.btn-block.btn-info Register &nbsp;
+                            span.mdi.mdi-play-circle
+                        div.d-flex.justify-content-between.mt-2
+                            button.btn.btn-danger Use Gmail &nbsp;
+                                span.mdi.mdi-gmail
+                            button.btn.btn-info Use Twitter &nbsp;
+                                span.mdi.mdi-twitter
+                    .form-group
+                        a(href="/client/signin?from=signup").link Sign in instead?
+                        a(href="javascript:void(0)").float-right#overview Overview 

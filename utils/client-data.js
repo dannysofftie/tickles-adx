@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const multer = require("multer");
-const uploads = multer({ dest: 'uploads/client' }).single('adDisplayImage');
+const _1 = require(".");
+const formidable = require("formidable");
 async function clientData(id, ref) {
     // do database/API data request for specific client
     // return an object with client data
@@ -22,7 +22,21 @@ exports.clientData = clientData;
  * @param req request object from client
  */
 async function publishAdvertisement(req, res) {
-    console.log(req.file, req.body);
+    let form = new formidable.IncomingForm();
+    form.uploadDir = './uploads/';
+    form.keepExtensions = true;
+    form.parse(req, (err, fields, files) => {
+        console.log(files.adDisplayImage.name);
+        requestBody(fields);
+    });
+    form.on('progress', (bytesReceived, bytesExpected) => {
+        console.log((Math.ceil(Number(bytesReceived) / Number(bytesExpected) * 100)) + '%');
+    });
+    async function requestBody(body) {
+        let result = await new _1.HttpRequest().post('/api/v1/publish/publish-ad', req.body).catch(e => e ? e.code : []);
+        console.log(body);
+        res.status(res.statusCode).json(body);
+    }
 }
 exports.publishAdvertisement = publishAdvertisement;
 /**
@@ -31,12 +45,9 @@ exports.publishAdvertisement = publishAdvertisement;
  * @param res response object
  */
 async function businessCategories(req, res) {
-    res.status(res.statusCode).json([
-        { businessGroup: 'Beauty and fragrances', groupValue: '1' },
-        { businessGroup: 'Books and magazines', groupValue: '2' },
-        { businessGroup: 'Clothing, accessories, and shoes', groupValue: '3' },
-        { businessGroup: 'Entertainment and media', groupValue: '4' }
-    ]);
+    let categories = await new _1.HttpRequest().get('/api/v1/data/business-categories').catch(e => e ? { error: 'Unreachable' } : []);
+    res.setHeader('Content-Type', 'application/json');
+    res.status(res.statusCode).send(categories);
 }
 exports.businessCategories = businessCategories;
 /**

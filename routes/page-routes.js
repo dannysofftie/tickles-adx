@@ -12,6 +12,12 @@ router.get('/', (req, res) => {
 router.get('/client', (req, res) => {
     res.render('advertiser/index', { title: 'Ad Exchange for Advertisers' });
 });
+router.get('/client/signin', async (req, res) => {
+    res.render('advertiser/signin', { title: 'Ad Exchange for Advertisers' });
+});
+router.get('/client/signup', async (req, res) => {
+    res.render('advertiser/signup', { title: 'Ad Exchange for Advertisers' });
+});
 router.get('/client/dashboard', async (req, res) => {
     res.render('advertiser/dashboard', await utils_1.clientData('user-id'));
 });
