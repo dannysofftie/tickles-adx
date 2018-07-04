@@ -6,7 +6,7 @@ function hideSpinner() {
     let spinner = document.querySelector('.spinner-holder')
     setTimeout(() => {
         spinner.classList.add('d-none')
-    }, 2000)
+    }, 500)
 }
 function showTopLoader() {
     let loader = document.querySelector('#color-top-loader')
@@ -16,7 +16,7 @@ function hideTopLoader() {
     let loader = document.querySelector('#color-top-loader')
     setTimeout(() => {
         loader.classList.add('d-none')
-    }, 2000)
+    }, 1000)
 }
 
 /**
@@ -109,7 +109,7 @@ function scriptLoader(script: string | Array<string>) {
         scd.async = true
         scd.defer = true
         allTags.forEach(s => {
-            (s.src == scd.src) ? s.parentNode.removeChild(s) : sad.parentNode.insertBefore(scd, s)
+            (s.src == scd.src) ? s.parentNode.removeChild(s) : s.parentNode.insertBefore(scd, s)
         })
 
     } else
@@ -136,7 +136,7 @@ async function extractFormData(form: HTMLFormElement) {
     else {
         let data = {}
         for (let element of Array.from(form.elements)) {
-            ['text', 'number', 'url', 'textarea', 'password','email'].forEach(type => {
+            ['text', 'number', 'url', 'textarea', 'password', 'email'].forEach(type => {
                 if (element['type'].indexOf(type) != -1) {
                     data[element['name']] = element['value'].trim()
                 }
@@ -168,4 +168,26 @@ async function extractFormData(form: HTMLFormElement) {
         }
         return data
     }
+}
+
+/**
+ * checks if cookie exists and returns all cookies, or cookie value if cookie name is passed
+ * @param {string} cookieString 
+ * @param {string} cookieName 
+ */
+function extractCookies(cookieString: string | Array<string>, cookieName?: string) {
+    // @ts-ignore
+    let c = decodeURIComponent(cookieString),
+        d: string | Array<string>, e: object = {}
+
+    if (c.indexOf(';') != -1) d = c.split(';')
+    else d = c
+    if (typeof d == 'string')
+        e[d.split('=')[0].trim()] = d.split('=')[1].trim()
+    else
+        d.map(p => e[p.split('=')[0].trim()] = p.split('=')[1].trim())
+
+    if (typeof cookieName != 'undefined')
+        return e[cookieName]
+    return JSON.stringify(e)
 }

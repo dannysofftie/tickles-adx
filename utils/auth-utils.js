@@ -36,8 +36,6 @@ async function advertiserLogin(req, res) {
     let clientData = await Advertiser_1.default.find({ emailAddress: req.body['username'] }).select('password ssid').exec();
     if (clientData.length < 1)
         return res.status(res.statusCode).json({ error: 'NOT_FOUND' });
-    console.log(req.body.password);
-    console.log(bcrypt.compareSync(req.body['password'], clientData[0].password));
     // @ts-ignore
     if (!bcrypt.compareSync(req.body['password'], clientData[0].password))
         return res.status(res.statusCode).json({ error: 'WRONG_PASS' });
@@ -49,7 +47,6 @@ async function advertiserLogin(req, res) {
 }
 exports.advertiserLogin = advertiserLogin;
 async function advertiserSignUp(req, res) {
-    console.log(req.body.password);
     let captcha = await verifyCaptcha(req.body['g-recaptcha-response'], req.ip).catch(e => e);
     try {
         if (JSON.parse(captcha.toString()).success != true) {

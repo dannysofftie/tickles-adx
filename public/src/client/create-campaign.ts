@@ -71,10 +71,11 @@ async function currentAdvertiserCampaigns() {
     $('.custom-select-search').selectpicker();
     // request campaign business group categories
     (async function () {
-        let catSelect: HTMLSelectElement = document.querySelector('select[name="campaignCategory"]'),
-            groups = await asyncRequest('/api/client/business-group-categories')
-        for await (const field of groups) {
-            catSelect.append(new Option(field.businessGroup, field.groupValue))
+        let selectOption: HTMLSelectElement = document.querySelector('select[name="campaignCategory"]'),
+            businessCategories = await fetch('http://' + extractCookies(document.cookie, 'API') + '/api/v1/data/business-categories').then(res => res.json())
+
+        for (const field of businessCategories) {
+            selectOption.append(new Option(field.businessName, field._id))
         }
         // @ts-ignore
         $('.selectpicker-category').selectpicker()

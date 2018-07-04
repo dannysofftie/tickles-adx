@@ -1,5 +1,4 @@
 import * as https from 'https'
-import { HttpRequest } from '.'
 import * as qs from 'querystring'
 
 import * as bcrypt from 'bcrypt'
@@ -26,25 +25,24 @@ export async function verifyCaptcha(captcha: string, ip: string): Promise<{} | A
 }
 
 export async function advertiserLogin(req: Request, res: Response) {
-    let captcha = await verifyCaptcha(req.body['g-recaptcha-response'], req.ip).catch(e=>e)
-    try{
-        if(JSON.parse(captcha.toString()).success != true){
-            return res.status(500).json({error: 'captcha_error'})
+    let captcha = await verifyCaptcha(req.body['g-recaptcha-response'], req.ip).catch(e => e)
+    try {
+        if (JSON.parse(captcha.toString()).success != true) {
+            return res.status(500).json({ error: 'captcha_error' })
         }
-    }catch(e){
-        return res.status(500).json({error: 'captcha_error'})
+    } catch (e) {
+        return res.status(500).json({ error: 'captcha_error' })
     }
 
     let clientData = await Advertiser.find({ emailAddress: req.body['username'] }).select('password ssid').exec()
     if (clientData.length < 1)
         return res.status(res.statusCode).json({ error: 'NOT_FOUND' })
-    console.log(req.body.password)
-    console.log(bcrypt.compareSync(req.body['password'], clientData[0].password))
+
     // @ts-ignore
     if (!bcrypt.compareSync(req.body['password'], clientData[0].password))
         return res.status(res.statusCode).json({ error: 'WRONG_PASS' })
 
-    let apiServerUrl:string = process.env.NODE_ENV === 'production'? 'adxserver.herokuapp.com': '127.0.0.1:5000'
+    let apiServerUrl: string = process.env.NODE_ENV === 'production' ? 'adxserver.herokuapp.com' : '127.0.0.1:5000'
     // @ts-ignore
     res.cookie('SSID', clientData[0].ssid, { path: '/', maxAge: 1000 * 60 * 60 * 24 })
     res.cookie('API', apiServerUrl, { path: '/', maxAge: 1000 * 60 * 60 * 24 })
@@ -52,30 +50,29 @@ export async function advertiserLogin(req: Request, res: Response) {
 }
 
 export async function advertiserSignUp(req: Request, res: Response) {
-console.log(req.body.password)
-    let captcha = await verifyCaptcha(req.body['g-recaptcha-response'], req.ip).catch(e=>e)
-    try{
-        if(JSON.parse(captcha.toString()).success != true){
-            return res.status(500).json({error: 'captcha_error'})
+    let captcha = await verifyCaptcha(req.body['g-recaptcha-response'], req.ip).catch(e => e)
+    try {
+        if (JSON.parse(captcha.toString()).success != true) {
+            return res.status(500).json({ error: 'captcha_error' })
         }
-    }catch(e){
-        return res.status(500).json({error: 'captcha_error'})
+    } catch (e) {
+        return res.status(500).json({ error: 'captcha_error' })
     }
-    
+
 
     let SSID = Buffer.from(req.body['emailaddress'] + ':' + req.body['fullnames']).toString('base64'),
-    hashPassword = await bcrypt.hashSync(req.body['password'], 8),
-    verificationCode = (Number(new Date()) % 7e9).toString(29).toUpperCase(),
-    advertiser = new Advertiser({
-        _id: new Types.ObjectId(),
-        fullNames: req.body['fullnames'],
-        emailAddress: req.body['emailaddress'],
-        password: hashPassword,
-        ssid: SSID,
-        joinedAs: req.body['businesstarget'],
-        verificationCode: verificationCode,
-        businessGroupTarget: req.body['businessgrouptarget']
-    })
+        hashPassword = await bcrypt.hashSync(req.body['password'], 8),
+        verificationCode = (Number(new Date()) % 7e9).toString(29).toUpperCase(),
+        advertiser = new Advertiser({
+            _id: new Types.ObjectId(),
+            fullNames: req.body['fullnames'],
+            emailAddress: req.body['emailaddress'],
+            password: hashPassword,
+            ssid: SSID,
+            joinedAs: req.body['businesstarget'],
+            verificationCode: verificationCode,
+            businessGroupTarget: req.body['businessgrouptarget']
+        })
 
     let emailCheck = await Advertiser.find({ emailAddress: req.body['emailaddress'] }).select('emailaddress').exec()
 
@@ -84,7 +81,7 @@ console.log(req.body.password)
 
     // @ts-ignore
     let saveResult = await advertiser.save().then(data => data.emailAddress == req.body['emailaddress']),
-    emailStatus = await sendMail(req.body['emailaddress'], `Verify your account using code: ${verificationCode}`)
-    
+        emailStatus = await sendMail(req.body['emailaddress'], `Verify your account using code: ${verificationCode}`)
+
     return res.status(res.statusCode).json({ signupStatus: saveResult, emailStatus: emailStatus })
 }
