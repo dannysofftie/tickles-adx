@@ -72,7 +72,7 @@ async function currentAdvertiserCampaigns() {
     // request campaign business group categories
     (async function () {
         let selectOption: HTMLSelectElement = document.querySelector('select[name="campaignCategory"]'),
-            businessCategories = await fetch('http://' + extractCookies(document.cookie, 'API') + '/api/v1/data/business-categories').then(res => res.json())
+            businessCategories = await fetch(extractCookies(document.cookie, 'API') + '/api/v1/data/business-categories').then(res => res.json())
 
         for (const field of businessCategories) {
             selectOption.append(new Option(field.businessName, field._id))

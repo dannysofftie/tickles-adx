@@ -82,7 +82,7 @@ let signUpRecaptcha = function () {
     router.add('client/logout', async () => {
         showSpinner()
         let allCookies = extractCookies(document.cookie)
-        for (const cookie in allCookies) {
+        for (const cookie in JSON.parse(allCookies)) {
             document.cookie = cookie + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
         }
         router.navigateTo('/client')

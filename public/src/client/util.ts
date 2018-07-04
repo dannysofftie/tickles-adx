@@ -187,7 +187,11 @@ function extractCookies(cookieString: string | Array<string>, cookieName?: strin
     else
         d.map(p => e[p.split('=')[0].trim()] = p.split('=')[1].trim())
 
-    if (typeof cookieName != 'undefined')
+    if (typeof cookieName != 'undefined') {
+        if (cookieName.trim() == 'API') {
+            return window.location.protocol + '//' + e[cookieName]
+        }
         return e[cookieName]
+    }
     return JSON.stringify(e)
 }
