@@ -179,7 +179,7 @@ function extractCookies(cookieString: string | Array<string>, cookieName?: strin
     // @ts-ignore
     let c = decodeURIComponent(cookieString),
         d: string | Array<string>, e: object = {}
-
+    if (c.length < 1) return false
     if (c.indexOf(';') != -1) d = c.split(';')
     else d = c
     if (typeof d == 'string')
