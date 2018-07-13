@@ -5,23 +5,24 @@ function initMap() {
     // initialize google maps
 }
 
-async function currentAdvertiserCampaigns() {
-    let catSelect: HTMLSelectElement = document.querySelector('select[name="adCampaignCategory"]'),
-        groups = await asyncRequest('/api/client/retrieve-campaigns')
-    if (catSelect != null)
-        for await (const field of groups) {
-            catSelect.append(new Option(field.campaignName, field.campaignValue))
-        }
-    // @ts-ignore
-    $('.custom-campaign-group').selectpicker()
-}
+// places search autocomplete
+// src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"
+/*
+function init() {
+                var input = document.getElementById('locationTextField');
+                var autocomplete = new google.maps.places.Autocomplete(input);
+            }
+
+            google.maps.event.addDomListener(window, 'load', init);
+*/
+
 ((f) => {
     if (typeof module == 'undefined') {
         f(document, window)
     }
     else
         throw new Error('Cannot run in Node environment')
-})((document: Document, window: Window) => {
+})(async (document: Document, window: Window) => {
     document.addEventListener('scroll', () => {
         let ref: HTMLElement = document.querySelector('.client-details-box')
 
@@ -48,7 +49,7 @@ async function currentAdvertiserCampaigns() {
             })
 
             // retrieve campaigns
-            if (this.getAttribute('ref-tab') == 'create-ad') currentAdvertiserCampaigns()
+            // if (this.getAttribute('ref-tab') == 'create-ad') 
 
             allChild.forEach(d => {
                 d.classList.add('hidden')
@@ -75,6 +76,7 @@ async function currentAdvertiserCampaigns() {
             businessCategories = await fetch(extractCookies(document.cookie, 'API') + '/api/v1/data/business-categories').then(res => res.json())
 
         for (const field of businessCategories) {
+            // @ts-ignore
             selectOption.append(new Option(field.businessName, field._id))
         }
         // @ts-ignore
@@ -89,8 +91,7 @@ async function currentAdvertiserCampaigns() {
             validated: boolean = false
         // validate input fields of type text
         Object.keys(data).forEach(inputName => {
-            let refInput: HTMLInputElement = campaignDataForm.querySelector(`input[name="${inputName}"]`),
-                refSelect: HTMLSelectElement = campaignDataForm.querySelector(`select[name="campaignTargetLocations"]`)
+            let refInput: HTMLInputElement = campaignDataForm.querySelector(`input[name="${inputName}"]`)
             if (refInput != null) {
                 if (refInput.getAttribute('type') == 'text' && data[inputName].length < 4) {
                     refInput.classList.add('is-invalid')
@@ -106,9 +107,12 @@ async function currentAdvertiserCampaigns() {
         })
 
         if (validated != false) {
-            let saveResult = await asyncRequest('/api/client/save-campaign', data),
+            let saveResult = await asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/save-campaign', data),
                 createAdTab: HTMLDivElement = document.querySelector('div[ref-tab="create-ad"]')
-            createAdTab.click()
+
+            // check saveResult and give appropriate messages
+            console.log(saveResult)
+            // createAdTab.click()
         }
     })
 
@@ -118,40 +122,128 @@ async function currentAdvertiserCampaigns() {
     if (createAdForm != undefined) {
         let finalStep: HTMLDivElement = document.querySelector('div[ref-tab="finalize"]'),
             upLoadedImage: HTMLImageElement = createAdForm.querySelector('input[name="adDisplayImage"]'),
-            previewImages = Array.from(document.querySelectorAll('.ad-image-preview'))
-        upLoadedImage.addEventListener('change', async function (e) {
-            let image = e.srcElement['files'][0],
-                imageName = image.name,
-                imageType = image.type,
-                imageSize = image.size
+            previewImages = Array.from(document.querySelectorAll('.ad-image-preview')),
+            advertiserCampaigns = await asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/get-campaigns'),
+            adCCategorySelect: HTMLSelectElement = createAdForm.querySelector('select[name="adCampaignCategory"]'),
+            adSelectedType: HTMLSelectElement = createAdForm.querySelector('select[name="adSelectedType"]'),
+            adDestinationUrl: HTMLInputElement = createAdForm.querySelector('input[name="adDestinationUrl"]'),
+            adDescription: HTMLTextAreaElement = createAdForm.querySelector('textarea[name="adDescription"]'),
+            descriptionpreview = Array.from(document.querySelectorAll('.description-preview '))
+        for (const field of advertiserCampaigns) {
+            // @ts-ignore
+            adCCategorySelect.append(new Option(field.campaignName, field._id))
+        }
+        // @ts-ignore
+        $('.custom-campaign-group').selectpicker()
 
-            if (imageType == 'image/jpeg' || imageType == 'image/png') {
+        adDestinationUrl.addEventListener('blur', async function (e) {
+            let urlValidated = await asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/validate-url', { adDestinationUrl: this.value }),
+                urlValidationMessage = document.getElementById('urlValidationMessage')
+            urlValidated.status != true ?
+                urlValidationMessage.innerHTML = '<span class="text-danger"> &nbsp;&nbsp; url could not be verified</span>' :
+                urlValidationMessage.innerHTML = '<span class="text-info">&nbsp;&nbsp;url has been verified</span>'
+        })
+
+        adSelectedType.addEventListener('change', function (e) {
+            switch (this.value) {
+                case 'text':
+                case 'link':
+                    document.getElementById('adDisplayHolder').classList.add('d-none')
+                    break
+                default:
+                    document.getElementById('adDisplayHolder').classList.remove('d-none')
+                    break
+            }
+        })
+        // @ts-ignore
+        upLoadedImage.addEventListener('change', async function (e) {
+            let input = e.srcElement['files'][0],
+                inputName = input.name,
+                inputType = input.type,
+                inputSize = input.size
+            if (inputType == 'image/jpeg' || inputType == 'image/png') {
+                if (Number(inputSize) / (1024 * 1024) > 1.2) {
+                    document.getElementById('labelUpload').innerHTML = `<span class="text-info">Maximum allowed size is 1 mb</span>`
+                    return false
+                }
                 let fileReader: FileReader = new FileReader()
-                await fileReader.readAsDataURL(image)
+                await fileReader.readAsDataURL(input)
                 fileReader.onloadend = function (e) {
-                    document.getElementById('labelUpload').innerHTML = `<span>${imageName}</span>`
+                    document.getElementById('labelUpload').innerHTML = `<span>${inputName}</span>`
                     previewImages.forEach(img => {
+                        // @ts-ignore
                         img.setAttribute('src', e.target.result)
                     })
                 }
             } else {
-                // display file format not supported error message, and clear input[type="file"]
+                // display file format not supported error message, and clear input[type="file"]                
+                document.getElementById('labelUpload').innerHTML = `<span class="text-danger">Input of type ${inputType} not supported</span>`
+            }
+        })
+        adDescription.addEventListener('keyup', function () {
+            let placeholderLength: HTMLSpanElement = document.getElementById('placeholderLength')
+            descriptionpreview.forEach(preview => {
+                preview.innerHTML = this.value.trim()
+            })
+            if (this.value.trim().length <= 120) {
+                this.classList.remove('is-invalid')
+                this.classList.add('is-valid')
+                placeholderLength.innerHTML = `<span>You have ${120 - this.value.trim().length} characters remaining.</span>`
+            }
+            else {
+                this.classList.remove('is-valid')
+                this.classList.add('is-invalid')
+                placeholderLength.innerHTML = `<span>You have 0 characters remaining.</span>`
             }
         })
 
         // submit and publish ad
         document.getElementById('goToFinalStep').addEventListener('click', async function (event) {
             event.preventDefault()
-            let adData = await extractFormData(createAdForm)
-            for (const key in adData) {
-                if (key.trim().length > 1)
-                    adDataToPublish.append(key, adData[key])
+            let data: object = await extractFormData(createAdForm),
+                validated: boolean = false
+            Object.keys(data).every(function (key) {
+                if (key.trim() != 'adDisplayImage' && key.trim() != 'adDescription'
+                    && key.trim() != 'adCampaignCategory' && data[key].trim().length < 2) {
+                    createAdForm.querySelector(`[name="${key}"]`).classList.add('is-invalid')
+                    validated = false
+                } else {
+                    createAdForm.querySelector(`[name="${key}"]`).classList.remove('is-invalid')
+                    validated = true
+                }
+
+                if (key.trim() == 'adCampaignCategory' && data[key].length < 3) {
+                    validated = false
+                } else {
+                    validated = true
+                }
+
+                if (key.trim() == 'adDescription' && data[key].trim().length < 80) {
+                    createAdForm.querySelector(`textarea[name="${key}"]`).classList.add('is-invalid')
+                    validated = false
+                } else {
+                    validated = true
+                }
+                return true
+            })
+
+            if (validated != false) {
+                // clear formdata object to circumvent repeatition
+                for (const key in data) {
+                    if (key.trim().length > 1)
+                        adDataToPublish.delete(key)
+                }
+                // add to formdata 
+                for (const key in data) {
+                    if (key.trim().length > 1)
+                        adDataToPublish.append(key, data[key])
+                }
+                finalStep.click()
             }
-            finalStep.click()
         })
 
         document.getElementById('publishAd').addEventListener('click', async function (e) {
-            let pubResult = await asyncRequest('/api/client/publish-ad', adDataToPublish)
+            let pubResult = await asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/save-campaignad', adDataToPublish, true)
             console.log(pubResult)
         })
     }

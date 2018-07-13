@@ -43,6 +43,7 @@ export async function advertiserLogin(req: Request, res: Response) {
         return res.status(res.statusCode).json({ error: 'WRONG_PASS' })
 
     let apiServerUrl: string = process.env.NODE_ENV === 'production' ? 'adxserver.herokuapp.com' : '127.0.0.1:5000'
+
     // @ts-ignore
     res.cookie('SSID', clientData[0].ssid, { path: '/', maxAge: 1000 * 60 * 60 * 24 })
     res.cookie('API', apiServerUrl, { path: '/', maxAge: 1000 * 60 * 60 * 24 })

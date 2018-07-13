@@ -92,7 +92,7 @@ let signUpRecaptcha = function () {
 
     router.add('/client/dashboard', async () => {
         showSpinner()
-        if (!extractCookies(document.cookie, "SSID")) {
+        if (! await extractCookies(document.cookie, "SSID")) {
             router.navigateTo('/client')
             window.location.reload()
         }

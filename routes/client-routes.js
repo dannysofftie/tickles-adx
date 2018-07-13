@@ -9,7 +9,4 @@ const router = express_1.Router();
 router.post('/client-login', utils_1.advertiserLogin);
 router.post('/client-signup', utils_1.advertiserSignUp);
 router.get('/business-group-categories', utils_1.businessCategories);
-router.get('/retrieve-campaigns', utils_1.retrieveCampaigns);
-router.post('/save-campaign', utils_1.saveCampaign);
-router.post('/publish-ad', utils_1.publishAdvertisement);
 module.exports = router;

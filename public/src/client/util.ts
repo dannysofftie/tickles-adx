@@ -25,24 +25,36 @@ function hideTopLoader() {
   * @param {Array.<string>|{}} body optional data to send to server `always in json`
   * @param {string} ifForm Content-Type to include in headers
   */
-async function asyncRequest(url: string, body?: {} | any) {
+async function asyncRequest(url: string, body?: {} | any, multipart?: boolean) {
     if (typeof url == 'undefined' || typeof url != 'string')
         throw new Error('Expected a url but found none!')
     if (typeof body == 'undefined')
-        return await fetch(url, { method: 'GET', credentials: 'include' }).then(res => {
+        return await fetch(url, {
+            method: 'GET', credentials: 'same-origin', headers: {
+                'Client-Ssid': extractCookies(document.cookie, 'SSID')
+            }
+        }).then(res => {
             if (res.headers.get('Content-Type').indexOf('text/html') != -1)
                 return res.text()
-            if (res.headers.get('Content-Type').indexOf('application/json') != -1)
+            else if (res.headers.get('Content-Type').indexOf('application/json') != -1)
                 return res.json()
             else return undefined
         })
+    else if (typeof multipart != "undefined")
+        return await fetch(url, {
+            method: 'POST', credentials: 'same-origin', headers: {
+                'Content-Length': body.length,
+                'Client-Ssid': extractCookies(document.cookie, 'SSID')
+            }, body: body
+        }).then(res => res.json())
     else
         return await fetch(url, {
-            method: 'POST', credentials: 'include', headers: {
+            method: 'POST', credentials: 'same-origin', headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': body.length
+                'Content-Length': body.length,
+                'Client-Ssid': extractCookies(document.cookie, 'SSID')
             }, body: JSON.stringify(body)
-        }).then(res => res.json()).catch(err => err)
+        }).then(res => res.json())
 }
 
 
@@ -135,6 +147,10 @@ async function extractFormData(form: HTMLFormElement) {
         throw new Error('Requires a form to iterate')
     else {
         let data = {}
+        // reset object values first before iterating form
+        Object.getOwnPropertyNames(data).forEach(key => {
+            delete data[key]
+        })
         for (let element of Array.from(form.elements)) {
             ['text', 'number', 'url', 'textarea', 'password', 'email'].forEach(type => {
                 if (element['type'].indexOf(type) != -1) {
@@ -166,6 +182,8 @@ async function extractFormData(form: HTMLFormElement) {
             if (element['type'] == 'radio' && element.checked)
                 data[element['name']] = element['value']
         }
+        // delete empty keys
+        await Object.keys(data).forEach((key) => (key.length < 1) && delete data[key])
         return data
     }
 }

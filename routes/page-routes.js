@@ -19,21 +19,21 @@ router.get('/client/signup', async (req, res) => {
     res.render('advertiser/signup', { title: 'Ad Exchange for Advertisers' });
 });
 router.get('/client/dashboard', async (req, res) => {
-    res.render('advertiser/dashboard', await utils_1.clientData('user-id'));
+    res.render('advertiser/dashboard', await utils_1.clientData(req.headers['client-ssid']));
 });
 router.get('/client/create-campaign', async (req, res) => {
-    res.render('advertiser/create-campaign', await utils_1.clientData('user-id'));
+    res.render('advertiser/create-campaign', await utils_1.clientData(req.headers['client-ssid']));
 });
 router.get('/client/manage-campaign', async (req, res) => {
-    res.render('advertiser/manage-campaigns', await utils_1.clientData('user-id'));
+    res.render('advertiser/manage-campaigns', await utils_1.clientData(req.headers['client-ssid']));
 });
 router.get('/client/campaign-statistics', async (req, res) => {
-    res.render('advertiser/campaign-stats', await utils_1.clientData('user-id'));
+    res.render('advertiser/campaign-stats', await utils_1.clientData(req.headers['client-ssid']));
 });
 router.get('/client/payment-wallet', async (req, res) => {
-    res.render('advertiser/payment-wallet', await utils_1.clientData('user-id'));
+    res.render('advertiser/payment-wallet', await utils_1.clientData(req.headers['client-ssid']));
 });
 router.get('/client/referral-program', async (req, res) => {
-    res.render('advertiser/referral-program', await utils_1.clientData('user-id'));
+    res.render('advertiser/referral-program', await utils_1.clientData(req.headers['client-ssid']));
 });
 module.exports = router;

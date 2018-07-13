@@ -23,7 +23,7 @@ export class AdWebServer {
         this.port = process.env.PORT || 4000
         this.app = express()
         this.server = http.createServer(this.app)
-        this.MONGO_URI = process.env.NODE_ENV === 'production' ? 'mongodb+srv://dannysofftie:25812345Dan@project-adexchange-bftmj.gcp.mongodb.net/test?retryWrites=true' : 'mongodb://127.0.0.1/project-adexchange'
+        this.MONGO_URI = process.env.NODE_ENV === 'production' ? 'mongodb+srv://dannysofftie:25812345Dan@project-adexchange-bftmj.gcp.mongodb.net/test?retryWrites=true' : 'mongodb://127.0.0.1:27017/project-adexchange'
         this.configs()
         this.routes()
     }
@@ -31,7 +31,7 @@ export class AdWebServer {
     private configs() {
         this.app.set('view engine', 'pug')
         this.app.disable('x-powered-by')
-        mongoose.connect(this.MONGO_URI).catch(e => e)
+        mongoose.connect(this.MONGO_URI, { useNewUrlParser: true }).catch(e => e)
         this.app.use(cookieParser())
         this.app.use(express.static(path.join(__dirname, '../', 'public')))
         this.app.use(bodyParser.urlencoded({ extended: true }))

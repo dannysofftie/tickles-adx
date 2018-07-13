@@ -1,7 +1,7 @@
 include ../includes/dash-layout
 //- create campaign instructions and UI
 .container-fluid.animated.fadeIn    
-    .row
+    .row.mt-4
         .col-md-3
             .campaign-tabs.py-4
                 p You currently have &nbsp;
@@ -17,169 +17,168 @@ include ../includes/dash-layout
                     span.mdi.mdi-source-commit-end
                     span &nbsp; Finalize & publish
         .col-md-9
-            .campaign-tab-content.py-3
-                #create-campaign-body.camp-child
-                    .alert.alert-dark Create your 
-                        span.badge.badge-info= Number(totalCampaigns) + 1
-                        span  campaign. You can have multiple campaigns. You will be able to add ads under a campaign group. A single campaign can have multiple campaigns.
-                        span You can 
-                            a(href="/client/dashboard/manage-campaign").link.btn.btn-sm.btn-info.py-0 manage &nbsp;
-                                small.badge.badge-light= Number(totalCampaigns)
-                            span &nbsp; campaigns &nbsp;
-                    form(action="#" name="campaignDataForm")
+            #create-campaign-body.camp-child
+                .alert.alert-dark Create your 
+                    span.badge.badge-info= Number(totalCampaigns) + 1
+                    span  campaign. You can have multiple campaigns. You will be able to add ads under a campaign group. A single campaign can have multiple campaigns.
+                    span You can 
+                        a(href="/client/dashboard/manage-campaign").link.btn.btn-sm.btn-info.py-0 manage &nbsp;
+                            small.badge.badge-light= Number(totalCampaigns)
+                        span &nbsp; campaigns &nbsp;
+                form(action="#" name="campaignDataForm")
+                    .row
+                        .col-md-5
+                            .form-group
+                                input(type="text" autocomplete="off" name="campaignName" placeholder="Campaign group name").form-control
+                                span.mdi.mdi-tag &nbsp; Campaign group name e.g. Holiday promotions
+                            .form-group
+                                input(type="number"  autocomplete="off" name="campaignEstimatedBudget" placeholder="0.00").form-control
+                                span.mdi.mdi-cash-usd &nbsp; Campaign estimated daily budget    
+                            .form-group
+                                .d-flex.flex-row
+                                    input(type="number"  autocomplete="off" name="campaignBidPerAd" placeholder="0.00").form-control.mr-2
+                                    span.btn.btn-dark(title="Show recommended bid rates")
+                                        span.mdi.mdi-eyedropper
+                                span.mdi.mdi-cash &nbsp; Bid per ad delivered   
+                            .form-group
+                                .d-flex.flex-row
+                                    span
+                                        input(type="text" autocomplete="off" name="campaignBeginDate" placeholder="Commence date").form-control.calendar
+                                    span.ml-2
+                                        input(type="text" autocomplete="off" name="campaignEndDate" placeholder="Commence date").form-control.calendar                              
+                                span.mdi.mdi-calendar &nbsp; Campaign duration (date schedule) 
+                            .form-group
+                                .d-flex.flex-row
+                                    select(name="campaignTargetLocations" data-live-search="true" title="Specify target location").form-control.mr-2.custom-select-search
+                                        option(value="1") Nairobi
+                                    span.btn.btn-dark(title="Select location on map")
+                                        span.mdi.mdi-google-maps
+                                span.mdi.mdi-crosshairs-gps &nbsp; Specify target location(s)
+
+                        .col-md-7
+                            p.text-center Advanced targeting helps you reach the right audience for your content. These includes target devices, campaign category, banned domains, prioritized domains and such custom targeting. With our cookie policy, updating your campaign category will improve audience reach drastically, but its necessary if you set targeting options yourself.
+
+                            a(href="javascript:void(0)" style={color:'blue'}) Show advanced trageting 
+                            .form-group                             
+                                .d-flex.flex-row.justify-content-between
+                                    .custom-control.custom-checkbox
+                                        input(type="checkbox", name="campaignTargetMobile").custom-control-input#customCheck1
+                                        label(for="customCheck1").custom-control-label
+                                            span.mdi.mdi-phone &nbsp; Smartphones
+                                    .custom-control.custom-checkbox
+                                        input(type="checkbox", name="campaignTargetTablets").custom-control-input#customCheck2
+                                        label(for="customCheck2").custom-control-label
+                                            span.mdi.mdi-tablet &nbsp; Tablets
+                                    .custom-control.custom-checkbox
+                                        input(type="checkbox", name="campaignTargetDesktop").custom-control-input#customCheck3
+                                        label(for="customCheck3").custom-control-label
+                                            span.mdi.mdi-monitor &nbsp; Desktop
+                                span.mdi.mdi-group &nbsp; Select target devices
+                            .form-group
+                                select(name="campaignCategory" data-live-search="true").form-control.selectpicker-category.mb-3
+                                span.mdi.mdi-skype-business.mt-5 &nbsp; Business group category
+                            .form-group
+                                textarea(name="campaignBannedDomains", rows="3" placeholder="Banned domains. Comma separated e.g. www.example.com , http://anotherdomain.net").form-control
+                                span.mdi.mdi-domain &nbsp; A list of banned domains (comma separated)
+                            .form-group
+                                button(type="submit").btn.btn-info.float-right Save campaign &nbsp;
+                                    span.mdi.mdi-table-column-remove
+
+            //- create ad tab
+            #create-ad.hidden.camp-child
+                .alert.alert-light Ad creation wizard, you can have multiple ads under a single campaign group.
+                -var campaigns = Number(totalCampaigns)
+                if campaigns < 1
+                    .container.text-center
+                        .mdi.mdi-alert.mdi-64px.text-danger
+                        div You don't have existing campaigns. You can only create an ad under a campaign. It's good to note that multiple campaigns can exist under a single campaign group.
+                            span You need to create one first, then you can add ads to it later. Follow this simple wizard to get you started.
+                            a(href="/client/dashboard/create-campaign").link.btn.btn-dark Create campaign wizard &nbsp;
+                                span.mdi.mdi-chevron-double-right
+                else  
+                    form(action="#" name="createAdDataForm" enctype="multipart/form-data")
                         .row
                             .col-md-5
                                 .form-group
-                                    input(type="text" autocomplete="off" name="campaignName" placeholder="Campaign group name").form-control
-                                    span.mdi.mdi-tag &nbsp; Campaign group name e.g. Holiday promotions
+                                    input(type="text" autocomplete="off" name="adName" placeholder="Ad name as it will appear").form-control
+                                    span.mdi.mdi-tag-plus &nbsp; Ad name
                                 .form-group
-                                    input(type="number"  autocomplete="off" name="campaignEstimatedBudget" placeholder="0.00").form-control
-                                    span.mdi.mdi-cash-usd &nbsp; Campaign estimated daily budget    
+                                    input(type="text" autocomplete="off" name="adTitle" placeholder="Ad title as it will appear").form-control
+                                    span.mdi.mdi-tag-text-outline &nbsp; Ad title
                                 .form-group
-                                    .d-flex.flex-row
-                                        input(type="number"  autocomplete="off" name="campaignBidPerAd" placeholder="0.00").form-control.mr-2
-                                        span.btn.btn-dark(title="Show recommended bid rates")
-                                            span.mdi.mdi-eyedropper
-                                    span.mdi.mdi-cash &nbsp; Bid per ad delivered   
+                                    select(name="adCampaignCategory" data-live-search="true" title="Select campaign category").custom-campaign-group.form-control.mb-3
+                                    span.mdi.mdi-group &nbsp; Ad campaign category (campaigns you have created)
+                                .form-group 
+                                    input(type="url" autocomplete="off" name="adDestinationUrl" placeholder="https://example.com/devices").form-control
+                                    span.mdi.mdi-domain#urlValidationMessage &nbsp; Ad destination url (click url)
                                 .form-group
-                                    .d-flex.flex-row
-                                        span
-                                            input(type="text" autocomplete="off" name="campaignBeginDate" placeholder="Commence date").form-control.calendar
-                                        span.ml-2
-                                            input(type="text" autocomplete="off" name="campaignEndDate" placeholder="Commence date").form-control.calendar                              
-                                    span.mdi.mdi-calendar &nbsp; Campaign duration (date schedule) 
-                                .form-group
-                                    .d-flex.flex-row
-                                        select(name="campaignTargetLocations" data-live-search="true" title="Specify target location").form-control.mr-2.custom-select-search
-                                            option(value="1") Nairobi
-                                        span.btn.btn-dark(title="Select location on map")
-                                            span.mdi.mdi-google-maps
-                                    span.mdi.mdi-crosshairs-gps &nbsp; Specify target location(s)
-
+                                    select(name="adSelectedType" title="Ad type e.g. Image, Text, Link").custom-select
+                                        option(value="image") Image
+                                        option(value="text") Text description
+                                        option(value="link") Click link
+                                    span.mdi.mdi-tag-multiple &nbsp; Ad type e.g. Image, Text, Link
+                                .form-group#adDisplayHolder
+                                    .custom-file
+                                        input(type="file" name="adDisplayImage").custom-file-input
+                                        label.custom-file-label#labelUpload Click here to upload &nbsp;
+                                            span.mdi.mdi-file-document
+                                        span.mdi.mdi-file-cloud &nbsp; Display image to feature
+                                .form-group.mt-4
+                                    textarea(name="adDescription", rows="3" maxlength="120" placeholder="Description in 120 characters").form-control.mt-4
+                                    span.mdi.mdi-comment-text#placeholderLength &nbsp; Text description
                             .col-md-7
-                                p.text-center Advanced targeting helps you reach the right audience for your content. These includes target devices, campaign category, banned domains, prioritized domains and such custom targeting. With our cookie policy, updating your campaign category will improve audience reach drastically, but its necessary if you set targeting options yourself.
-
-                                a(href="javascript:void(0)" style={color:'blue'}) Show advanced trageting 
-                                .form-group                             
-                                    .d-flex.flex-row.justify-content-between
-                                        .custom-control.custom-checkbox
-                                            input(type="checkbox", name="campaignTargetMobile").custom-control-input#customCheck1
-                                            label(for="customCheck1").custom-control-label
-                                                span.mdi.mdi-phone &nbsp; Smartphones
-                                        .custom-control.custom-checkbox
-                                            input(type="checkbox", name="campaignTargetTablets").custom-control-input#customCheck2
-                                            label(for="customCheck2").custom-control-label
-                                                span.mdi.mdi-tablet &nbsp; Tablets
-                                        .custom-control.custom-checkbox
-                                            input(type="checkbox", name="campaignTargetDesktop").custom-control-input#customCheck3
-                                            label(for="customCheck3").custom-control-label
-                                                span.mdi.mdi-monitor &nbsp; Desktop
-                                    span.mdi.mdi-group &nbsp; Select target devices
-                                .form-group
-                                    select(name="campaignCategory" data-live-search="true" title="Select business category" ).form-control.selectpicker-category.mb-1
-                                    span.mdi.mdi-skype-business &nbsp; Business group category
-                                .form-group
-                                    textarea(name="campaignBannedDomains", rows="3" placeholder="Banned domains. Comma separated e.g. www.example.com , http://anotherdomain.net").form-control
-                                    span.mdi.mdi-domain &nbsp; A list of banned domains (comma separated)
-                                .form-group
-                                    button(type="submit").btn.btn-info.float-right Save campaign &nbsp;
-                                        span.mdi.mdi-table-column-remove
-
-                //- create ad tab
-                #create-ad.hidden.camp-child
-                    .alert.alert-light Ad creation wizard, you can have multiple ads under a single campaign group.
-                    -var campaigns = Number(totalCampaigns)
-                    if campaigns > 1
-                        .container.text-center
-                            .mdi.mdi-alert.mdi-64px.text-danger
-                            div You don't have existing campaigns. You can only create an ad under a campaign. It's good to note that multiple campaigns can exist under a single campaign group.
-                                span You need to create one first, then you can add ads to it later. Follow this simple wizard to get you started.
-                                a(href="/client/dashboard/create-campaign").link.btn.btn-dark Create campaign wizard &nbsp;
-                                    span.mdi.mdi-chevron-double-right
-                    else  
-                        form(action="#" name="createAdDataForm" enctype="multipart/form-data")
-                            .row
-                                .col-md-5
-                                    .form-group
-                                        input(type="text" autocomplete="off" name="adName" placeholder="Ad name as it will appear").form-control
-                                        span.mdi.mdi-tag-plus &nbsp; Ad name
-                                    .form-group
-                                        input(type="text" autocomplete="off" name="adTitle" placeholder="Ad title as it will appear").form-control
-                                        span.mdi.mdi-tag-text-outline &nbsp; Ad title
-                                    .form-group
-                                        select(name="adCampaignCategory" data-live-search="true" title="Ad type e.g. Image, Text, Link").custom-campaign-group.form-control
-                                        span.mdi.mdi-group.mt-4 &nbsp; Ad campaign category (campaigns you have created)
-                                    .form-group 
-                                        input(type="url" autocomplete="off" name="adDestinationUrl" placeholder="https://example.com/devices").form-control
-                                        span.mdi.mdi-domain &nbsp; Ad destination url (click url)
-                                    .form-group
-                                        select(name="adType" title="Ad type e.g. Image, Text, Link").custom-select
-                                            option(value="image") Image
-                                            option(value="text") Text description
-                                            option(value="link") Click link
-                                        span.mdi.mdi-tag-multiple &nbsp; Ad type e.g. Image, Text, Link
-                                    .form-group
-                                        .custom-file
-                                            input(type="file" name="adDisplayImage").custom-file-input
-                                            label.custom-file-label#labelUpload Click here to upload &nbsp;
-                                                span.mdi.mdi-file-document
-                                            span.mdi.mdi-file-cloud &nbsp; Display image to feature
-                                    .form-group.mt-4
-                                        textarea(name="adDescription", rows="3" maxlength="120" placeholder="Description in 120 characters").form-control
-                                        span.mdi.mdi-comment-text &nbsp; Text description
-                                .col-md-7
-                                    .alert.alert-light Ad preview as it would appear in different devices
-                                    .btn-group
-                                        span.btn.btn-dark Desktop
-                                        span.btn.btn-secondary Tablets
-                                        span.btn.btn-dark Mobiles (phones)
-                                    .ad-preview-holder
-                                        .ad-preview-header
-                                            span Title will go here
-                                            span.float-right Ad name will go here
-                                        .ad-preview-body
-                                            div
-                                                img(src="/images/sample-image.ico", alt="").ad-image-preview
-                                            .container-fluid Ad description text will go here. Add your description text of up to 120 characters.
-                                        .ad-preview-footer
-                                            i Tickles ads
-                                            span.float-right
-                                                span(title="What is this?").badge.badge-info.mr-1#adHelp
-                                                    span.mdi.mdi-help-circle
-                                                span(title="Close this ad").badge.badge-dark#closeAd
-                                                    span.mdi.mdi-close
-                                    .form-group.mt-5
-                                        span.btn.btn-info.float-right#goToFinalStep Next &nbsp;
-                                            span.mdi.mdi-skip-next
+                                .alert.alert-light Ad preview as it would appear in different devices
+                                .btn-group
+                                    span.btn.btn-dark Desktop
+                                    span.btn.btn-secondary Tablets
+                                    span.btn.btn-dark Mobiles (phones)
+                                .ad-preview-holder
+                                    .ad-preview-header
+                                        span Title will go here
+                                        span.float-right Ad name will go here
+                                    .ad-preview-body
+                                        div
+                                            img(src="/images/sample-image.ico", alt="").ad-image-preview
+                                        .container-fluid.description-preview Ad description text will go here. Add your description text of up to 120 characters.
+                                    .ad-preview-footer
+                                        i Tickles ads
+                                        span.float-right
+                                            span(title="What is this?").badge.badge-info.mr-1#adHelp
+                                                span.mdi.mdi-help-circle
+                                            span(title="Close this ad").badge.badge-dark#closeAd
+                                                span.mdi.mdi-close
+                                .form-group.mt-5
+                                    span.btn.btn-info.float-right#goToFinalStep Next &nbsp;
+                                        span.mdi.mdi-skip-next
 
 
-                //- finalize and publish ad
-                #finalize.hidden.camp-child
-                    .alert.alert-light We have collected your ad data and this is how it will look like when you publish and how it will feature on websites.
-                    .row
-                        .col-md-7
-                            .ad-preview-holder
-                                .ad-preview-header
-                                    span Title will go here
-                                    span.float-right Ad name will go here
-                                .ad-preview-body
-                                    div
-                                        img(src="/images/sample-image.ico", alt="").ad-image-preview
-                                    .container-fluid Ad description text will go here. Add your description text of up to 120 characters.
-                                .ad-preview-footer
-                                    i Tickles ads
-                                    span.float-right
-                                        span(title="What is this?").badge.badge-info.mr-1#adHelp
-                                            span.mdi.mdi-help-circle
-                                        span(title="Close this ad").badge.badge-dark#closeAd
-                                            span.mdi.mdi-close
-                            .mt-4.text-center
-                                button.btn.btn-dark#publishAd Publish Ad &nbsp;
-                                    span.mdi.mdi-chevron-double-right
-                        .col-md-5
-                            p.text-center Your currently have &nbsp;$
-                                span= balance 
-                                span &nbsp; in your account. Your ad will start featuring in websites and other online platforms when minimum balance is met.
-                                span You might want to add some funds. <br /> &nbsp;
-                                a(href="/client/dashboard/payment-wallet").btn.btn-info.link Manage wallet &nbsp;
-                                    span.mdi.mdi-wallet-membership
+            //- finalize and publish ad
+            #finalize.hidden.camp-child
+                .alert.alert-light We have collected your ad data and this is how it will look like when you publish and how it will feature on websites.
+                .row
+                    .col-md-7
+                        .ad-preview-holder
+                            .ad-preview-header
+                                span Title will go here
+                                span.float-right Ad name will go here
+                            .ad-preview-body
+                                div
+                                    img(src="/images/sample-image.ico", alt="").ad-image-preview
+                                .container-fluid.description-preview  Ad description text will go here. Add your description text of up to 120 characters.
+                            .ad-preview-footer
+                                i Tickles ads
+                                span.float-right
+                                    span(title="What is this?").badge.badge-info.mr-1#adHelp
+                                        span.mdi.mdi-help-circle
+                                    span(title="Close this ad").badge.badge-dark#closeAd
+                                        span.mdi.mdi-close
+                        .mt-4.text-center
+                            button.btn.btn-dark#publishAd Publish Ad &nbsp;
+                                span.mdi.mdi-chevron-double-right
+                    .col-md-5
+                        p.text-center Your currently have &nbsp;$
+                            span= balance 
+                            span &nbsp; in your account. Your ad will start featuring in websites and other online platforms when minimum balance is met.
+                            span You might want to add some funds. <br /> &nbsp;
+                            a(href="/client/dashboard/payment-wallet").btn.btn-info.link Manage wallet &nbsp;
+                                span.mdi.mdi-wallet-membership

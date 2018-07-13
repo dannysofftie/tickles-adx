@@ -25,22 +25,22 @@ router.get('/client/signup', async (req, res) => {
 })
 
 router.get('/client/dashboard', async (req, res) => {
-    res.render('advertiser/dashboard', await clientData('user-id'))
+    res.render('advertiser/dashboard', await clientData(req.headers['client-ssid']))
 })
 router.get('/client/create-campaign', async (req, res) => {
-    res.render('advertiser/create-campaign', await clientData('user-id'))
+    res.render('advertiser/create-campaign', await clientData(req.headers['client-ssid']))
 })
 router.get('/client/manage-campaign', async (req, res) => {
-    res.render('advertiser/manage-campaigns', await clientData('user-id'))
+    res.render('advertiser/manage-campaigns', await clientData(req.headers['client-ssid']))
 })
 router.get('/client/campaign-statistics', async (req, res) => {
-    res.render('advertiser/campaign-stats', await clientData('user-id'))
+    res.render('advertiser/campaign-stats', await clientData(req.headers['client-ssid']))
 })
 router.get('/client/payment-wallet', async (req, res) => {
-    res.render('advertiser/payment-wallet', await clientData('user-id'))
+    res.render('advertiser/payment-wallet', await clientData(req.headers['client-ssid']))
 })
 router.get('/client/referral-program', async (req, res) => {
-    res.render('advertiser/referral-program', await clientData('user-id'))
+    res.render('advertiser/referral-program', await clientData(req.headers['client-ssid']))
 })
 
 export = router

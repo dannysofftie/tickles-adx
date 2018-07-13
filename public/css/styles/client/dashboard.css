@@ -110,8 +110,6 @@ a {
 }
 
 .camp-child {
-    position: absolute;
-    left: -2px;
     width: 100%;
     padding: 0;
 }
