@@ -1,5 +1,11 @@
 include ../includes/dash-layout
 //- payment wallet instructions and UI
 .container-fluid.my-3.page-template.payment-wallet-template
-    .jumbotron
-        h3 Manage your billing wallet
+  .jumbotron
+    h3 Manage your billing wallet here
+    button.btn.btn-info pay here
+  form(action="#", method="post" name="paypal-checkout")
+    .form-group
+      input(type="text" name='top-up-amount')
+    button(type="submit") Paypal checkout
+    

@@ -1,7 +1,7 @@
 /**
  * google maps initializer
  */
-function initMap() {
+function initializeMap() {
     // initialize google maps
 }
 
@@ -23,6 +23,18 @@ function init() {
     else
         throw new Error('Cannot run in Node environment')
 })(async (document: Document, window: Window) => {
+
+    let g = document.createElement('script'),
+        s = Array.from(document.getElementsByTagName('script'))
+    g.async = true
+    g.defer = true
+    g.type = 'text/javascript'
+    g.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBs-9K2aygiKd_2bXjhgnltqE-LW8FgRLc&callback=initializeMap'
+    for (const l of s) {
+        if (l.src !== g.src)
+            l.parentNode.insertBefore(g, l)
+    }
+    // s.forEach(sc => sc.src == g.src ? console.log(sc.src) : sc.parentNode.insertBefore(g, sc))
     document.addEventListener('scroll', () => {
         let ref: HTMLElement = document.querySelector('.client-details-box')
 
@@ -111,7 +123,16 @@ function init() {
                 createAdTab: HTMLDivElement = document.querySelector('div[ref-tab="create-ad"]')
 
             // check saveResult and give appropriate messages
-            console.log(saveResult)
+            if (saveResult.message == 'INVALID') {
+                // @ts-ignore
+                this.querySelector('button[type="submit"]').disabled = false
+                this.querySelector('button[type="submit"]').innerHTML = `<span>Failed &nbsp; <i class="mdi mdi-block-helper"></i></span>`
+                setTimeout(() => {
+                    this.querySelector('button[type="submit"]').innerHTML = `<span>Save campaign ad &nbsp; <i class="mdi mdi-chevron-double-right"></i></span>`
+                }, 3000)
+                return
+            }
+            this.querySelector('button[type="submit"]').innerHTML = `<span>Successfull &nbsp; <i class="mdi mdi-check-circle"></i></span>`
             // createAdTab.click()
         }
     })
@@ -228,7 +249,7 @@ function init() {
             })
 
             if (validated != false) {
-                // clear formdata object to circumvent repeatition
+                // clear formdata object to circumvent repetition
                 for (const key in data) {
                     if (key.trim().length > 1)
                         adDataToPublish.delete(key)
@@ -243,8 +264,21 @@ function init() {
         })
 
         document.getElementById('publishAd').addEventListener('click', async function (e) {
+            // @ts-ignore
+            this.disabled = true
+            this.innerHTML = `<span>Publishing ... <i class="mdi mdi-loading mdi-spin"></i></span>`
             let pubResult = await asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/save-campaignad', adDataToPublish, true)
-            console.log(pubResult)
+            // give message
+            if (pubResult.message == 'INVALID') {
+                // @ts-ignore
+                this.disabled = false
+                this.innerHTML = `<span>Failed &nbsp; <i class="mdi mdi-block-helper"></i></span>`
+                setTimeout(() => {
+                    this.innerHTML = `<span>Publish ad &nbsp; <i class="mdi mdi-chevron-double-right"></i></span>`
+                }, 3000)
+                return
+            }
+            this.innerHTML = `<span>Successfull &nbsp; <i class="mdi mdi-check-circle"></i></span>`
         })
     }
 })

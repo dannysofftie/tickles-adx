@@ -6,12 +6,11 @@ async function clientData(ssid) {
     // do another request to retrieve advertiser metadata
     return {
         title: 'Tickles All in one dashboard || Client portal',
-        client: advertiser[0]['fullNames'],
-        balance: advertiser[0]['accountBalance'],
+        client: advertiser['fullNames'],
+        balance: advertiser['accountBalance'],
         referralAwards: '0.00',
         averageSpend: '0.00',
-        // @ts-ignore
-        totalCampaigns: totalCampaigns.length,
+        totalCampaigns: totalCampaigns,
         totalAds: totalAds
     };
 }

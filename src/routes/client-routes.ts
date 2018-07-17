@@ -4,10 +4,7 @@
  */
 
 import { Router } from 'express'
-import {
-    advertiserLogin,
-    businessCategories, advertiserSignUp
-} from '../utils'
+import { advertiserLogin, businessCategories, advertiserSignUp } from '../utils'
 
 const router = Router()
 

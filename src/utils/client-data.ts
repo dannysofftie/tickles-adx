@@ -8,7 +8,7 @@ interface T {
     balance: string,
     referralAwards: string,
     averageSpend: string,
-    totalCampaigns: string,
+    totalCampaigns: any,
     totalAds: string | any
 }
 
@@ -20,12 +20,11 @@ export async function clientData(ssid: string | Array<string>): Promise<T> {
     // do another request to retrieve advertiser metadata
     return {
         title: 'Tickles All in one dashboard || Client portal',
-        client: advertiser[0]['fullNames'],
-        balance: advertiser[0]['accountBalance'],
+        client: advertiser['fullNames'],
+        balance: advertiser['accountBalance'],
         referralAwards: '0.00',
         averageSpend: '0.00',
-        // @ts-ignore
-        totalCampaigns: totalCampaigns.length,
+        totalCampaigns: totalCampaigns,
         totalAds: totalAds
     }
 }

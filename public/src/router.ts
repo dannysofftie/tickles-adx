@@ -97,7 +97,6 @@ let signUpRecaptcha = function () {
             window.location.reload()
         }
         app.innerHTML = await asyncRequest('/page-view/client/dashboard')
-        // ['chart-data', 'create-campaign', 'dash-home']
         await scriptLoader('chart-data')
         await linksLoader()
         hideSpinner()
@@ -107,13 +106,6 @@ let signUpRecaptcha = function () {
         showSpinner()
         app.innerHTML = await asyncRequest('/page-view/client/create-campaign')
         await scriptLoader('create-campaign')
-        let g = document.createElement('script'),
-            s = Array.from(document.getElementsByTagName('script'))
-        g.async = true
-        g.defer = true
-        g.type = 'text/javascript'
-        g.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBs-9K2aygiKd_2bXjhgnltqE-LW8FgRLc&callback=initMap"
-        s.forEach(sc => sc.src == g.src ? sc.parentNode.removeChild(sc) : sc.parentNode.insertBefore(g, sc))
         await linksLoader()
         hideTopLoader()
         hideSpinner()
@@ -138,7 +130,7 @@ let signUpRecaptcha = function () {
     router.add('/client/dashboard/payment-wallet', async () => {
         showTopLoader()
         app.innerHTML = await asyncRequest('/page-view/client/payment-wallet')
-        // await scriptLoader('create-campaign')
+        await scriptLoader('payment-wallet')
         await linksLoader()
         hideTopLoader()
         hideSpinner()
