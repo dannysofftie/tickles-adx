@@ -1,0 +1,26 @@
+include ../includes/top-navigation
+
+.container.my-5
+    .row
+        .col-md-7
+            h4.my-4 Tell us a little bit about yourself, then we will guide through set-up process to have you started. It's easy than before.
+            span.text-center After providing your details, we will automate the set-up process, and email you when your site is ready to feature our ads. 
+        .col-md-6.my-4
+            form(action="#" name="publisherSignUp" autocomplete="off").card-body
+                .form-group
+                    input(type="text" required autofocus name="publisherWebsite" placeholder="Your website url e.g. https://example.com").form-control#url
+                    label(for="url")#verificationStatus Your online website url
+                .form-group
+                    input(type="email" required name="publisherEmail" placeholder="someone@example.com").form-control#email
+                    label(for="email") This email address will be used to set-up Paypal. Ensure you have a Paypal account
+                .form-group
+                    input(type="password" required name="publisherPassword" placeholder="**********").form-control#password
+                    label(for="password") Necessary to secure your payment wallet
+                .form-group
+                    button(type="submit").btn.btn-block.btn-primary Sign up &nbsp;&nbsp;&nbsp;&nbsp;
+                        i.mdi.mdi-arrow-right-bold-circle-outline
+                    span.btn.btn-block.btn-outline-success
+                        i.mdi.mdi-google &nbsp;&nbsp;&nbsp;&nbsp; 
+                        span Sign up with Google
+
+include ../includes/footer

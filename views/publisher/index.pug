@@ -1,5 +1,40 @@
-extends ../includes/layout
-append css
-    link(rel="stylesheet", href="/css/styles/adv/custom.css")
-block content
-    div.jumbotron
+include ../includes/top-navigation
+.h-100
+    .container
+        .row.mt-5
+            .col-md-5.my-5
+                .display-4.text-uppercase Monetize easily
+                span Generate revenue from your online content. Get paid as your traffic grows.
+                span It's as simple as 1, 2, 3
+            .col-md-7
+                .d-flex.justify-content-center.align-content-center
+                    span Display video
+                
+            hr
+            .col-md-12.mt-5
+                .text-center.mt-5
+                    a(href="#instructions").btn.btn-secondary.scroll-to-view.mt-5
+                        span.mdi.mdi-chevron-double-down
+.jumbotron#instructions
+    .my-2
+        .publisher-steps-grid
+            div.d-flex.justify-content-center.align-items-center.flex-column
+                p
+                    img(src="/images/signup.png", alt="")
+                span Sign up
+            div.d-flex.justify-content-center.align-items-center.flex-column
+                p 
+                    img(src="/images/paste-code.png", alt="")
+                span Paste code
+            div.d-flex.justify-content-center.align-items-center.flex-column
+                p 
+                    img(src="/images/get-paid.jpg", alt="")
+                span Get paid
+
+.container
+    //- put a slider with publisher comments
+    .text-center.my-5
+        h4 Various ad sizes and types to feature across your apps
+    
+include ../includes/footer
+    

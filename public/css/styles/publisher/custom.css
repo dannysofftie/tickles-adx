@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css?family=Emilys+Candy');
+@import url('https://fonts.googleapis.com/css?family=Nosifer');
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: inherit;
+    border-bottom: 2px solid coral;
+}
+
+a:focus {
+    color: inherit;
+}
+
+.nav {
+    display: flex;
+    padding: 10px 30px 8px 30px;
+    background-color: rgb(45, 69, 75);
+    color: white;
+    box-shadow: 1px 1px 9px 1px rgba(0, 0, 0, 0.4);
+    justify-content: space-between
+}
+
+.nav-header-title {
+    font-family: 'Nosifer', cursive;
+    font-size: x-large;
+}
+
+.nav-menus * {
+    margin-right: 18px;
+    text-transform: uppercase;
+    transition: cubic-bezier(0.68, -0.55, 0.265, 1.55) 7.2s
+}
+
+.scroll-to-view {
+    transition: cubic-bezier(0.455, 0.03, 0.515, 0.955) 5s;
+}
+
+.publisher-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+    grid-gap: 10px;
+}
+
+.publisher-steps-grid img {
+    height: 120px;
+}

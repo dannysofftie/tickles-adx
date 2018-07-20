@@ -117,7 +117,7 @@ function scriptLoader(script: string | Array<string>) {
         sad = d.getElementsByTagName('script')[0],
         allTags = Array.from(document.getElementsByTagName('script'))
     if (typeof script == "string") {
-        scd.src = `/dist/client/${script}.js`
+        scd.src = `/dist/${script}.js`
         scd.async = true
         scd.defer = true
         allTags.forEach(s => {
@@ -127,7 +127,7 @@ function scriptLoader(script: string | Array<string>) {
     } else
         script.forEach(s => {
             let sr = d.createElement('script')
-            sr.src = `/dist/client/${s}.js`
+            sr.src = `/dist/${s}.js`
             sr.async = true
             sr.defer = true
             allTags.forEach(s => {

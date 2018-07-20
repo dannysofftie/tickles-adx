@@ -62,7 +62,7 @@ let signUpRecaptcha = function () {
             window.location.reload()
         }
         app.innerHTML = await asyncRequest('/page-view/client/signin')
-        await scriptLoader('captcha-auth')
+        await scriptLoader('client/captcha-auth')
         await linksLoader()
         hideSpinner()
     })
@@ -74,7 +74,7 @@ let signUpRecaptcha = function () {
             window.location.reload()
         }
         app.innerHTML = await asyncRequest('/page-view/client/signup')
-        await scriptLoader('captcha-auth')
+        await scriptLoader('client/captcha-auth')
         await linksLoader()
         hideSpinner()
     })
@@ -97,7 +97,7 @@ let signUpRecaptcha = function () {
             window.location.reload()
         }
         app.innerHTML = await asyncRequest('/page-view/client/dashboard')
-        await scriptLoader('chart-data')
+        await scriptLoader('client/chart-data')
         await linksLoader()
         hideSpinner()
     })
@@ -105,7 +105,7 @@ let signUpRecaptcha = function () {
     router.add('/client/dashboard/create-campaign', async () => {
         showSpinner()
         app.innerHTML = await asyncRequest('/page-view/client/create-campaign')
-        await scriptLoader('create-campaign')
+        await scriptLoader('client/create-campaign')
         await linksLoader()
         hideTopLoader()
         hideSpinner()
@@ -130,7 +130,7 @@ let signUpRecaptcha = function () {
     router.add('/client/dashboard/payment-wallet', async () => {
         showTopLoader()
         app.innerHTML = await asyncRequest('/page-view/client/payment-wallet')
-        await scriptLoader('payment-wallet')
+        await scriptLoader('client/payment-wallet')
         await linksLoader()
         hideTopLoader()
         hideSpinner()
@@ -144,6 +144,20 @@ let signUpRecaptcha = function () {
         hideSpinner()
     })
 
+    router.add('/publisher', async () => {
+        showSpinner()
+        app.innerHTML = await asyncRequest('/page-view/publisher')
+        await linksLoader()
+        hideSpinner()
+    })
+
+    router.add('/publisher/signup', async () => {
+        showSpinner()
+        app.innerHTML = await asyncRequest('/page-view/publisher/signup')
+        await scriptLoader('publisher/signup')
+        await linksLoader()
+        hideSpinner()
+    })
     router.navigateTo(window.location.pathname)
 
     // @ts-ignore

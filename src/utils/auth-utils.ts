@@ -28,10 +28,10 @@ export async function advertiserLogin(req: Request, res: Response) {
     let captcha = await verifyCaptcha(req.body['g-recaptcha-response'], req.ip).catch(e => e)
     try {
         if (JSON.parse(captcha.toString()).success != true) {
-            // return res.status(500).json({ error: 'captcha_error' })
+            return res.status(500).json({ error: 'captcha_error' })
         }
     } catch (e) {
-        // return res.status(500).json({ error: 'captcha_error' })
+        return res.status(500).json({ error: 'captcha_error' })
     }
 
     let clientData = await Advertiser.find({ emailAddress: req.body['username'] }).select('password ssid').exec()

@@ -1,0 +1,14 @@
+extends ./layout
+append css
+    link(rel="stylesheet", href="/css/styles/publisher/custom.css")
+block content
+    nav.nav
+        a(href="/").nav-header-title Tickles
+        div.nav-menus
+            a(href="/client").link Advertiser
+            a(href="/publisher").link Publisher
+            a(href="#").link Products
+            a(href="#").link Blog
+            a(href="#").link faq
+            a(href="/publisher/signup").link.btn.btn-sm.btn-success sign up &nbsp;
+                i.mdi.mdi-chevron-double-right

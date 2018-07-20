@@ -158,11 +158,12 @@ function init() {
         $('.custom-campaign-group').selectpicker()
 
         adDestinationUrl.addEventListener('blur', async function (e) {
-            let urlValidated = await asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/validate-url', { adDestinationUrl: this.value }),
+            document.getElementById('urlValidationMessage').innerHTML = '<span class="text-info">Verifying url ...<span class="mdi mdi-loading mdi-spin"></span></span>'
+            let urlValidated = await asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/validate-url', { url: this.value }),
                 urlValidationMessage = document.getElementById('urlValidationMessage')
             urlValidated.status != true ?
-                urlValidationMessage.innerHTML = '<span class="text-danger"> &nbsp;&nbsp; url could not be verified</span>' :
-                urlValidationMessage.innerHTML = '<span class="text-info">&nbsp;&nbsp;url has been verified</span>'
+                urlValidationMessage.innerHTML = '<span class="text-danger">Url verification failed. Ensure url does not contain http:// or https://</span>' :
+                urlValidationMessage.innerHTML = '<span class="text-info">Url has been approved</span>'
         })
 
         adSelectedType.addEventListener('change', function (e) {

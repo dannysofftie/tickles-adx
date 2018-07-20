@@ -36,4 +36,11 @@ router.get('/client/payment-wallet', async (req, res) => {
 router.get('/client/referral-program', async (req, res) => {
     res.render('advertiser/referral-program', await utils_1.clientData(req.headers['client-ssid']).catch(e => []));
 });
+// publisher routes
+router.get('/publisher', (req, res) => {
+    res.render('publisher/index', { title: 'Adexchange for Publishers' });
+});
+router.get('/publisher/signup', (req, res) => {
+    res.render('publisher/signup', { title: 'Publisher signup' });
+});
 module.exports = router;
