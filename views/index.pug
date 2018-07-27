@@ -2,6 +2,7 @@ extends ./includes/layout
 append css
   link(rel="stylesheet", href="/css/styles/custom.css")
 block content
+  include ./includes/top-navigation
   body.index
   section.section-header
     div._innercontainer.p-3.mx-3.mt-4
@@ -104,3 +105,5 @@ block content
               small Secure content delivery
         a(href="/publisher").link.btn.btn-info.mx-3.float-right Publisher &nbsp;
           span.mdi.mdi-bell-ring-outline
+  
+  include ./includes/footer

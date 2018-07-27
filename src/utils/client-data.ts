@@ -24,7 +24,8 @@ export async function clientData(ssid: string | Array<string>): Promise<T> {
         balance: advertiser['accountBalance'],
         referralAwards: '0.00',
         averageSpend: '0.00',
-        totalCampaigns: totalCampaigns,
+        // @ts-ignore
+        totalCampaigns: totalCampaigns.length,
         totalAds: totalAds
     }
 }

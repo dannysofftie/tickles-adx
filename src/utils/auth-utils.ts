@@ -6,6 +6,9 @@ import { Request, Response } from 'express'
 import Advertiser from '../models/Advertiser'
 import { sendMail } from '../utils/send-email'
 import { Types } from 'mongoose'
+import Publishers from '../models/Publisher'
+
+const apiServerUrl: string = process.env.NODE_ENV === 'production' ? 'adxserver.herokuapp.com' : '127.0.0.1:5000'
 
 export async function verifyCaptcha(captcha: string, ip: string): Promise<{} | Array<string>> {
     return new Promise((resolve, reject) => {
@@ -38,14 +41,10 @@ export async function advertiserLogin(req: Request, res: Response) {
     if (clientData.length < 1)
         return res.status(res.statusCode).json({ error: 'NOT_FOUND' })
 
-    // @ts-ignore
-    if (!bcrypt.compareSync(req.body['password'], clientData[0].password))
+    if (!bcrypt.compareSync(req.body['password'], clientData[0]['password']))
         return res.status(res.statusCode).json({ error: 'WRONG_PASS' })
 
-    let apiServerUrl: string = process.env.NODE_ENV === 'production' ? 'adxserver.herokuapp.com' : '127.0.0.1:5000'
-
-    // @ts-ignore
-    res.cookie('SSID', clientData[0].ssid, { path: '/', maxAge: 1000 * 60 * 60 * 24 })
+    res.cookie('SSID', clientData[0]['ssid'], { path: '/', maxAge: 1000 * 60 * 60 * 24 })
     res.cookie('API', apiServerUrl, { path: '/', maxAge: 1000 * 60 * 60 * 24 })
     return res.status(res.statusCode).json({ message: 'success' })
 }
@@ -73,16 +72,46 @@ export async function advertiserSignUp(req: Request, res: Response) {
             joinedAs: req.body['businesstarget'],
             verificationCode: verificationCode,
             businessGroupTarget: req.body['businessgrouptarget']
-        })
-
-    let emailCheck = await Advertiser.find({ emailAddress: req.body['emailaddress'] }).select('emailaddress').exec()
+        }),
+        emailCheck = await Advertiser.find({ emailAddress: req.body['emailaddress'] }).select('emailaddress').exec()
 
     if (emailCheck.length > 0)
         return res.status(res.statusCode).json({ error: 'EMAIL_EXISTS' })
 
-    // @ts-ignore
-    let saveResult = await advertiser.save().then(data => data.emailAddress == req.body['emailaddress']),
+    let saveResult = await advertiser.save().then(data => data['emailAddress'] == req.body['emailaddress']),
         emailStatus = await sendMail(req.body['emailaddress'], `Verify your account using code: ${verificationCode}`)
 
     return res.status(res.statusCode).json({ signupStatus: saveResult, emailStatus: emailStatus })
+}
+
+
+export async function publisherSignUp(req: Request, res: Response) {
+    let SSID = Buffer.from(req.body['publisherEmail'] + ':' + req.body['publisherWebsite']).toString('base64'),
+        hashPassword = await bcrypt.hashSync(req.body['publisherPassword'], 8),
+        publisher = new Publishers({
+            _id: new Types.ObjectId(),
+            publisherEmail: req.body['publisherEmail'],
+            publisherAppUrl: req.body['publisherWebsite'],
+            publisherPassword: hashPassword,
+            publisherDefaultWallet: null,
+            publisherSsid: SSID
+        }),
+        emailCheck = await Publishers.find({ publisherEmail: req.body['publisherEmail'] }).select('publisherEmail').exec()
+    if (emailCheck.length > 0)
+        return res.status(res.statusCode).json({ signupStatus: false })
+
+    let saveResult = await publisher.save().then(data => data['publisherEmail'] == req.body['publisherEmail'])
+    return res.status(res.statusCode).json({ signupStatus: saveResult })
+}
+
+export async function publisherSignIn(req: Request, res: Response) {
+    // check whether their app url is verified
+    let publisherData = await Publishers.find({ publisherEmail: req.body['publisherEmail'] }).select('publisherPassword -_id').exec()
+
+    if (!bcrypt.compareSync(req.body['publisherPassword'], publisherData[0]['publisherPassword']))
+        return res.status(res.statusCode).json({ loginStatus: false })
+
+    res.cookie('SSID', publisherData[0]['publisherSsid'], { path: '/publisher', maxAge: 1000 * 60 * 60 * 24 })
+    res.cookie('API', apiServerUrl, { path: '/publisher', maxAge: 1000 * 60 * 60 * 24 })
+    return res.status(res.statusCode).json({ loginStatus: true })
 }

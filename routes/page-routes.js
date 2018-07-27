@@ -38,9 +38,12 @@ router.get('/client/referral-program', async (req, res) => {
 });
 // publisher routes
 router.get('/publisher', (req, res) => {
-    res.render('publisher/index', { title: 'Adexchange for Publishers' });
+    res.render('publisher/index', { title: 'Adexchange for Publishers', navigationLink: '/publisher/signup', navigationText: 'Sign up' });
 });
 router.get('/publisher/signup', (req, res) => {
-    res.render('publisher/signup', { title: 'Publisher signup' });
+    res.render('publisher/signup', { title: 'Publisher signup', navigationLink: 'javascript:void(0)', navigationText: 'Sign in' });
+});
+router.get('/publisher/dashboard', (req, res) => {
+    res.render('publisher/dashboard');
 });
 module.exports = router;

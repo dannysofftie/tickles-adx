@@ -2,7 +2,7 @@ extends ./layout
 append css
     link(rel="stylesheet", href="/css/styles/publisher/custom.css")
 block content
-    nav.nav
+    nav.nav.px-4
         a(href="/").nav-header-title Tickles
         div.nav-menus
             a(href="/client").link Advertiser
@@ -10,5 +10,5 @@ block content
             a(href="#").link Products
             a(href="#").link Blog
             a(href="#").link faq
-            a(href="/publisher/signup").link.btn.btn-sm.btn-success sign up &nbsp;
-                i.mdi.mdi-chevron-double-right
+            a(href= navigationLink).signinToggle.btn.btn-sm.btn-success= navigationText
+                span.mdi.mdi-chevron-double-right.ml-1.mr-0

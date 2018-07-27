@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const Advertiser_1 = require("../models/Advertiser");
 const send_email_1 = require("../utils/send-email");
 const mongoose_1 = require("mongoose");
+const Publisher_1 = require("../models/Publisher");
+const apiServerUrl = process.env.NODE_ENV === 'production' ? 'adxserver.herokuapp.com' : '127.0.0.1:5000';
 async function verifyCaptcha(captcha, ip) {
     return new Promise((resolve, reject) => {
         let req = https.request({
@@ -36,12 +38,9 @@ async function advertiserLogin(req, res) {
     let clientData = await Advertiser_1.default.find({ emailAddress: req.body['username'] }).select('password ssid').exec();
     if (clientData.length < 1)
         return res.status(res.statusCode).json({ error: 'NOT_FOUND' });
-    // @ts-ignore
-    if (!bcrypt.compareSync(req.body['password'], clientData[0].password))
+    if (!bcrypt.compareSync(req.body['password'], clientData[0]['password']))
         return res.status(res.statusCode).json({ error: 'WRONG_PASS' });
-    let apiServerUrl = process.env.NODE_ENV === 'production' ? 'adxserver.herokuapp.com' : '127.0.0.1:5000';
-    // @ts-ignore
-    res.cookie('SSID', clientData[0].ssid, { path: '/', maxAge: 1000 * 60 * 60 * 24 });
+    res.cookie('SSID', clientData[0]['ssid'], { path: '/', maxAge: 1000 * 60 * 60 * 24 });
     res.cookie('API', apiServerUrl, { path: '/', maxAge: 1000 * 60 * 60 * 24 });
     return res.status(res.statusCode).json({ message: 'success' });
 }
@@ -65,12 +64,35 @@ async function advertiserSignUp(req, res) {
         joinedAs: req.body['businesstarget'],
         verificationCode: verificationCode,
         businessGroupTarget: req.body['businessgrouptarget']
-    });
-    let emailCheck = await Advertiser_1.default.find({ emailAddress: req.body['emailaddress'] }).select('emailaddress').exec();
+    }), emailCheck = await Advertiser_1.default.find({ emailAddress: req.body['emailaddress'] }).select('emailaddress').exec();
     if (emailCheck.length > 0)
         return res.status(res.statusCode).json({ error: 'EMAIL_EXISTS' });
-    // @ts-ignore
-    let saveResult = await advertiser.save().then(data => data.emailAddress == req.body['emailaddress']), emailStatus = await send_email_1.sendMail(req.body['emailaddress'], `Verify your account using code: ${verificationCode}`);
+    let saveResult = await advertiser.save().then(data => data['emailAddress'] == req.body['emailaddress']), emailStatus = await send_email_1.sendMail(req.body['emailaddress'], `Verify your account using code: ${verificationCode}`);
     return res.status(res.statusCode).json({ signupStatus: saveResult, emailStatus: emailStatus });
 }
 exports.advertiserSignUp = advertiserSignUp;
+async function publisherSignUp(req, res) {
+    let SSID = Buffer.from(req.body['publisherEmail'] + ':' + req.body['publisherWebsite']).toString('base64'), hashPassword = await bcrypt.hashSync(req.body['publisherPassword'], 8), publisher = new Publisher_1.default({
+        _id: new mongoose_1.Types.ObjectId(),
+        publisherEmail: req.body['publisherEmail'],
+        publisherAppUrl: req.body['publisherWebsite'],
+        publisherPassword: hashPassword,
+        publisherDefaultWallet: null,
+        publisherSsid: SSID
+    }), emailCheck = await Publisher_1.default.find({ publisherEmail: req.body['publisherEmail'] }).select('publisherEmail').exec();
+    if (emailCheck.length > 0)
+        return res.status(res.statusCode).json({ signupStatus: false });
+    let saveResult = await publisher.save().then(data => data['publisherEmail'] == req.body['publisherEmail']);
+    return res.status(res.statusCode).json({ signupStatus: saveResult });
+}
+exports.publisherSignUp = publisherSignUp;
+async function publisherSignIn(req, res) {
+    // check whether their app url is verified
+    let publisherData = await Publisher_1.default.find({ publisherEmail: req.body['publisherEmail'] }).select('publisherPassword -_id').exec();
+    if (!bcrypt.compareSync(req.body['publisherPassword'], publisherData[0]['publisherPassword']))
+        return res.status(res.statusCode).json({ loginStatus: false });
+    res.cookie('SSID', publisherData[0]['publisherSsid'], { path: '/publisher', maxAge: 1000 * 60 * 60 * 24 });
+    res.cookie('API', apiServerUrl, { path: '/publisher', maxAge: 1000 * 60 * 60 * 24 });
+    return res.status(res.statusCode).json({ loginStatus: true });
+}
+exports.publisherSignIn = publisherSignIn;

@@ -1,10 +1,11 @@
 import { Router } from 'express'
+import { publisherSignUp, publisherSignIn } from '../utils'
+
 const router = Router({ strict: true, caseSensitive: true })
 
-router.post('/signup', async (req, res) => {
-    console.log(req.body)
-    res.end()
-})
+router.post('/signup', publisherSignUp)
+
+router.post('/signin', publisherSignIn)
 
 router.post('*', (req, res) => {
     // error page

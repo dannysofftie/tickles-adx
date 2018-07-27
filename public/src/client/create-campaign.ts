@@ -152,7 +152,7 @@ function init() {
             descriptionpreview = Array.from(document.querySelectorAll('.description-preview '))
         for (const field of advertiserCampaigns) {
             // @ts-ignore
-            adCCategorySelect.append(new Option(field.campaignName, field._id))
+            adCCategorySelect.append(new Option(field['campaignName'], field._id))
         }
         // @ts-ignore
         $('.custom-campaign-group').selectpicker()

@@ -23,7 +23,7 @@ export class AdWebServer {
         this.port = process.env.PORT || 4000
         this.app = express()
         this.server = http.createServer(this.app)
-        this.MONGO_URI = process.env.NODE_ENV === 'production' ? 'mongodb+srv://dannysofftie:25812345Dan@project-adexchange-bftmj.gcp.mongodb.net/test?retryWrites=true' : 'mongodb://127.0.0.1:27017/project-adexchange'
+        this.MONGO_URI = process.env.MONGO_URI
         this.configs()
         this.routes()
     }

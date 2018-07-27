@@ -158,6 +158,14 @@ let signUpRecaptcha = function () {
         await linksLoader()
         hideSpinner()
     })
+
+    router.add('/publisher/dashboard', async () => {
+        showSpinner()
+        app.innerHTML = await asyncRequest('/page-view/publisher/dashboard')
+        await scriptLoader('publisher/dashboard')
+        await linksLoader()
+        hideSpinner()
+    })
     router.navigateTo(window.location.pathname)
 
     // @ts-ignore

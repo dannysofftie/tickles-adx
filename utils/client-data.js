@@ -10,7 +10,8 @@ async function clientData(ssid) {
         balance: advertiser['accountBalance'],
         referralAwards: '0.00',
         averageSpend: '0.00',
-        totalCampaigns: totalCampaigns,
+        // @ts-ignore
+        totalCampaigns: totalCampaigns.length,
         totalAds: totalAds
     };
 }

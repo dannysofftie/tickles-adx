@@ -22,8 +22,49 @@
     pubForm.addEventListener('submit', async function (e) {
         e.preventDefault()
         let pubData = await extractFormData(this),
-            signUpStatus = await asyncRequest('/api/publisher/signup', pubData)
+            btn: HTMLButtonElement = this.querySelector('button[type="submit"]')
+        btn.disabled = true
+        btn.innerHTML = `<span>Processing ... &nbsp; <span class="mdi mdi-loading mdi-spin"></span></span>`
+        let signUpStatus = await asyncRequest('/api/publisher/signup', pubData)
+        if (!signUpStatus['signupStatus']) {
+            btn.innerHTML = `<span> Account exists &nbsp; <span class="mdi mdi-alert"></span></span>`
+            setTimeout(() => {
+                btn.innerHTML = `<span> Sign up &nbsp; <span class="mdi mdi-arrow-right-bold-circle-outline"></span></span>`
+                btn.disabled = false
+            }, 3000)
+            return
+        }
+        btn.innerHTML = `<span> Successfully registered &nbsp; <span class="mdi mdi-emoticon-happy"></span></span>`
+        document.getElementById('successSignUp').classList.remove('d-none')
+    })
 
-        console.log(pubData)
+    Array.from(document.querySelectorAll('.signinToggle')).forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('signUpForm').classList.add('d-none')
+            document.getElementById('signInForm').classList.remove('d-none')
+        })
+    })
+
+    let publisherSignIn: HTMLFormElement = document.forms['publisherSignIn']
+    publisherSignIn.addEventListener('submit', async function (e) {
+        e.preventDefault()
+        let loginData = await extractFormData(this),
+            btn: HTMLButtonElement = this.querySelector('button[type="submit"]')
+        btn.innerHTML = `<span>Processing ... &nbsp; <span class="mdi mdi-loading mdi-spin"></span></span>`
+        let loginStatus = await asyncRequest('/api/publisher/signin', loginData)
+        if (!loginStatus['loginStatus']) {
+            btn.innerHTML = `<span> Wrong credentials &nbsp; <span class="mdi mdi-alert"></span></span>`
+            setTimeout(() => {
+                btn.innerHTML = `<span> Sign up &nbsp; <span class="mdi mdi-arrow-right-bold-circle-outline"></span></span>`
+                btn.disabled = false
+            }, 3000)
+            return
+        }
+        // redirect
+        btn.innerHTML = `<span>Redirecting .... &nbsp; <span class="mdi mdi-loading mdi-spin"></span></span>`
+        setTimeout(() => {
+            // @ts-ignore
+            window.router.navigateTo('/publisher/dashboard')
+        }, 5000)
     })
 })
