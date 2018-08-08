@@ -31,7 +31,7 @@ async function asyncRequest(url: string, body?: {} | any, multipart?: boolean) {
     if (typeof body == 'undefined')
         return await fetch(url, {
             method: 'GET', credentials: 'same-origin', headers: {
-                'Client-Ssid': extractCookies(document.cookie, 'SSID')
+                'client-ssid': extractCookies(document.cookie, 'SSID')
             }
         }).then(res => {
             if (res.headers.get('Content-Type').indexOf('text/html') != -1)

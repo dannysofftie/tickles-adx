@@ -114,7 +114,7 @@ let signUpRecaptcha = function () {
     router.add('/client/dashboard/manage-campaign', async () => {
         showTopLoader()
         app.innerHTML = await asyncRequest('/page-view/client/manage-campaign')
-        // await scriptLoader('create-campaign')
+        await scriptLoader('client/manage-campaigns')
         await linksLoader()
         hideTopLoader()
         hideSpinner()

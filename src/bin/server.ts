@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 import * as path from 'path'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
@@ -30,8 +33,8 @@ export class AdWebServer {
 
     private configs() {
         this.app.set('view engine', 'pug')
-        this.app.disable('x-powered-by')
-        mongoose.connect(this.MONGO_URI, { useNewUrlParser: true }).catch(e => e)
+        // this.app.disable('x-powered-by')
+        mongoose.connect(this.MONGO_URI, { useNewUrlParser: true }).catch(e => console.log(e))
         this.app.use(cookieParser())
         this.app.use(express.static(path.join(__dirname, '../', 'public')))
         this.app.use(bodyParser.urlencoded({ extended: true }))

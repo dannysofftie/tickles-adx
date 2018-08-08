@@ -60,6 +60,7 @@ let d = document;
         let businessCategories = await fetch('/api/client/business-group-categories').then(res => res.json()),
             selectOption: HTMLSelectElement = document.querySelector('select[name="businessgrouptarget"]')
         for (const field of businessCategories) {
+            // @ts-ignore
             selectOption.append(new Option(field.businessName, field._id))
         }
         // @ts-ignore

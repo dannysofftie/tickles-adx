@@ -1,5 +1,59 @@
 include ../includes/dash-layout
 //- manage campaign instructions and UI
-.container-fluid.my-3.page-template.manage-campaign-template
-    .jumbotron
-        h3 Manage your campaigns here
+.container-fluid.my-3
+    -if( Number(totalCampaigns) < 1)
+        .container.m-5.p-5
+            div
+                span.alert.d-flex.flex-column.justify-content-center.align-items-center
+                    span.mdi.mdi-alert.mdi-64px
+                    span You currently don't have any listed campaign(s).
+                    span
+                        a(href="/client/dashboard/create-campaign").link.btn.btn-info Add one here 
+                            span.mdi.mdi-chevron-double-right
+    -else
+        .row
+            .col-md-4 
+                .jumbotron.p-3
+                    p You currently have 
+                        span= Number(totalCampaigns)
+                        span  campaigns
+                    div
+                        div Device targeting status &nbsp;
+                            span.mdi.mdi-desktop-mac
+                        div.dropdown-divider
+                        div.targeting-level
+            .col-md-4
+                .jumbotron.p-3 
+                    div Location targeting status &nbsp;
+                        span.mdi.mdi-crosshairs-gps
+                    div.dropdown-divider
+                    div.targeting-level
+
+            .col-md-4
+                .jumbotron.p-3
+                    p Suggested optimizations &nbsp;
+                        span.mdi.mdi-openid
+                    ul.suggested-improvements
+                        li Target more than one device type
+                        li Target specific locations, or explicitly set global
+        .row.p-2
+            .col-md-12.mb-3 
+                .float-right.d-flex.flex-row
+                    div 
+                        input(type="text" placeholder="Search campaign").form-control
+                    div.ml-3.btn.btn-light Apply filters &nbsp;
+                        span.mdi.mdi-filter-variant
+            .col.md-12.management-section
+                .campaign-headers
+                    div Campaign name
+                    div Campaign status
+                    div Start date
+                    div End date
+                    div Daily budget
+                    div Business category
+                    div Device targeting
+                    div Location targeting
+                div.all-campaigns-section
+                .text-right.mt-3
+                    button.btn.btn-light Update &nbsp;
+                        span.mdi.mdi-update

@@ -155,3 +155,112 @@ a {
 .ad-preview-footer {
     padding-bottom: 10px;
 }
+
+.targeting-status {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-gap: 3px;
+}
+
+.targeting-status .status-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* management section */
+
+.management-section {
+    box-shadow: 1px 0px 5px 1px rgba(0, 0, 0, 0.3);
+    padding: 0;
+}
+
+.campaign-headers {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-bottom: 2px solid rgba(20, 161, 163, 0.938);
+    padding-bottom: 2px;
+    box-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.3);
+}
+
+.campaign-headers,
+.single-campaign {
+    padding: 10px 5px;
+    display: grid;
+    grid-template-columns: 13% 10% 10% 10% 8% 15% 18% 16%;
+    grid-gap: 5px;
+}
+
+.single-campaign {
+    margin-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
+}
+
+.campaign-headers>* {
+    border-right: .8px solid white;
+}
+
+/* The switch - the box around the slider */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 53px;
+    height: 24px;
+    margin: 0 auto;
+}
+
+/* Hide default HTML checkbox */
+
+.switch input {
+    display: none;
+}
+
+/* The slider */
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 20px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: rgba(20, 161, 163, 0.938);
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px rgba(20, 161, 163, 0.938);
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}

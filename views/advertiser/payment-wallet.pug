@@ -1,11 +1,23 @@
 include ../includes/dash-layout
 //- payment wallet instructions and UI
-.container-fluid.my-3.page-template.payment-wallet-template
-  .jumbotron
-    h3 Manage your billing wallet here
-    button.btn.btn-info pay here
-  form(action="#", method="post" name="paypal-checkout")
-    .form-group
-      input(type="text" name='top-up-amount')
-    button(type="submit") Paypal checkout
+.container-fluid.my-3
+  .container
+    .row
+      .col-md-5
+        div Every campaign you create is marked as active. Your ads will feature when your account has more than allowed minimum. 
+        div You currently have &nbsp;$
+          span= balance
+        .card-body.my-4
+          form(action="#", method="post" name="paypal-checkout")
+            .form-group
+            .form-group
+              input(type="email" required placeholder="Paypal email address" autocomplete="off").form-control
+            .form-group
+              input(type="number" name='top-up-amount' required placeholder="Amount to deposit" autocomplete="off").form-control
+            button(type="submit").btn.btn-block.btn-info Paypal Checkout &nbsp;
+              span.mdi.mdi-paypal
+      .col-md-2
+      .col-md-5
+        div Transaction history
+
     

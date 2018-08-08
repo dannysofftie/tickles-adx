@@ -8,6 +8,9 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -30,8 +33,8 @@ class AdWebServer {
     }
     configs() {
         this.app.set('view engine', 'pug');
-        this.app.disable('x-powered-by');
-        mongoose.connect(this.MONGO_URI, { useNewUrlParser: true }).catch(e => e);
+        // this.app.disable('x-powered-by')
+        mongoose.connect(this.MONGO_URI, { useNewUrlParser: true }).catch(e => console.log(e));
         this.app.use(cookieParser());
         this.app.use(express.static(path.join(__dirname, '../', 'public')));
         this.app.use(bodyParser.urlencoded({ extended: true }));
