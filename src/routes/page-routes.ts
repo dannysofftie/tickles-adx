@@ -4,7 +4,7 @@
  */
 
 import { Router } from 'express'
-import { clientData } from '../utils'
+import { clientData, getPublisherDetails } from '../utils'
 
 const router = Router()
 
@@ -52,7 +52,11 @@ router.get('/publisher/signup', (req, res) => {
     res.render('publisher/signup', { title: 'Publisher signup', navigationLink: 'javascript:void(0)', navigationText: 'Sign in' })
 })
 
-router.get('/publisher/dashboard', (req, res) => {
-    res.render('publisher/dashboard')
+router.get('/publisher/dashboard', async (req, res) => {
+    res.render('publisher/dashboard', await getPublisherDetails(req))
+})
+
+router.get('/publisher/embed', (req, res) => {
+    res.render('publisher/embed')
 })
 export = router

@@ -122,7 +122,7 @@ let signUpRecaptcha = function () {
     router.add('/client/dashboard/campaign-statistics', async () => {
         showTopLoader()
         app.innerHTML = await asyncRequest('/page-view/client/campaign-statistics')
-        // await scriptLoader('create-campaign')
+        await scriptLoader('client/campaign-statistics')
         await linksLoader()
         hideTopLoader()
         hideSpinner()
@@ -163,7 +163,22 @@ let signUpRecaptcha = function () {
         showSpinner()
         app.innerHTML = await asyncRequest('/page-view/publisher/dashboard')
         await scriptLoader('publisher/dashboard')
+        // let s = document.createElement('script'),
+        //     scripts = document.getElementsByTagName('script')
+        // s.src = 'https://gist.github.com/DannySofftie/4d4cc28189fa384a97ac8f26bfec5109.js'
+        // scripts[0].parentNode.insertBefore(s, scripts[0])
         await linksLoader()
+        hideSpinner()
+    })
+
+    router.add('/publisher/logout', async () => {
+        showSpinner()
+        let allCookies = extractCookies(document.cookie)
+        for (const cookie in JSON.parse(allCookies)) {
+            document.cookie = cookie + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/publisher;'
+        }
+        router.navigateTo('/publisher')
+        window.location.reload()
         hideSpinner()
     })
     router.navigateTo(window.location.pathname)

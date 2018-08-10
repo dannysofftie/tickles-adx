@@ -3,5 +3,36 @@ append css
     //- some css files
     link(rel="stylesheet", href="/css/styles/publisher/custom.css")
 block content
-    .container
-        .jumbotron Publisher dashboard
+    .container-fluid
+        .row.my-3
+            .col-md-12.d-flex.justify-content-between
+                .alert.alert-info.w-50
+                    span You are steps away to start monetizing your website.
+                div                
+                    a(href="/publisher/logout").btn.btn-dark.link Logout
+                        span.mdi.mdi-logout
+            .col-md-12
+            .col-md-5
+                .card-body
+                    strong Step 1
+                    div Ensure your site is online.
+                    .dropdown-divider
+                    strong Step 2
+                    div Paste below code to every page you want to feature Tickles ads.
+                    .dropdown-divider
+                    strong Step 3
+                    div Setup a paypal account
+                    .dropdown-divider
+                    strong Step 4
+                    div Activate your site
+                    .dropdown-divider
+                    strong Step 5
+                    div Sit back and relax, increase your website traffic and earn money.
+            .col-md-7
+                div Test to ensure your site is running.
+                    a(href= pubslisherSiteUrl).btn.btn-info Test here
+                div Paste below code to your website
+                iframe(src="/page-view/publisher/embed", frameborder="0" style="height:500px; width: 100%;")
+
+    include ../includes/footer
+    

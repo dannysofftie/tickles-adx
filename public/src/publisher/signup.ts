@@ -4,13 +4,13 @@
     f()
 })(function () {
     let pubForm: HTMLFormElement = document.forms['publisherSignUp'],
-        websiteUrl: HTMLInputElement = pubForm.querySelector('input[name="publisherWebsite"]')
+        urlElement: HTMLInputElement = pubForm.querySelector('input[name="publisherWebsite"]')
 
     let api = 'http://127.0.0.1:5000'
     if (!window.location.origin.includes('127.0.0.1'))
         api = 'https://adxserver.herokuapp.com'
 
-    websiteUrl.addEventListener('blur', async function (e) {
+    urlElement.addEventListener('blur', async function (e) {
         document.getElementById('verificationStatus').innerHTML = '<span class="text-info">Verifying url ...<span class="mdi mdi-loading mdi-spin"></span></span>'
         let verificationStatus = await asyncRequest(api + '/api/v1/data/validate-url', { url: this.value })
         if (verificationStatus['status'] == true)

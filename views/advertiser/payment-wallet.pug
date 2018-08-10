@@ -13,11 +13,25 @@ include ../includes/dash-layout
             .form-group
               input(type="email" required placeholder="Paypal email address" autocomplete="off").form-control
             .form-group
-              input(type="number" name='top-up-amount' required placeholder="Amount to deposit" autocomplete="off").form-control
+              input(type="text" name='top-up-amount' required placeholder="Amount to deposit" autocomplete="off").form-control
+            .form-group
+              input(type="password", name="advertiser-password" placeholder="Confirm password" autocomplete="off").form-control
             button(type="submit").btn.btn-block.btn-info Paypal Checkout &nbsp;
               span.mdi.mdi-paypal
       .col-md-2
       .col-md-5
         div Transaction history
+        nav
+          div(class="nav nav-tabs nav-justified" role="tablist")
+            a(href="#ownTransactionsTab" role="tab" data-toggle="tab" class="nav-item nav-link active").mdi.mdi-history &nbsp; Transactions
+            a(href="#referralAwardsTab" role="tab" data-toggle="tab" class="nav-item nav-link").mdi.mdi-refresh &nbsp; Refferal rewards
+
+          div.tab-content.mt-2
+            div(role="tabepanel").tab-pane.fade.show.active#ownTransactionsTab
+              div.own-transactions
+            div(role="tabepanel").tab-pane.fade#referralAwardsTab
+              div.from-referrals
+
+include ../includes/footer
 
     

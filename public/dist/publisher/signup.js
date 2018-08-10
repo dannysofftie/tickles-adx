@@ -38,11 +38,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         throw new Error('Should not run in Node environment!');
     f();
 })(function () {
-    var pubForm = document.forms['publisherSignUp'], websiteUrl = pubForm.querySelector('input[name="publisherWebsite"]');
+    var pubForm = document.forms['publisherSignUp'], urlElement = pubForm.querySelector('input[name="publisherWebsite"]');
     var api = 'http://127.0.0.1:5000';
     if (!window.location.origin.includes('127.0.0.1'))
         api = 'https://adxserver.herokuapp.com';
-    websiteUrl.addEventListener('blur', function (e) {
+    urlElement.addEventListener('blur', function (e) {
         return __awaiter(this, void 0, void 0, function () {
             var verificationStatus;
             return __generator(this, function (_a) {

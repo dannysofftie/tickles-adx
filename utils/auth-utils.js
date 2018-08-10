@@ -88,10 +88,10 @@ async function publisherSignUp(req, res) {
 exports.publisherSignUp = publisherSignUp;
 async function publisherSignIn(req, res) {
     // check whether their app url is verified
-    let publisherData = await Publisher_1.default.find({ publisherEmail: req.body['publisherEmail'] }).select('publisherPassword -_id').exec();
+    let publisherData = await Publisher_1.default.find({ publisherEmail: req.body['publisherEmail'] }).select('publisherPassword publisherSsid -_id').exec();
     if (!bcrypt.compareSync(req.body['publisherPassword'], publisherData[0]['publisherPassword']))
         return res.status(res.statusCode).json({ loginStatus: false });
-    res.cookie('SSID', publisherData[0]['publisherSsid'], { path: '/publisher', maxAge: 1000 * 60 * 60 * 24 });
+    res.cookie('PUBSSID', publisherData[0]['publisherSsid'], { path: '/publisher', maxAge: 1000 * 60 * 60 * 24 });
     res.cookie('API', apiServerUrl, { path: '/publisher', maxAge: 1000 * 60 * 60 * 24 });
     return res.status(res.statusCode).json({ loginStatus: true });
 }

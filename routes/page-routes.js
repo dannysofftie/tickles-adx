@@ -43,7 +43,10 @@ router.get('/publisher', (req, res) => {
 router.get('/publisher/signup', (req, res) => {
     res.render('publisher/signup', { title: 'Publisher signup', navigationLink: 'javascript:void(0)', navigationText: 'Sign in' });
 });
-router.get('/publisher/dashboard', (req, res) => {
-    res.render('publisher/dashboard');
+router.get('/publisher/dashboard', async (req, res) => {
+    res.render('publisher/dashboard', await utils_1.getPublisherDetails(req));
+});
+router.get('/publisher/embed', (req, res) => {
+    res.render('publisher/embed');
 });
 module.exports = router;

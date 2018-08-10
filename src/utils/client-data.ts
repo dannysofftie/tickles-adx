@@ -1,6 +1,8 @@
 
 import { HttpRequest } from '.'
 import { Request, Response } from 'express'
+import Publisher from '../models/Publisher';
+import { cookieExists } from './originCookies';
 
 interface T {
     title: string,
@@ -39,4 +41,25 @@ export async function businessCategories(req: Request, res: Response) {
     let categories = await new HttpRequest().get('/api/v1/data/business-categories').catch(err => ({ error: err }))
     res.setHeader('Content-Type', 'application/json')
     res.status(res.statusCode).send(categories)
+}
+
+
+export async function getPublisherDetails(req: Request) {
+    let PUBSSID = cookieExists(req.headers.cookie, 'PUBSSID')
+    let siteData = await Publisher.aggregate([
+        {
+            $match: { publisherSsid: PUBSSID }
+        }, {
+            $lookup: {
+                from: 'businesscategories',
+                localField: 'businessCategory',
+                foreignField: '_id',
+                as: 'businessCategory'
+            }
+        }
+    ])
+
+    return {
+        pubslisherSiteUrl: 'http://dannysofftie.github.io'
+    }
 }
