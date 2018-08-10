@@ -19,6 +19,9 @@ const Pulishers = new Schema({
     publisherDefaultWallet: {
         type: String,
         required: false
+    }, walletAddress: {
+        type: String,
+        required: false
     },
     isAppUrlVerified: {
         type: Boolean,
@@ -28,6 +31,16 @@ const Pulishers = new Schema({
     publisherSsid: {
         type: String,
         required: true
+    },
+    businessCategory: {
+        type: Schema.Types.ObjectId,
+        ref: 'BusinessCategories',
+        required: false
+    },
+    allowedMinimumBid: {
+        type: Number,
+        required: false,
+        default: 0.0
     }
 })
 

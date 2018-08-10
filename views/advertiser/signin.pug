@@ -2,9 +2,8 @@ extends ../includes/layout
 
 block content
     .container
-        div.d-flex.justify-content-center.align-content-center
-            .sign-up-form(style={width:'380px'})
-                .mt-5
+        div(style="width: 420px;margin: auto auto;").mt-5.pt-4
+            .sign-up-form.card-body                
                 span Sign in to manage your campaigns
                 p.text-danger.animated.flash#notifystatus
                 form(method="POST", name="signinform").text-left

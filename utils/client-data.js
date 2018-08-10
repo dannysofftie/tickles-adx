@@ -2,14 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
 const Publisher_1 = require("../models/Publisher");
-const originCookies_1 = require("./originCookies");
 async function clientData(ssid) {
     let advertiser = await new _1.HttpRequest().get('/api/v1/data/advertiser-details', { 'client-ssid': ssid }).catch(err => { }), totalCampaigns = await new _1.HttpRequest().get('/api/v1/data/get-campaigns', { 'client-ssid': ssid }).catch(err => { }), totalAds = await new _1.HttpRequest().get('/api/v1/data/get-advertiser-ads', { 'client-ssid': ssid }).catch(err => { });
     // do another request to retrieve advertiser metadata
     return {
         title: 'Tickles All in one dashboard || Client portal',
-        client: advertiser['fullNames'],
-        balance: advertiser['accountBalance'],
+        client: advertiser[0]['fullNames'],
+        balance: Number(advertiser[0]['accountBalance']).toFixed(2),
         referralAwards: '0.00',
         averageSpend: '0.00',
         // @ts-ignore
@@ -30,21 +29,22 @@ async function businessCategories(req, res) {
 }
 exports.businessCategories = businessCategories;
 async function getPublisherDetails(req) {
-    let PUBSSID = originCookies_1.cookieExists(req.headers.cookie, 'PUBSSID');
-    let siteData = await Publisher_1.default.aggregate([
+    let pubssid = req.headers['client-ssid'], siteData = await Publisher_1.default.aggregate([
         {
-            $match: { publisherSsid: PUBSSID }
+            $match: { publisherSsid: pubssid }
         }, {
             $lookup: {
                 from: 'businesscategories',
                 localField: 'businessCategory',
                 foreignField: '_id',
-                as: 'businessCategory'
+                as: 'business'
+            }
+        }, {
+            $project: {
+                publisherPassword: 0
             }
         }
     ]);
-    return {
-        pubslisherSiteUrl: 'http://dannysofftie.github.io'
-    };
+    return Object.assign({}, siteData[0]);
 }
 exports.getPublisherDetails = getPublisherDetails;

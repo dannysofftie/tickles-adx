@@ -31,7 +31,7 @@ async function asyncRequest(url: string, body?: {} | any, multipart?: boolean) {
     if (typeof body == 'undefined')
         return await fetch(url, {
             method: 'GET', credentials: 'same-origin', headers: {
-                'client-ssid': extractCookies(document.cookie, 'SSID')
+                'client-ssid': extractCookies(document.cookie, 'SSID') == undefined ? extractCookies(document.cookie, 'PUBSSID') : extractCookies(document.cookie, 'SSID')
             }
         }).then(res => {
             if (res.headers.get('Content-Type').indexOf('text/html') != -1)
@@ -44,7 +44,7 @@ async function asyncRequest(url: string, body?: {} | any, multipart?: boolean) {
         return await fetch(url, {
             method: 'POST', credentials: 'same-origin', headers: {
                 'Content-Length': body.length,
-                'Client-Ssid': extractCookies(document.cookie, 'SSID')
+                'client-ssid': extractCookies(document.cookie, 'SSID') == undefined ? extractCookies(document.cookie, 'PUBSSID') : extractCookies(document.cookie, 'SSID')
             }, body: body
         }).then(res => res.json())
     else
@@ -52,7 +52,7 @@ async function asyncRequest(url: string, body?: {} | any, multipart?: boolean) {
             method: 'POST', credentials: 'same-origin', headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': body.length,
-                'Client-Ssid': extractCookies(document.cookie, 'SSID')
+                'client-ssid': extractCookies(document.cookie, 'SSID') == undefined ? extractCookies(document.cookie, 'PUBSSID') : extractCookies(document.cookie, 'SSID')
             }, body: JSON.stringify(body)
         }).then(res => res.json())
 }

@@ -40,8 +40,8 @@ async function advertiserLogin(req, res) {
         return res.status(res.statusCode).json({ error: 'NOT_FOUND' });
     if (!bcrypt.compareSync(req.body['password'], clientData[0]['password']))
         return res.status(res.statusCode).json({ error: 'WRONG_PASS' });
-    res.cookie('SSID', clientData[0]['ssid'], { path: '/', maxAge: 1000 * 60 * 60 * 24 });
-    res.cookie('API', apiServerUrl, { path: '/', maxAge: 1000 * 60 * 60 * 24 });
+    res.cookie('SSID', clientData[0]['ssid'], { path: '/client', maxAge: 1000 * 60 * 60 * 24 });
+    res.cookie('API', apiServerUrl, { path: '/client', maxAge: 1000 * 60 * 60 * 24 });
     return res.status(res.statusCode).json({ message: 'success' });
 }
 exports.advertiserLogin = advertiserLogin;
@@ -72,7 +72,7 @@ async function advertiserSignUp(req, res) {
 }
 exports.advertiserSignUp = advertiserSignUp;
 async function publisherSignUp(req, res) {
-    let SSID = Buffer.from(req.body['publisherEmail'] + ':' + req.body['publisherWebsite']).toString('base64'), hashPassword = await bcrypt.hashSync(req.body['publisherPassword'], 8), publisher = new Publisher_1.default({
+    let SSID = Buffer.from(req.body['publisherEmail'] + new Date()).toString('base64').slice(0, -5), hashPassword = await bcrypt.hashSync(req.body['publisherPassword'], 8), publisher = new Publisher_1.default({
         _id: new mongoose_1.Types.ObjectId(),
         publisherEmail: req.body['publisherEmail'],
         publisherAppUrl: req.body['publisherWebsite'],
@@ -89,6 +89,8 @@ exports.publisherSignUp = publisherSignUp;
 async function publisherSignIn(req, res) {
     // check whether their app url is verified
     let publisherData = await Publisher_1.default.find({ publisherEmail: req.body['publisherEmail'] }).select('publisherPassword publisherSsid -_id').exec();
+    if (publisherData.length < 1)
+        return res.status(res.statusCode).json({ error: 'does-not-exist' });
     if (!bcrypt.compareSync(req.body['publisherPassword'], publisherData[0]['publisherPassword']))
         return res.status(res.statusCode).json({ loginStatus: false });
     res.cookie('PUBSSID', publisherData[0]['publisherSsid'], { path: '/publisher', maxAge: 1000 * 60 * 60 * 24 });

@@ -39,9 +39,44 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     f();
 })(function () {
     return __awaiter(this, void 0, void 0, function () {
+        var checkStatus, verifyPaypal;
         return __generator(this, function (_a) {
+            checkStatus = document.getElementById('checkStatus');
+            checkStatus.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.location.reload();
+            });
+            verifyPaypal = document.forms['verifyPaypal'];
+            verifyPaypal.addEventListener('submit', function (e) {
+                return __awaiter(this, void 0, void 0, function () {
+                    var verificationStatus, btn, _a, _b;
+                    return __generator(this, function (_c) {
+                        switch (_c.label) {
+                            case 0:
+                                e.preventDefault();
+                                _a = asyncRequest;
+                                _b = [extractCookies(document.cookie, 'API') + '/api/v1/auth/verifyPaypal'];
+                                return [4 /*yield*/, extractFormData(this)];
+                            case 1: return [4 /*yield*/, _a.apply(void 0, _b.concat([_c.sent()]))];
+                            case 2:
+                                verificationStatus = _c.sent(), btn = verifyPaypal.querySelector('button[type="submit"]');
+                                if (verificationStatus['error'] == 'password-error') {
+                                    btn.innerHTML = "<span>Wrong password</span>";
+                                    setTimeout(function () {
+                                        btn.innerHTML = "<span>Confirm account <span class=\"mdi mdi-paypal\"></span></span>";
+                                    }, 3000);
+                                }
+                                else if (verificationStatus['message'] == 'success') {
+                                    btn.innerHTML = "<span>Account confirmed</span>";
+                                    btn.disabled = true;
+                                }
+                                return [2 /*return*/];
+                        }
+                    });
+                });
+            });
             return [2 /*return*/];
         });
     });
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGFzaGJvYXJkLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3B1Ymxpc2hlci9kYXNoYm9hcmQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxDQUFDLFVBQVUsQ0FBQztJQUNSLElBQUksT0FBTyxNQUFNLElBQUksV0FBVztRQUM1QixNQUFNLElBQUksS0FBSyxDQUFDLHFDQUFxQyxDQUFDLENBQUE7SUFDMUQsQ0FBQyxFQUFFLENBQUE7QUFDUCxDQUFDLENBQUMsQ0FBQzs7Ozs7O0NBSUYsQ0FBQyxDQUFBIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGFzaGJvYXJkLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3B1Ymxpc2hlci9kYXNoYm9hcmQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxDQUFDLFVBQVMsQ0FBQztJQUNQLElBQUksT0FBTyxNQUFNLElBQUksV0FBVztRQUM1QixNQUFNLElBQUksS0FBSyxDQUFDLHFDQUFxQyxDQUFDLENBQUE7SUFDMUQsQ0FBQyxFQUFFLENBQUE7QUFDUCxDQUFDLENBQUMsQ0FBQzs7OztZQUNLLFdBQVcsR0FBRyxRQUFRLENBQUMsY0FBYyxDQUFDLGFBQWEsQ0FBQyxDQUFBO1lBQ3hELFdBQVcsQ0FBQyxnQkFBZ0IsQ0FBQyxPQUFPLEVBQUUsVUFBUyxDQUFDO2dCQUM1QyxDQUFDLENBQUMsY0FBYyxFQUFFLENBQUE7Z0JBQ2xCLE1BQU0sQ0FBQyxRQUFRLENBQUMsTUFBTSxFQUFFLENBQUE7WUFDNUIsQ0FBQyxDQUFDLENBQUE7WUFFRSxZQUFZLEdBQW9CLFFBQVEsQ0FBQyxLQUFLLENBQUMsY0FBYyxDQUFDLENBQUE7WUFDbEUsWUFBWSxDQUFDLGdCQUFnQixDQUFDLFFBQVEsRUFBRSxVQUFlLENBQUM7Ozs7OztnQ0FDcEQsQ0FBQyxDQUFDLGNBQWMsRUFBRSxDQUFBO2dDQUNhLEtBQUEsWUFBWSxDQUFBO3NDQUFDLGNBQWMsQ0FBQyxRQUFRLENBQUMsTUFBTSxFQUFFLEtBQUssQ0FBQyxHQUFHLDJCQUEyQjtnQ0FBRSxxQkFBTSxlQUFlLENBQUMsSUFBSSxDQUFDLEVBQUE7b0NBQXBILHFCQUFNLDRCQUFtRixTQUEyQixHQUFDLEVBQUE7O2dDQUExSSxrQkFBa0IsR0FBRyxTQUFxSCxFQUMxSSxHQUFHLEdBQXNCLFlBQVksQ0FBQyxhQUFhLENBQUMsdUJBQXVCLENBQUM7Z0NBQ2hGLElBQUksa0JBQWtCLENBQUMsT0FBTyxDQUFDLElBQUksZ0JBQWdCLEVBQUU7b0NBQ2pELEdBQUcsQ0FBQyxTQUFTLEdBQUcsNkJBQTZCLENBQUE7b0NBQzdDLFVBQVUsQ0FBQzt3Q0FDUCxHQUFHLENBQUMsU0FBUyxHQUFHLHFFQUFtRSxDQUFBO29DQUN2RixDQUFDLEVBQUUsSUFBSSxDQUFDLENBQUE7aUNBQ1g7cUNBQU0sSUFBSSxrQkFBa0IsQ0FBQyxTQUFTLENBQUMsSUFBSSxTQUFTLEVBQUU7b0NBQ25ELEdBQUcsQ0FBQyxTQUFTLEdBQUcsZ0NBQWdDLENBQUE7b0NBQ2hELEdBQUcsQ0FBQyxRQUFRLEdBQUcsSUFBSSxDQUFBO2lDQUN0Qjs7Ozs7YUFDSixDQUFDLENBQUE7Ozs7Q0FDTCxDQUFDLENBQUEifQ==

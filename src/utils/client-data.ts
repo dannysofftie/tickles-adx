@@ -2,7 +2,6 @@
 import { HttpRequest } from '.'
 import { Request, Response } from 'express'
 import Publisher from '../models/Publisher';
-import { cookieExists } from './originCookies';
 
 interface T {
     title: string,
@@ -20,10 +19,11 @@ export async function clientData(ssid: string | Array<string>): Promise<T> {
         totalCampaigns = await new HttpRequest().get('/api/v1/data/get-campaigns', { 'client-ssid': ssid }).catch(err => { }),
         totalAds = await new HttpRequest().get('/api/v1/data/get-advertiser-ads', { 'client-ssid': ssid }).catch(err => { })
     // do another request to retrieve advertiser metadata
+
     return {
         title: 'Tickles All in one dashboard || Client portal',
-        client: advertiser['fullNames'],
-        balance: advertiser['accountBalance'],
+        client: advertiser[0]['fullNames'],
+        balance: Number(advertiser[0]['accountBalance']).toFixed(2),
         referralAwards: '0.00',
         averageSpend: '0.00',
         // @ts-ignore
@@ -45,21 +45,23 @@ export async function businessCategories(req: Request, res: Response) {
 
 
 export async function getPublisherDetails(req: Request) {
-    let PUBSSID = cookieExists(req.headers.cookie, 'PUBSSID')
-    let siteData = await Publisher.aggregate([
-        {
-            $match: { publisherSsid: PUBSSID }
-        }, {
-            $lookup: {
-                from: 'businesscategories',
-                localField: 'businessCategory',
-                foreignField: '_id',
-                as: 'businessCategory'
+    let pubssid = req.headers['client-ssid'],
+        siteData = await Publisher.aggregate([
+            {
+                $match: { publisherSsid: pubssid }
+            }, {
+                $lookup: {
+                    from: 'businesscategories',
+                    localField: 'businessCategory',
+                    foreignField: '_id',
+                    as: 'business'
+                }
+            }, {
+                $project: {
+                    publisherPassword: 0
+                }
             }
-        }
-    ])
+        ])
 
-    return {
-        pubslisherSiteUrl: 'http://dannysofftie.github.io'
-    }
+    return { ...siteData[0] }
 }

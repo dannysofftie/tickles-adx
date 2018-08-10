@@ -20,6 +20,9 @@ const Pulishers = new mongoose_1.Schema({
     publisherDefaultWallet: {
         type: String,
         required: false
+    }, walletAddress: {
+        type: String,
+        required: false
     },
     isAppUrlVerified: {
         type: Boolean,
@@ -29,6 +32,16 @@ const Pulishers = new mongoose_1.Schema({
     publisherSsid: {
         type: String,
         required: true
+    },
+    businessCategory: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'BusinessCategories',
+        required: false
+    },
+    allowedMinimumBid: {
+        type: Number,
+        required: false,
+        default: 0.0
     }
 });
 exports.default = mongoose_1.model('Publishers', Pulishers);

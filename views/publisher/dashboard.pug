@@ -4,35 +4,62 @@ append css
     link(rel="stylesheet", href="/css/styles/publisher/custom.css")
 block content
     .container-fluid
-        .row.my-3
-            .col-md-12.d-flex.justify-content-between
-                .alert.alert-info.w-50
-                    span You are steps away to start monetizing your website.
-                div                
-                    a(href="/publisher/logout").btn.btn-dark.link Logout
-                        span.mdi.mdi-logout
-            .col-md-12
-            .col-md-5
-                .card-body
-                    strong Step 1
-                    div Ensure your site is online.
-                    .dropdown-divider
-                    strong Step 2
-                    div Paste below code to every page you want to feature Tickles ads.
-                    .dropdown-divider
-                    strong Step 3
-                    div Setup a paypal account
-                    .dropdown-divider
-                    strong Step 4
-                    div Activate your site
-                    .dropdown-divider
-                    strong Step 5
-                    div Sit back and relax, increase your website traffic and earn money.
-            .col-md-7
-                div Test to ensure your site is running.
-                    a(href= pubslisherSiteUrl).btn.btn-info Test here
-                div Paste below code to your website
-                iframe(src="/page-view/publisher/embed", frameborder="0" style="height:500px; width: 100%;")
+        - if(isAppUrlVerified == false || publisherDefaultWallet == null)
+            .row.my-3
+                .col-md-12.d-flex.justify-content-between
+                    .alert.alert-info.w-50
+                        span You are a few steps away to start monetizing your website.
+                    span Your site url #{publisherAppUrl}
+                    div                
+                        a(href="/publisher/logout").btn.btn-dark.link Logout
+                            span.mdi.mdi-logout
+                .col-md-12
+                .col-md-5
+                    .card-body(style="position:fixed;")
+                        strong Step 1
+                        div Ensure your site is online.                   
+                        .dropdown-divider
+                        strong Step 2
+                        div Paste below code to every page you want to feature Tickles ads.
+                        .dropdown-divider
+                        strong Step 3
+                        div Setup a paypal account
+                        .dropdown-divider
+                        strong Step 4
+                        div Activate your site
+                        .dropdown-divider
+                        strong Step 5
+                        div Sit back and relax, increase your website traffic and earn money.
+                .col-md-7
+                    div Test to ensure your site is running.&nbsp;
+                        a(href='http://'+publisherAppUrl target='_blank' ).text-success Test here
+                    .dropdown-divider.clearfix
+                    div Paste below code to every page on your website
+                    iframe(src="/page-view/publisher/embed", frameborder="0" style="height:500px; width: 100%;")
+                    div Setup paypal account
+                        form(action="#" name="verifyPaypal").w-50.float-right.card-body
+                            .form-group
+                                input(type="email" id="email" name="emailAddress" placeholder="Paypal email address").form-control
+                                label(for="email") Email address which will be used to pay you
+                            .form-group
+                                input(type="password" name="password" placeholder="Password" id="password").form-control
+                                label(for="password") Password used on sign up
+                            .form-group
+                                button(type="submit").btn.btn-block.btn-info Confirm account 
+                                    span.mdi.mdi-paypal
+                    .dropdown-divider.clearfix
+                    div Activate your site &nbsp;
+                        a(href='http://'+publisherAppUrl target='_blank' ).text-success here
+                    .my-4 After completing the above steps, check status here.
+                        a(href="")#checkStatus.btn.btn-sm.btn-dark check status
+                        span &nbsp; If you still see this page, things are not good, your site is not active yet. <br>
+                        span Ensure you have pasted above code at the bottom of every page you want Tickles ads to feature,
+                            | and you have initialized correctly with existing element ids, and recommended element sizes.
+                            | If you haven't set your paypal account, please do so.
+                        
 
+        - else
+            h3 You have successfully verified your website
+    
     include ../includes/footer
     

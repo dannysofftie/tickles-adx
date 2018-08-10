@@ -44,8 +44,8 @@ export async function advertiserLogin(req: Request, res: Response) {
     if (!bcrypt.compareSync(req.body['password'], clientData[0]['password']))
         return res.status(res.statusCode).json({ error: 'WRONG_PASS' })
 
-    res.cookie('SSID', clientData[0]['ssid'], { path: '/', maxAge: 1000 * 60 * 60 * 24 })
-    res.cookie('API', apiServerUrl, { path: '/', maxAge: 1000 * 60 * 60 * 24 })
+    res.cookie('SSID', clientData[0]['ssid'], { path: '/client', maxAge: 1000 * 60 * 60 * 24 })
+    res.cookie('API', apiServerUrl, { path: '/client', maxAge: 1000 * 60 * 60 * 24 })
     return res.status(res.statusCode).json({ message: 'success' })
 }
 
@@ -86,7 +86,7 @@ export async function advertiserSignUp(req: Request, res: Response) {
 
 
 export async function publisherSignUp(req: Request, res: Response) {
-    let SSID = Buffer.from(req.body['publisherEmail'] + ':' + req.body['publisherWebsite']).toString('base64'),
+    let SSID = Buffer.from(req.body['publisherEmail'] + new Date()).toString('base64').slice(0, -5),
         hashPassword = await bcrypt.hashSync(req.body['publisherPassword'], 8),
         publisher = new Publishers({
             _id: new Types.ObjectId(),
@@ -107,6 +107,9 @@ export async function publisherSignUp(req: Request, res: Response) {
 export async function publisherSignIn(req: Request, res: Response) {
     // check whether their app url is verified
     let publisherData = await Publishers.find({ publisherEmail: req.body['publisherEmail'] }).select('publisherPassword publisherSsid -_id').exec()
+
+    if (publisherData.length < 1)
+        return res.status(res.statusCode).json({ error: 'does-not-exist' })
 
     if (!bcrypt.compareSync(req.body['publisherPassword'], publisherData[0]['publisherPassword']))
         return res.status(res.statusCode).json({ loginStatus: false })
