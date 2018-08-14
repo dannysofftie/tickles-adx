@@ -14,20 +14,7 @@
     for await (const campaign of campaignData) {
         campaignManager(campaign)
     }
-    /*
-    campaignAdvertisements
-    campaignBannedDomains
-    campaignBeginDate
-    campaignBidPerAd
-    campaignCategory
-    campaignEndDate
-    campaignEstimatedBudget
-    campaignName
-    campaignTargetDesktop
-    campaignTargetLocations
-    campaignTargetMobile
-    campaignTargetTablets
-    */
+
     function campaignManager(campaign: any) {
         let statusIndicator = ''
         if (campaign['campaignTargetDesktop'] == 'off' && campaign['campaignTargetMobile'] == 'off' && campaign['campaignTargetTablets'] == 'off')

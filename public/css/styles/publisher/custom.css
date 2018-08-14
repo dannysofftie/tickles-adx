@@ -37,7 +37,7 @@ a:focus {
 .nav-menus * {
     margin-right: 18px;
     text-transform: uppercase;
-    transition: cubic-bezier(0.68, -0.55, 0.265, 1.55) 7.2s
+    transition: cubic-bezier(0.68, -0.55, 0.265, 1.55) 1.2s;
 }
 
 .scroll-to-view {

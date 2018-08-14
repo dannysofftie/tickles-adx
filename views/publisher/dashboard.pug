@@ -55,11 +55,18 @@ block content
                         span &nbsp; If you still see this page, things are not good, your site is not active yet. <br>
                         span Ensure you have pasted above code at the bottom of every page you want Tickles ads to feature,
                             | and you have initialized correctly with existing element ids, and recommended element sizes.
-                            | If you haven't set your paypal account, please do so.
+                            | If you haven't set up your paypal account, please do so.
                         
 
         - else
-            h3 You have successfully verified your website
-    
+            .container.my-4
+                div Your site has been verified.
+                span.btn.btn-light #{publisherAppUrl}
+                .row
+                    .col-md-4
+                        .card-body.card-dark.m-2
+                            div Accumulated revenue $#{revenueBalance.toFixed(2)}
+                            div.my-2 Allowed withdrawals
+                        input(type="text").form-control#testPlaces
+
     include ../includes/footer
-    

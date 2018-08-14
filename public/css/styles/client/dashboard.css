@@ -176,7 +176,8 @@ a {
     padding: 0;
 }
 
-.campaign-headers {
+.campaign-headers,
+.campaign-statistics-header {
     color: white;
     background-color: rgba(0, 0, 0, 0.7);
     border-bottom: 2px solid rgba(20, 161, 163, 0.938);
@@ -190,6 +191,16 @@ a {
     display: grid;
     grid-template-columns: 13% 10% 10% 10% 8% 15% 18% 16%;
     grid-gap: 5px;
+}
+
+.campaign-statistics,
+.campaign-statistics-header {
+    text-align: center;
+    padding: 10px 5px;
+    display: grid;
+    grid-template-columns: 13% 20% 10% 8% 10% 10% 8% 11%;
+    grid-gap: 5px;
+    border-bottom: .3px solid rgba(0, 0, 0, 0.3);
 }
 
 .single-campaign {

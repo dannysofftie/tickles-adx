@@ -6,9 +6,9 @@ block content
             span.alert.alert-danger.animated.jello.d-none#notify
         div.d-flex.justify-content-center.align-content-center
             span.text-danger.animated
-            .sign-up-form(style={width:'420px'})
-                span Sign up to get started
-                form(action="/api/client/client-signup", method="POST",name="signupform").pr-3#signupform
+            .sign-up-form(style={width:'440px'})
+                form(action="/api/client/client-signup", method="POST",name="signupform").pr-3#signupform.card-body
+                    span Sign up to get started
                     .form-group
                         input(type="text", name="fullnames" placeholder="Full names" required="required").form-control
                     .form-group
@@ -36,11 +36,11 @@ block content
                     .form-group
                         button(type="submit").btn.btn-block.btn-info Register &nbsp;
                             span.mdi.mdi-play-circle
-                        div.d-flex.justify-content-between.mt-2
-                            button.btn.btn-danger Use Gmail &nbsp;
-                                span.mdi.mdi-gmail
-                            button.btn.btn-info Use Twitter &nbsp;
-                                span.mdi.mdi-twitter
+                        //- div.d-flex.justify-content-between.mt-2
+                        //-     button.btn.btn-danger Use Gmail &nbsp;
+                        //-         span.mdi.mdi-gmail
+                        //-     button.btn.btn-info Use Twitter &nbsp;
+                        //-         span.mdi.mdi-twitter
                     .form-group
                         a(href="/client/signin?from=signup").link Sign in instead?
-                        a(href="javascript:void(0)").float-right#overview Overview 
+                        //- a(href="javascript:void(0)").float-right#overview Overview 

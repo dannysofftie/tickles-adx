@@ -33,6 +33,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
+var __values = (this && this.__values) || function (o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+};
 var _this = this;
 (function (f) {
     if (typeof module == 'undefined') {
@@ -41,15 +58,91 @@ var _this = this;
     else
         throw new Error('Unsupported environment');
 })(function (document, window) { return __awaiter(_this, void 0, void 0, function () {
-    var campaigns;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/campaignStatistics')];
+    function showStatistics() {
+        return __awaiter(this, void 0, void 0, function () {
+            function displayStatistics(campaign) {
+                campaignStatistics += "\n        <div class=\"campaign-statistics\" data-campaign=\"" + campaign['_id'] + "\">\n            <div class=\"text-left\">" + campaign['_id']['campaignName'] + "</div>\n            <div class=\"text-left\">" + campaign['_id']['adName'] + "</div>\n            <div style=\"margin: 0 auto;\">" + campaign['impressions'] + "</div>\n            <div style=\"margin: 0 auto;\">" + campaign['views'] + "</div>\n            <div style=\"margin: 0 auto;\">" + campaign['clicks'] + "</div>\n            <div style=\"margin: 0 auto;\">" + campaign['doubleclicks'] + "</div>\n            <div></div>\n            <div>\n                <a href=\"#t" + campaign['_id']['adId'] + "\" data-href=\"" + campaign['_id']['adId'] + "\" class=\"btn btn-light deleteAd\">\n                    <span class=\"mdi mdi-delete\"></span>\n                </a>                \n            </div>\n        </div>";
+            }
+            var e_2, _a, campaigns, statisticsParent, campaignStatistics, campaigns_1, campaigns_1_1, campaign, e_2_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/campaignStatistics')];
+                    case 1:
+                        campaigns = _b.sent(), statisticsParent = document.getElementById('campaignStatistics'), campaignStatistics = '';
+                        _b.label = 2;
+                    case 2:
+                        _b.trys.push([2, 7, 8, 13]);
+                        campaigns_1 = __asyncValues(campaigns);
+                        _b.label = 3;
+                    case 3: return [4 /*yield*/, campaigns_1.next()];
+                    case 4:
+                        if (!(campaigns_1_1 = _b.sent(), !campaigns_1_1.done)) return [3 /*break*/, 6];
+                        campaign = campaigns_1_1.value;
+                        displayStatistics(campaign);
+                        _b.label = 5;
+                    case 5: return [3 /*break*/, 3];
+                    case 6: return [3 /*break*/, 13];
+                    case 7:
+                        e_2_1 = _b.sent();
+                        e_2 = { error: e_2_1 };
+                        return [3 /*break*/, 13];
+                    case 8:
+                        _b.trys.push([8, , 11, 12]);
+                        if (!(campaigns_1_1 && !campaigns_1_1.done && (_a = campaigns_1["return"]))) return [3 /*break*/, 10];
+                        return [4 /*yield*/, _a.call(campaigns_1)];
+                    case 9:
+                        _b.sent();
+                        _b.label = 10;
+                    case 10: return [3 /*break*/, 12];
+                    case 11:
+                        if (e_2) throw e_2.error;
+                        return [7 /*endfinally*/];
+                    case 12: return [7 /*endfinally*/];
+                    case 13:
+                        statisticsParent.innerHTML = campaignStatistics;
+                        return [2 /*return*/];
+                }
+            });
+        });
+    }
+    var e_1, _a, deleteAds, deleteAds_1, deleteAds_1_1, deleteAd;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, showStatistics()];
             case 1:
-                campaigns = _a.sent();
-                console.log(campaigns);
+                _b.sent();
+                deleteAds = Array.from(document.querySelectorAll('a.deleteAd'));
+                try {
+                    for (deleteAds_1 = __values(deleteAds), deleteAds_1_1 = deleteAds_1.next(); !deleteAds_1_1.done; deleteAds_1_1 = deleteAds_1.next()) {
+                        deleteAd = deleteAds_1_1.value;
+                        deleteAd.addEventListener('click', function (e) {
+                            return __awaiter(this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            e.preventDefault();
+                                            return [4 /*yield*/, asyncRequest(extractCookies(document.cookie, 'API') + '/api/v1/data/deleteAdFromRecords?id=' + this.getAttribute('data-href'))];
+                                        case 1:
+                                            _a.sent();
+                                            return [4 /*yield*/, showStatistics()];
+                                        case 2:
+                                            _a.sent();
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            });
+                        });
+                    }
+                }
+                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                finally {
+                    try {
+                        if (deleteAds_1_1 && !deleteAds_1_1.done && (_a = deleteAds_1["return"])) _a.call(deleteAds_1);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                }
                 return [2 /*return*/];
         }
     });
 }); });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FtcGFpZ24tc3RhdGlzdGljcy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9jbGllbnQvY2FtcGFpZ24tc3RhdGlzdGljcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLGlCQVdFO0FBWEYsQ0FBQyxVQUFDLENBQUM7SUFDQyxJQUFJLE9BQU8sTUFBTSxJQUFJLFdBQVcsRUFBRTtRQUM5QixDQUFDLENBQUMsUUFBUSxFQUFFLE1BQU0sQ0FBQyxDQUFBO0tBQ3RCOztRQUVHLE1BQU0sSUFBSSxLQUFLLENBQUMseUJBQXlCLENBQUMsQ0FBQTtBQUNsRCxDQUFDLENBQUMsQ0FBQyxVQUFPLFFBQWtCLEVBQUUsTUFBYzs7OztvQkFFeEIscUJBQU0sWUFBWSxDQUFDLGNBQWMsQ0FBQyxRQUFRLENBQUMsTUFBTSxFQUFFLEtBQUssQ0FBQyxHQUFHLGlDQUFpQyxDQUFDLEVBQUE7O2dCQUExRyxTQUFTLEdBQUcsU0FBOEY7Z0JBRTlHLE9BQU8sQ0FBQyxHQUFHLENBQUMsU0FBUyxDQUFDLENBQUE7Ozs7S0FDekIsQ0FBQyxDQUFBIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FtcGFpZ24tc3RhdGlzdGljcy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9jbGllbnQvY2FtcGFpZ24tc3RhdGlzdGljcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsaUJBOENFO0FBOUNGLENBQUMsVUFBQyxDQUFDO0lBQ0MsSUFBSSxPQUFPLE1BQU0sSUFBSSxXQUFXLEVBQUU7UUFDOUIsQ0FBQyxDQUFDLFFBQVEsRUFBRSxNQUFNLENBQUMsQ0FBQTtLQUN0Qjs7UUFFRyxNQUFNLElBQUksS0FBSyxDQUFDLHlCQUF5QixDQUFDLENBQUE7QUFDbEQsQ0FBQyxDQUFDLENBQUMsVUFBTyxRQUFrQixFQUFFLE1BQWM7SUFDeEMsU0FBZSxjQUFjOztZQVN6QixTQUFTLGlCQUFpQixDQUFDLFFBQWE7Z0JBQ3BDLGtCQUFrQixJQUFJLGtFQUN3QixRQUFRLENBQUMsS0FBSyxDQUFDLGtEQUNwQyxRQUFRLENBQUMsS0FBSyxDQUFDLENBQUMsY0FBYyxDQUFDLHFEQUMvQixRQUFRLENBQUMsS0FBSyxDQUFDLENBQUMsUUFBUSxDQUFDLDJEQUNuQixRQUFRLENBQUMsYUFBYSxDQUFDLDJEQUN2QixRQUFRLENBQUMsT0FBTyxDQUFDLDJEQUNqQixRQUFRLENBQUMsUUFBUSxDQUFDLDJEQUNsQixRQUFRLENBQUMsY0FBYyxDQUFDLHdGQUd0QyxRQUFRLENBQUMsS0FBSyxDQUFDLENBQUMsTUFBTSxDQUFDLHVCQUFnQixRQUFRLENBQUMsS0FBSyxDQUFDLENBQUMsTUFBTSxDQUFDLCtLQUk1RSxDQUFBO1lBQ1AsQ0FBQzs7Ozs0QkF4QmUscUJBQU0sWUFBWSxDQUFDLGNBQWMsQ0FBQyxRQUFRLENBQUMsTUFBTSxFQUFFLEtBQUssQ0FBQyxHQUFHLGlDQUFpQyxDQUFDLEVBQUE7O3dCQUExRyxTQUFTLEdBQUcsU0FBOEYsRUFDMUcsZ0JBQWdCLEdBQUcsUUFBUSxDQUFDLGNBQWMsQ0FBQyxvQkFBb0IsQ0FBQyxFQUNoRSxrQkFBa0IsR0FBRyxFQUFFOzs7O3dCQUVFLGNBQUEsY0FBQSxTQUFTLENBQUE7Ozs7O3dCQUFyQixRQUFRLHNCQUFBLENBQUE7d0JBQ3JCLGlCQUFpQixDQUFDLFFBQVEsQ0FBQyxDQUFBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7d0JBcUIvQixnQkFBZ0IsQ0FBQyxTQUFTLEdBQUcsa0JBQWtCLENBQUE7Ozs7O0tBQ2xEOzs7O29CQUNELHFCQUFNLGNBQWMsRUFBRSxFQUFBOztnQkFBdEIsU0FBc0IsQ0FBQTtnQkFFbEIsU0FBUyxHQUFHLEtBQUssQ0FBQyxJQUFJLENBQUMsUUFBUSxDQUFDLGdCQUFnQixDQUFDLFlBQVksQ0FBQyxDQUFDLENBQUE7O29CQUNuRSxLQUF1QixjQUFBLFNBQUEsU0FBUyxDQUFBLCtGQUFFO3dCQUF2QixRQUFRO3dCQUNmLFFBQVEsQ0FBQyxnQkFBZ0IsQ0FBQyxPQUFPLEVBQUUsVUFBZ0IsQ0FBQzs7Ozs7NENBQ2hELENBQUMsQ0FBQyxjQUFjLEVBQUUsQ0FBQTs0Q0FDbEIscUJBQU0sWUFBWSxDQUFDLGNBQWMsQ0FBQyxRQUFRLENBQUMsTUFBTSxFQUFFLEtBQUssQ0FBQyxHQUFHLHNDQUFzQyxHQUFHLElBQUksQ0FBQyxZQUFZLENBQUMsV0FBVyxDQUFDLENBQUMsRUFBQTs7NENBQXBJLFNBQW9JLENBQUE7NENBQ3BJLHFCQUFNLGNBQWMsRUFBRSxFQUFBOzs0Q0FBdEIsU0FBc0IsQ0FBQTs7Ozs7eUJBQ3pCLENBQUMsQ0FBQTtxQkFDTDs7Ozs7Ozs7Ozs7O0tBQ0osQ0FBQyxDQUFBIn0=
